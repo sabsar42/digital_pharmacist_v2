@@ -19,6 +19,7 @@ class AuthPage extends StatelessWidget {
             return HomePage();
           }
 
+
           // user is NOT logged in
           else {
             return LogInScreen();

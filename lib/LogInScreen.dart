@@ -15,6 +15,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
 
+
   // Future logIn() async {
   //   print(_emailController.text);
   //   print(_passwordController.text);

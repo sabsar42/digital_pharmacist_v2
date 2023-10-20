@@ -60,6 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
             ),
+
             Padding(
               padding: EdgeInsets.all(20),
               child: TextField(

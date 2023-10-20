@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
             icon: Icon(Icons.logout),
           )
         ],
+
       ),
       body: Center(
           child: Text(
