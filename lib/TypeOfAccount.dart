@@ -11,7 +11,7 @@ class TypeOfAccount extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(   //Whole
+      body: Column(    //Whole
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Type of Account", style: TextStyle(
