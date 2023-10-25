@@ -1,4 +1,4 @@
-import 'package:digi_pharma_app_test/SignUpScreen.dart';
+import 'package:digi_pharma_app_test/signUp_logIn//SignUpScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
