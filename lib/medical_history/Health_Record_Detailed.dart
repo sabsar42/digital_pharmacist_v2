@@ -49,19 +49,19 @@ class HealthRecordDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: Size.fromHeight(50.0),
         child: ClipRRect(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
+            bottom: Radius.circular(15),
           ),
           child: AppBar(
 
-            elevation: 10,
+            elevation: 20.0,
             backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
             title: Text(
-              '$diagnosisNumberfromPrev Health Records',
+              '$diagnosisNumberfromPrev - Health Record',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 color: Colors.deepPurple,
                 fontWeight: FontWeight.bold,
               ),
@@ -69,114 +69,132 @@ class HealthRecordDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: HealthRecordDetailCard(record: record),
-        ),
-      ),
+
+      body: HealthRecordDetailCard(record: record),
+
     );
   }
 }
-
 class HealthRecordDetailCard extends StatelessWidget {
   final HealthRecord record;
-  final customColor = Color.fromRGBO(239, 207, 170, 1.0);
+  final customColor = Color.fromRGBO(99, 174, 232, 1.0);
+
   HealthRecordDetailCard({required this.record});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: customColor,
-      margin: EdgeInsets.all(0.0),
-      elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Container(
-        height: 700,
-        width : 600,
-        margin: EdgeInsets.all(5.0),
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+    return ListView(
+
+      children: [
+        Container(
+
+          height: 700,
+          color: Color.fromRGBO(241, 229, 220, 1.0),
+          margin: EdgeInsets.all(1.0),
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            //  _buildthreeButton();
+              _buildDoctorInfo(record.doctorName, record.hospitalName),
+              _buildDivider(),
+              _buildSection("Diagnosis", record.diagnosis),
+              _buildDivider(),
+              _buildSection("Summary of the whole History", record.summaryOfMedicalRecord, textColor: Colors.black),
+              _buildDivider(),
+              _buildSection("Prescribed Medicine", record.prescribedDrugs),
+
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSection(String title, String content, {Color textColor = Colors.black}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color:Colors.black
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          content,
+          style: TextStyle(
+            fontSize: 18,
+            color: textColor,
+          ),
+        ),
+        SizedBox(height: 16.0),
+      ],
+    );
+  }
+
+  Widget _buildDivider() {
+    return Divider(
+      color: Colors.black,
+      thickness: 1.0,
+    );
+  }
+
+  Widget _buildDoctorInfo(String doctorName, String hospitalName) {
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+      child : Container(
+      color:Color.fromRGBO(65, 33, 1, 0.18823529411764706),
+      padding: EdgeInsets.all(20),
+      child: Column(
+      children: [
+        Row(
           children: [
-            Text(
-              'Diagnosis',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            CircleAvatar(
+              backgroundImage: AssetImage('assets/doctor_avatar.png'),
+              radius: 30,
             ),
-            SizedBox(height: 8.0),
-            Text(
-              record.diagnosis,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Summary of Medical Record',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              record.summaryOfMedicalRecord,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Prescribed Drugs',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox (height: 8.0),
-            Text(
-              record.prescribedDrugs,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Row(
+            SizedBox(width: 16.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 8.0),
                 Text(
-                  'Dr. ${record.doctorName}',
+                  record.doctorName,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 8.0),
-                Icon(
-                  Icons.link,
-                  color: Colors.white,
+                Text(
+                  record.hospitalName,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),
           ],
         ),
-      ),
+        SizedBox(height: 16.0),
+        Text(
+          'Hospital: $hospitalName',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    ),
+    ),
     );
   }
 }

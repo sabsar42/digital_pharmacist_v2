@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:transformable_list_view/transformable_list_view.dart';
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'TranformableListView_Packagea_Method.dart';
+
+
+
+
 
 class HealthRecordScreen extends StatelessWidget {
   List<HealthRecord> generateHealthRecords() {
@@ -21,32 +26,39 @@ class HealthRecordScreen extends StatelessWidget {
 
     return records;
   }
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     List<HealthRecord> records = generateHealthRecords();
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0), // Adjust the preferred height
+        preferredSize: Size.fromHeight(70.0),
         child: ClipRRect(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20), // Adjust the radius to control roundness
+            bottom: Radius.circular(20),
           ),
           child: AppBar(
             elevation: 10,
             backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
             title: Text(
-                '\nHealth Records',
+              '\nHealth Records',
               style: TextStyle(
-                fontSize: 24, // Adjust the font size
-                color: Colors.deepPurple, // Text color
-                fontWeight: FontWeight.bold, // Font weight
+                fontSize: 24,
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
       ),
-      body: ListView.builder(
+      body: TransformableListView.builder(
+        getTransformMatrix: getTransformMatrix,
         itemCount: records.length,
         itemBuilder: (context, index) {
           return HealthRecordCard(record: records[index]);
@@ -71,10 +83,12 @@ class HealthRecord {
     required this.timeline,
   });
 }
+
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
+  final String num;
 
-  HealthRecordCard({required this.record});
+  HealthRecordCard({required this.record}) : num = record.diagnosisNumber;
   final customColor = Color.fromRGBO(8, 52, 109, 1.0);
 
   @override
@@ -82,17 +96,21 @@ class HealthRecordCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         // Navigate to the HealthRecord Detailed screen here
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HealthRecordDetailScreen(diagnosisNumberfromPrev: 'diagnosisNumber'),
+            builder: (context) =>
+                HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
           ),
         );
       },
       child: Card(
         margin: EdgeInsets.all(10.0),
-        color: customColor, // Set your preferred background color
-        elevation: 20, // Add some elevation for a material design look
+        color: customColor,
+
+        elevation: 30,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(19.0), // Rounded corners
         ),
@@ -129,9 +147,8 @@ class HealthRecordCard extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage:
-                        AssetImage('assets/doctor_avatar.png'), // Replace with the path to the doctor's avatar image
-                        radius: 30, // Increase the radius for a larger avatar
+                        backgroundImage: AssetImage('assets/doctor_avatar.png'),
+                        radius: 30,
                       ),
                       SizedBox(width: 16.0),
                       Column(
