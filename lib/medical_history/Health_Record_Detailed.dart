@@ -48,24 +48,26 @@ class HealthRecordDetailScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
+      appBar: AppBar(
+        toolbarHeight: 45,
+        elevation: 20.0,
+        backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+        title: Text(
+          '$diagnosisNumberfromPrev - Health Record',
+          style: TextStyle(
+            fontSize: 22,
+            color: Colors.deepPurple,
+            fontWeight: FontWeight.bold,
           ),
-          child: AppBar(
-
-            elevation: 20.0,
-            backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-            title: Text(
-              '$diagnosisNumberfromPrev - Health Record',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
+          child: _buildThreeButton(context),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
           ),
         ),
       ),
@@ -87,6 +89,7 @@ class HealthRecordDetailCard extends StatelessWidget {
     return ListView(
 
       children: [
+
         Container(
 
           height: 700,
@@ -97,7 +100,8 @@ class HealthRecordDetailCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            //  _buildthreeButton();
+
+
               _buildDoctorInfo(record.doctorName, record.hospitalName),
               _buildDivider(),
               _buildSection("Diagnosis", record.diagnosis),
@@ -197,4 +201,38 @@ class HealthRecordDetailCard extends StatelessWidget {
     ),
     );
   }
+}
+
+Widget _buildThreeButton(BuildContext context) {
+  final String c  ;
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Align buttons in the center horizontally
+    children: <Widget>[
+      ElevatedButton(
+        onPressed: () {
+          final String  c='1';
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HealthRecordDetailScreen(diagnosisNumberfromPrev: c),
+            ),
+          );
+        },
+        child: Text('Record'),
+      ),
+      ElevatedButton(
+        onPressed: () {
+
+        },
+        child: Text('EHR'),
+      ),
+      ElevatedButton(
+        onPressed: () {
+
+        },
+        child: Text('PDF'),
+      ),
+    ],
+  );
 }
