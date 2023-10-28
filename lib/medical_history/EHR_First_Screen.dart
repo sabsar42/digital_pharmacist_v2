@@ -15,8 +15,8 @@ import 'package:flutter/material.dart';
 import 'Three_Button_Functions_Screen.dart';
 
 class EHRScreen extends StatelessWidget {
-
   final String diagnosisNumberfromPrev;
+
   EHRScreen({required this.diagnosisNumberfromPrev});
 
   @override
@@ -48,10 +48,13 @@ class EHRScreen extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2, // Number of columns in the grid
         children: <Widget>[
-          _buildEHRFolder("Folder 1"),
-          _buildEHRFolder("Folder 2"),
-          _buildEHRFolder("Folder 3"),
-          _buildEHRFolder("Folder 4"),
+          _buildEHRFolder("Blood"),
+          _buildEHRFolder("X-ray"),
+          _buildEHRFolder("Medication"),
+          _buildEHRFolder("Diagnostic Report"),
+          _buildEHRFolder("Urine Report"),
+          _buildEHRFolder("Diabetics Report"),
+          _buildEHRFolder("SonoGram Report"),
         ],
       ),
     );
@@ -59,27 +62,44 @@ class EHRScreen extends StatelessWidget {
 
   Widget _buildEHRFolder(String folderName) {
     return Card(
-      elevation: 5.0,
-      margin: EdgeInsets.all(16.0),
-
+      elevation: 6.0,
+      margin: EdgeInsets.all(20.0),
       child: InkWell(
-        onTap: () {
+        onTap: () {},
+        child: Stack(
+          children: [
+          Positioned(
+            right: 1.0,
+          child: Row(
+            children: [
+              IconButton(onPressed: (){}, icon: Icon(
+                Icons.more_horiz_sharp,
+              ))
 
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.folder,
-              size: 80.0,
-              color: Colors.blue,
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              folderName,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
+            ],
+          )),
+            Positioned(
+              left: 1.0,
+              right: 1.0,
+              top: 1.0,
+              bottom: 1.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.folder,
+                    size: 80.0,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    folderName,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
