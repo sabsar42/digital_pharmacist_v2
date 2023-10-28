@@ -6,6 +6,8 @@ import 'package:digi_pharma_app_test/medical_history/Three_Button_Functions_Scre
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
+import 'TabBar_View.dart';
+
 class HealthRecord {
   final String diagnosisNumber;
   final String doctorName;
@@ -49,29 +51,30 @@ class HealthRecordDetailScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 45,
-        elevation: 20.0,
-        backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-        title: Text(
-          '$diagnosisNumberfromPrev - Health Record',
-          style: TextStyle(
-            fontSize: 22,
-            color: Colors.deepPurple,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
-          child: BuildThreeButton(),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   toolbarHeight: 45,
+      //   elevation: 20.0,
+      //   backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+      //   title: Text(
+      //     '$diagnosisNumberfromPrev - Health Record',
+      //     style: TextStyle(
+      //       fontSize: 22,
+      //       color: Colors.deepPurple,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   bottom: PreferredSize(
+      //     preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
+      //     // child: BuildThreeButton(), **** Will Check Later !!!!
+      //     child: TabBarScreen(),
+      //   ),
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.only(
+      //       bottomLeft: Radius.circular(15),
+      //       bottomRight: Radius.circular(15),
+      //     ),
+      //   ),
+      // ),
 
       body: HealthRecordDetailCard(record: record),
 
@@ -162,7 +165,7 @@ class HealthRecordDetailCard extends StatelessWidget {
         Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/doctor_avatar.png'),
+              backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
               radius: 30,
             ),
             SizedBox(width: 16.0),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'TabBar_View.dart';
 import 'TranformableListView_Packagea_Method.dart';
 
 
@@ -101,7 +102,8 @@ class HealthRecordCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
+                //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
+            TabBarScreen(diagnosisNumberfromPrev: num),
           ),
         );
       },
@@ -147,7 +149,7 @@ class HealthRecordCard extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage('assets/doctor_avatar.png'),
+                        backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
                         radius: 30,
                       ),
                       SizedBox(width: 16.0),
