@@ -37,9 +37,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   vertical_card_pager: ^1.5.0
   transformable_list_view: ^0.4.0
+  syncfusion_flutter_pdfviewer: ^23.1.42
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -55,6 +59,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/logo-one.jpeg
+    - assets/pdf/sample.pdf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

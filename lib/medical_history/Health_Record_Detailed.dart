@@ -1,7 +1,8 @@
+import 'EHR_First_Screen.dart';
 import 'Health_Record_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:digi_pharma_app_test/medical_history/Three_Button_Functions_Screen.dart';
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,7 @@ class HealthRecordDetailScreen extends StatelessWidget {
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
-          child: _buildThreeButton(context),
+          child: BuildThreeButton(),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -201,38 +202,4 @@ class HealthRecordDetailCard extends StatelessWidget {
     ),
     );
   }
-}
-
-Widget _buildThreeButton(BuildContext context) {
-  final String c  ;
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Align buttons in the center horizontally
-    children: <Widget>[
-      ElevatedButton(
-        onPressed: () {
-          final String  c='1';
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  HealthRecordDetailScreen(diagnosisNumberfromPrev: c),
-            ),
-          );
-        },
-        child: Text('Record'),
-      ),
-      ElevatedButton(
-        onPressed: () {
-
-        },
-        child: Text('EHR'),
-      ),
-      ElevatedButton(
-        onPressed: () {
-
-        },
-        child: Text('PDF'),
-      ),
-    ],
-  );
 }
