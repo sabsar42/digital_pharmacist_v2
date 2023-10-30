@@ -1,4 +1,3 @@
-
 import 'EHR_Detailed_View.dart';
 import 'Health_Record_Screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,14 +6,14 @@ import 'EHR_First_Screen.dart';
 import 'Health_Record_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:popover/popover.dart';
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
-import 'Three_Button_Functions_Screen.dart';
+import 'PopBup_Menu_Three_Button_Functions_Screen.dart';
 
 class EHRScreen extends StatelessWidget {
   final String diagnosisNumberfromPrev;
@@ -50,19 +49,19 @@ class EHRScreen extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2, // Number of columns in the grid
         children: <Widget>[
-          _buildEHRFolder(context,"Blood"),
-          _buildEHRFolder(context,"X-ray"),
-          _buildEHRFolder(context,"Medication"),
-          _buildEHRFolder(context,"Diagnostic Report"),
-          _buildEHRFolder(context,"Urine Report"),
-          _buildEHRFolder(context,"Diabetics Report"),
-          _buildEHRFolder(context,"SonoGram Report"),
+          _buildEHRFolder(context, "Blood"),
+          _buildEHRFolder(context, "X-ray"),
+          _buildEHRFolder(context, "Medication"),
+          _buildEHRFolder(context, "Diagnostic Report"),
+          _buildEHRFolder(context, "Urine Report"),
+          _buildEHRFolder(context, "Diabetics Report"),
+          _buildEHRFolder(context, "SonoGram Report"),
         ],
       ),
     );
   }
 
-  Widget _buildEHRFolder(BuildContext context,String folderName) {
+  Widget _buildEHRFolder(BuildContext context, String folderName) {
     return Card(
       color: Color.fromRGBO(226, 216, 238, 1.0),
       elevation: 6.0,
@@ -72,22 +71,22 @@ class EHRScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EHRArticleDetailScreen(folderName: folderName),
+              builder: (context) =>
+                  EHRArticleDetailScreen(folderName: folderName),
             ),
           );
         },
         child: Stack(
           children: [
-          Positioned(
-            right: 1.0,
-          child: Row(
-            children: [
-              IconButton(onPressed: (){}, icon: Icon(
-                Icons.more_horiz_sharp,
-              ))
-
-            ],
-          )),
+            const Positioned(
+                 top: 9.0,
+                right: 5.0,
+                child: Row(
+                  children: [
+                    PopUpMenuThreeButton(), // Create an instance and include it
+                  ],
+                )
+            ),
             Positioned(
               left: 1.0,
               right: 1.0,
