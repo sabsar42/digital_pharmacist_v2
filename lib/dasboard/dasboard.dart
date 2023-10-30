@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
+import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health_Record_Screen.dart';
 import 'dashboard_appbar.dart';
 
@@ -59,6 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Expanded(
                       flex: 50,
+
                       child: InkWell(
                         onTap: () {
                           Navigator.push(

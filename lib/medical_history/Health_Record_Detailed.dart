@@ -114,13 +114,13 @@ class HealthRecordDetailCard extends StatelessWidget {
               _buildDivider(),
               _buildSection("Prescribed Medicine", record.prescribedDrugs),
 
-
             ],
           ),
         ),
       ],
     );
   }
+
 
   Widget _buildSection(String title, String content, {Color textColor = Colors.black}) {
     return Column(

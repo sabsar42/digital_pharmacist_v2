@@ -46,6 +46,8 @@ class EHRScreen extends StatelessWidget {
       //     ),
       //   ),
       // ),
+
+
       body: GridView.count(
         crossAxisCount: 2, // Number of columns in the grid
         children: <Widget>[

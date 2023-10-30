@@ -18,7 +18,6 @@ class BookMarkScreen extends StatefulWidget {
 }
 
 class _BookMarkScreenState extends State<BookMarkScreen> {
-
   List<ToDo> toDoList = [];
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -163,7 +162,6 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         backgroundColor: Color.fromRGBO(241, 229, 220, 1.0),
         toolbarHeight: 40,
         title: Text(
@@ -242,7 +240,12 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+                      radius: 18,
+                      child: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Color.fromRGBO(255, 255, 255, 1.0),
+                      ),
+                      backgroundColor: Color.fromRGBO(144, 125, 227, 1.0),
                     ),
                     title: Text(toDoList[index].title),
                     subtitle: Text(toDoList[index].description),

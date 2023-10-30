@@ -102,7 +102,7 @@ class HealthRecordCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
+            //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
             TabBarScreen(diagnosisNumberfromPrev: num),
           ),
         );

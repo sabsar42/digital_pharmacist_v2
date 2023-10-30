@@ -43,6 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
+
                   labelText: 'Name',
                   hintText: 'Enter your name',
                 ),

@@ -25,6 +25,8 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
 
 
 
+
+
       body: SfPdfViewer.network(
         'https://www.africau.edu/images/default/sample.pdf',
         key: _pdfViewerKey,

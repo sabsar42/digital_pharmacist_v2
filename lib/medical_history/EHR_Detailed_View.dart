@@ -13,6 +13,8 @@ class EHRArticleDetailScreen extends StatelessWidget {
     final double cholesterolLevel = 170.5;
     final String diagnosis = 'Hypertension';
 
+
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
