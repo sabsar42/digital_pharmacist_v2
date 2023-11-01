@@ -1,7 +1,7 @@
 import 'package:digi_pharma_app_test/ForgotPassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/SignUpScreen.dart';
+import 'package:digi_pharma_app_test/signUpScreen.dart';
 
 
 class LogInScreen extends StatefulWidget {
