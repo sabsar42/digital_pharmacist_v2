@@ -1,5 +1,9 @@
+import 'package:digi_pharma_app_test/BloodGroup.dart';
+import 'package:digi_pharma_app_test/ForgotPassword.dart';
+import 'package:digi_pharma_app_test/LoginPage.dart';
 import 'package:flutter/material.dart';
 
+import 'Age.dart';
 import 'OnBoard.dart';
 
 
@@ -12,7 +16,8 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Medicine App",
-      home: OnBoard(),
+      home: LogInScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 
