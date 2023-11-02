@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/shuvo_sonjoy/style.dart';
+import 'package:digi_pharma_app_test/style.dart';
 
 
 
