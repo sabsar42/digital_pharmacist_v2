@@ -138,11 +138,12 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                     Text(
                       BookmarkTitle,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                         fontSize: 30,
                         color: Color.fromRGBO(8, 52, 109, 1.0),
                       ),
                     ),
+                    SizedBox(height: 10),
                     Text(BookmarkDescription),
                   ],
                 ),
@@ -175,6 +176,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         centerTitle: true,
       ),
       body: Container(
+
         color: Color.fromRGBO(241, 229, 220, 1.0),
         child: Column(
           children: [
@@ -236,62 +238,70 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
             SizedBox(height: 20),
             Expanded(
               child: ListView.separated(
+                padding: EdgeInsets.all(12),
                 itemCount: toDoList.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 18,
-                      child: Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color.fromRGBO(255, 255, 255, 1.0),
+                  return Card(
+                    elevation: 3,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 18,
+                        child: Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: Color.fromRGBO(255, 255, 255, 1.0),
+                        ),
+                        backgroundColor: Color.fromRGBO(144, 125, 227, 1.0),
                       ),
-                      backgroundColor: Color.fromRGBO(144, 125, 227, 1.0),
-                    ),
-                    title: Text(toDoList[index].title),
-                    subtitle: Text(toDoList[index].description),
-                    trailing: IconButton(
-                      onPressed: () {
-                        String BookmarkTitle = toDoList[index].title;
-                        String BookmarkDescription =
-                            toDoList[index].description;
-                        _showBottomSheet(context, BookmarkTitle,
-                            BookmarkDescription); // Call the _showBottomSheet function
-                      },
-                      icon: Icon(Icons.arrow_forward),
-                    ),
-                    tileColor: Color.fromRGBO(236, 220, 248, 1.0),
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Choosee"),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  _editTask(context, index);
-                                },
-                                child: Text("Edit"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  _deleteTask(index);
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("Delete"),
-                              ),
-                            ],
-                          );
+                      title: Text(toDoList[index].title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Color.fromRGBO(8, 52, 109, 1.0),
+                        ),),
+                      subtitle: Text(toDoList[index].description),
+                      trailing: IconButton(
+                        onPressed: () {
+                          String BookmarkTitle = toDoList[index].title;
+                          String BookmarkDescription =
+                              toDoList[index].description;
+                          _showBottomSheet(context, BookmarkTitle,
+                              BookmarkDescription); // Call the _showBottomSheet function
                         },
-                      );
-                    },
+                        icon: Icon(Icons.arrow_forward),
+                      ),
+                      tileColor: Color.fromRGBO(236, 220, 248, 1.0),
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Choosee"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _editTask(context, index);
+                                  },
+                                  child: Text("Edit"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _deleteTask(index);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Delete"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return Divider(
-                    color: Color.fromRGBO(229, 88, 88, 0.7019607843137254),
-                    height: 3.0,
+                    height: 2.0,
                   );
                 },
               ),
