@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import '../Camera Scanner/camera_screen.dart';
+import '../Google Berd/BardHomePage.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health_Record_Screen.dart';
 import 'dashboard_appbar.dart';
@@ -39,10 +40,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               size: 40,
             ),
           ),
-          Icon(
-            Icons.home,
-            color: Color(0xffB3C3FD),
-            size: 40,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return BardHomePage();
+                  },
+                ),
+              );
+            },
+            child: Icon(
+              Icons.mark_chat_unread_outlined,
+              color: Color(0xffF68D8D),
+              size: 40,
+            ),
           ),
           Icon(
             Icons.settings,
