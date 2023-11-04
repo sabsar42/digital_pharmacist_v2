@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
+import '../Camera Scanner/camera_screen.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health_Record_Screen.dart';
 import 'dashboard_appbar.dart';
@@ -21,10 +22,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: Color(0xff08346D),
         animationDuration: Duration(milliseconds: 290),
         items: [
-          Icon(
-            Icons.camera_alt,
-            color: Color(0xffF68D8D),
-            size: 40,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CameraScreen();
+                  },
+                ),
+              );
+            },
+            child: Icon(
+              Icons.camera_alt,
+              color: Color(0xffF68D8D),
+              size: 40,
+            ),
           ),
           Icon(
             Icons.home,
@@ -52,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Text(
                 "Medical History",
-                style: TextStyle(fontSize: 31,color: Colors.black),
+                style: TextStyle(fontSize: 31, color: Colors.black),
               ),
               Container(
                 margin: EdgeInsets.all(15),
@@ -60,7 +73,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Expanded(
                       flex: 50,
-
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -73,9 +85,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           //  margin: EdgeInsets.only(left: 5),
 
                           child: Container(
-                            child:  Text(
+                            child: Text(
                               "Medical History",
-                              style: TextStyle(fontSize: 15,color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
                             ),
                             height: 68,
                             width: double.infinity,

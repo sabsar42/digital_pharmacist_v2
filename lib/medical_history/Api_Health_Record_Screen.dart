@@ -26,7 +26,9 @@
 //       records = json['results'];
 //     });
 //   //  print( ${randomU)
+//     print(json['results'][1]['name']['first']);
 //   }
+//
 //
 //
 //
@@ -53,6 +55,7 @@
 //
 //     return record;
 //   }
+//
 //   @override
 //   Widget build(BuildContext context) {
 //     List<HealthRecord> records = generateHealthRecords();
@@ -164,12 +167,12 @@
 //                   ),
 //                   Row(
 //                     children: [
-//                       CircleAvatar(
-//
-//                         backgroundImage:
-//                         Image.network( 'record.img' ), // Replace with the path to the doctor's avatar image
-//                         radius: 30, // Increase the radius for a larger avatar
-//                       ),
+//                       // CircleAvatar(
+//                       //
+//                       //   backgroundImage:
+//                       //  // Image.network( 'record.img' ), // Replace with the path to the doctor's avatar image
+//                       // //  radius: 30, // Increase the radius for a larger avatar
+//                       // ),
 //                       SizedBox(width: 16.0),
 //                       Column(
 //                         crossAxisAlignment: CrossAxisAlignment.start,
