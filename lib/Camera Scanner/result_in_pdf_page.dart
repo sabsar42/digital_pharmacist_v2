@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
@@ -20,7 +19,9 @@ import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 
 
 class ResultInPDFPage extends StatefulWidget {
-  const ResultInPDFPage({super.key});
+
+  final String textPdf ;
+  const ResultInPDFPage({super.key, required this.textPdf});
 
   @override
   State<ResultInPDFPage> createState() => _ResultInPDFPageState();
@@ -32,11 +33,7 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
 
   String content = '';
 
-  @override
-  void initState() {
-    super.initState();
-    content = bardController.bardReplay.value;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +57,7 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
                 ),
                 child: TextFormField(
                   onSaved: (val) {
-                    content = val!;
+                    content = widget.textPdf;
                     setState(() {});
                   },
                   decoration: const InputDecoration(
