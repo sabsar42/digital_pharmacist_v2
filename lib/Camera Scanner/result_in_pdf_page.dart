@@ -45,35 +45,27 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            children: [
-              const SizedBox(height: 100),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.blue,
-                  ),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.blue, // Border color
+                  width: 2, // Border width
                 ),
-                child: TextFormField(
-                  onSaved: (val) {
-                    content = widget.textPdf;
-                    setState(() {});
-                  },
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                ),
+                borderRadius: BorderRadius.circular(10),
               ),
-              const SizedBox(height: 50),
-              TextButton(
+              child: TextButton(
                 onPressed: () {
+                  content = widget.textPdf;
+                  setState(() {});
                   createPdf();
                 },
-                child: const Text("Generate Pdf"),
-              )
-            ],
-          ),
+                child: Text("Generate Pdf", style: TextStyle(fontSize: 18),), // Customize the text and size
+              ),
+            ),
+          )
+
         ),
       ),
     );
