@@ -12,6 +12,7 @@ class ResultScreen extends StatelessWidget {
 
   const ResultScreen({super.key, required this.text});
 
+
   @override
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());
