@@ -56,3 +56,12 @@ TextStyle size20Gray() {
   return const TextStyle(
       color: Colors.grey, fontSize: 20, fontFamily: 'Fontmain');
 }
+
+
+TextStyle siz20System() {
+  return const TextStyle(
+    color: Color(0xff08346D),
+    fontFamily: 'Fontmain',
+    fontSize: 20,
+  );
+}

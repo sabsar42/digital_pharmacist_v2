@@ -1,7 +1,7 @@
 import 'dashbaord_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:digi_pharma_app_test/monthlyMed.dart';
+import 'package:digi_pharma_app_test/monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Medical History", style: siz31Black()),
+            Text("Medical History ", style: siz31Black()),
             Container(
               margin: EdgeInsets.all(15),
               child: Row(

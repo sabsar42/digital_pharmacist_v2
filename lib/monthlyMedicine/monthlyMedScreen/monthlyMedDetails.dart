@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'style.dart';
+import '../../style.dart';
 import 'package:flutter/material.dart';
 
 class monthlyMedDetails extends StatelessWidget {

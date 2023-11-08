@@ -55,8 +55,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/images/logo-one.jpeg
-    - images/
+    - assets/images/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -80,7 +79,7 @@ flutter:
   fonts:
     - family: Fontmain
       fonts:
-        - asset: font/font_1.ttf
+        - asset: assets/font/font_1.ttf
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic

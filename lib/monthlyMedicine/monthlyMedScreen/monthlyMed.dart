@@ -1,4 +1,4 @@
-import 'style.dart';
+import '../../style.dart';
 import 'package:flutter/material.dart';
 import 'monthlyMedDetails.dart';
 
