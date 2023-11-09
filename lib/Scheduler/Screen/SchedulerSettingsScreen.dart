@@ -10,7 +10,6 @@ class SchedulerSettingsScreen extends StatefulWidget {
 }
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
-  // Initial Selected Value
   String dropdownvalue = 'Item 1';
 
   var items = [
@@ -124,14 +123,46 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Time & Schedule',
                   style: size25Black(),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      height: 20,
-                      width: 100,
-                      color: Colors.green,
-                    ),
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.green,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.yellow,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.deepOrangeAccent,
+                        ),
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff08346D)
+                          ),
+
+
+                          onPressed: () {}, child: Icon(Icons.add))
+                    ],
+                  ),
                 ),
                 Card(
                   margin: EdgeInsets.fromLTRB(5, 15, 5, 5),
@@ -140,32 +171,69 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   // width: double.infinity,
                   // color: Colors.black,
                   child: Container(
-                    height: 150,
+                    margin: EdgeInsets.all(20),
+                    height: 180,
                     width: double.infinity,
                     color: Colors.white,
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Text('Start'),
+                            Text(
+                              'Start',
+                              style: siz20Black(),
+                            ),
+                            CustomDropdown(
+                              items: ['Today', 'Yesterdat'],
+                              initialValue: 'Today',
+                              onChanged: (String newValue) {},
+                            ),
                             Icon(Icons.add),
                           ],
                         ),
                         Row(
                           children: [
-                            Text('Start'),
+                            Text(
+                              'Duration',
+                              style: siz20Black(),
+                            ),
+                            CustomDropdown(
+                              items: [
+                                '3 Days',
+                                '7 Days',
+                                '15 Days',
+                                '1 Month',
+                                '2 Month'
+                              ],
+                              initialValue: '3 Days',
+                              onChanged: (String newValue) {},
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Frequency',
+                              style: siz20Black(),
+                            ),
+                            CustomDropdown(
+                              items: [
+                                'Everyday',
+                                'Twice a Day',
+                                'Thrice a Day'
+                              ],
+                              initialValue: 'Everyday',
+                              onChanged: (String newValue) {},
+                            ),
                             Icon(Icons.add),
                           ],
                         ),
                         Row(
                           children: [
-                            Text('Start'),
-                            Icon(Icons.add),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text('Start'),
+                            Text(
+                              'Alarm',
+                              style: siz20Black(),
+                            ),
                             Icon(Icons.add),
                           ],
                         ),
@@ -194,6 +262,52 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomDropdown extends StatefulWidget {
+  final List<String> items;
+  final String initialValue;
+  final Function(String) onChanged;
+
+  CustomDropdown({
+    required this.items,
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  _CustomDropdownState createState() => _CustomDropdownState();
+}
+
+class _CustomDropdownState extends State<CustomDropdown> {
+  String dropdownValue = '';
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownValue = widget.initialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      elevation: 0,
+      icon: const Icon(Icons.keyboard_arrow_down),
+      items: widget.items.map((String item) {
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Text(item),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+          widget.onChanged(dropdownValue);
+        });
+      },
     );
   }
 }
