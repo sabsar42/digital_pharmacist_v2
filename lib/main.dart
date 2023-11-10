@@ -1,5 +1,6 @@
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerSettingsScreen.dart';
+import 'package:digi_pharma_app_test/dashboard/dashbaord_appbar.dart';
 
 import 'dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SchedulerScreen(),
+      home: DashboardScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

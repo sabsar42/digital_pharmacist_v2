@@ -1,3 +1,4 @@
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
@@ -147,9 +148,14 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                   top: 3,
                   left: 3,
                   right: 3,
-                  child: CircleAvatar(
-                    radius: 2,
-                    backgroundImage: AssetImage('images/alarm-clock.png'),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulerScreen()));
+                    },
+                    child: CircleAvatar(
+                      radius: 2,
+                      backgroundImage: AssetImage('images/alarm-clock.png'),
+                    ),
                   ),
                 ),
               ],

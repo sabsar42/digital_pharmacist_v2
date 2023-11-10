@@ -31,10 +31,15 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.black,
-          size: 30,
+        leading: InkWell(
+          onTap: (){
+
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 30,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

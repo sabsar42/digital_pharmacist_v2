@@ -1,3 +1,4 @@
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerSettingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
@@ -78,7 +79,9 @@ class _SchedulerAppBarState extends State<SchedulerAppBar> {
                       ),
 
 
-                        onPressed: () {},
+                        onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulerSettingsScreen()));
+                        },
                         child: Text(
                           'Create',
                           style: siz20System(),
