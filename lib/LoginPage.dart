@@ -2,7 +2,7 @@ import 'package:digi_pharma_app_test/ForgotPassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/signUpScreen.dart';
-
+ import 'package:flutter_svg/flutter_svg.dart';
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
 
@@ -16,20 +16,24 @@ class _LogInScreenState extends State<LogInScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
+     
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+
+                padding: const EdgeInsets.only(top:90),
                 child: SizedBox(
-                  width: 180.0,
-                  height: 180.0,
+                  width: 100.0,
+                  height: 100.0,
                   child: Align(
                     alignment: Alignment.center,
-                    child: Image.asset(
-                        'assets/images/Digi-Pharma-App-Screen-MockUps.png'),
+                    child: SvgPicture.asset(
+                        'assets/images/digi-pharma-prussian.svg'),
                   ),
                 ),
               ),
+              SizedBox(height: 40,)          ,
               Column(
                 children: [
                   Padding(

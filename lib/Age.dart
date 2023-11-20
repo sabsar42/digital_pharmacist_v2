@@ -17,13 +17,17 @@ class _AgeState extends State<Age> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
+        ),
       ),
-    ),
       body: Column(
         //Whole
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,15 +44,17 @@ class _AgeState extends State<Age> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-            child: Text('Let us know your age', style: TextStyle(
-              fontSize: 15,
-              color: Colors.grey,
-            ),),
+            child: Text(
+              'Let us know your age',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey,
+              ),
+            ),
           ),
           SizedBox(
             height: 10,
           ),
-
           Slider(
             value: _currentSliderValue,
             max: 100,
@@ -84,25 +90,8 @@ class _AgeState extends State<Age> {
                   fixedSize: Size(350.0, 60.0)),
             ),
           ),
-
         ],
       ),
-
     );
   }
 }
-
-//
-
-
-/*
-*/
-
-
-
-
-
-/*
-Scaffold(
-    );
- */
