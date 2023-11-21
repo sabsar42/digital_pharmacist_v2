@@ -1,3 +1,4 @@
+import 'package:digi_pharma_app_test/Upload%20to%20Scanner/UploadScreenPreview.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -19,24 +20,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        color: Color(0xff08346D),
+        backgroundColor: Colors.transparent,
+        color:  Colors.transparent,
+        buttonBackgroundColor : Colors.grey,
+        height : 50,
+          animationCurve: Curves.linear,
         animationDuration: Duration(milliseconds: 290),
         items: [
+
+
+
+          // We Will call UploadScreenPreviw from here
           GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return CameraScreen();
+                    return UploadScreenPreview();
+                    // return CameraScreen();
                   },
                 ),
               );
             },
             child: Icon(
               Icons.camera_alt,
-              color: Color(0xffF68D8D),
+              color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
               size: 40,
             ),
           ),
@@ -53,13 +62,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
             child: Icon(
               Icons.mark_chat_unread_outlined,
-              color: Color(0xffF68D8D),
+              color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
               size: 40,
             ),
           ),
           Icon(
             Icons.settings,
-            color: Color(0xffB3C3FD),
+            color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
             size: 40,
           ),
         ],
@@ -94,8 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   builder: (context) => HealthRecordScreen()));
                         },
                         child: Container(
-                          //  padding: const EdgeInsets.only(top: 20),
-                          //  margin: EdgeInsets.only(left: 5),
+
 
                           child: Container(
                             child: Text(
@@ -137,10 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         margin: EdgeInsets.only(left: 14),
                         child: InkWell(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => monthlyMed()));
+
                           },
                           child: Stack(
                             children: [
