@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_weight_picker/animated_weight_picker.dart';
 
 class Weight extends StatefulWidget {
   const Weight({super.key});
@@ -34,7 +35,7 @@ class _WeightState extends State<Weight> {
             ),
           ),
           SizedBox(
-            height: 50,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
@@ -44,20 +45,10 @@ class _WeightState extends State<Weight> {
             ),),
           ),
           SizedBox(
-            height: 10,
-          ),
+            height: 50,
+          ), //
 
-          Slider(
-            value: _currentSliderValue,
-            max: 200,
-            divisions: 200,
-            label: _currentSliderValue.round().toString(),
-            onChanged: (double value) {
-              setState(() {
-                _currentSliderValue = value;
-              });
-            },
-          ),
+          AnimatedWeightPicker(min: 5, max: 150),
           SizedBox(
             height: 100,
           ),

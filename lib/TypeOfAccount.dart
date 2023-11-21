@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:digi_pharma_app_test/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,14 @@ class TypeOfAccount extends StatelessWidget {
                   height: 250,
                   width: double.infinity,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return LogInScreen();
+                        }),
+                      );
+                    },
                     splashColor: Colors.blue,
                     child: Row(
                       children: [
@@ -83,7 +91,14 @@ class TypeOfAccount extends StatelessWidget {
                   height: 250,
                   width: double.infinity,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return LogInScreen();
+                        }),
+                      );
+                    },
                     splashColor: Colors.blue,
                     child: Row(
                       children: [
