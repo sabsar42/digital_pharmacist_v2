@@ -5,10 +5,6 @@ import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart
 import 'TabBar_View.dart';
 import 'TranformableListView_Packagea_Method.dart';
 
-
-
-
-
 class HealthRecordScreen extends StatelessWidget {
   List<HealthRecord> generateHealthRecords() {
     List<HealthRecord> records = [];
@@ -27,11 +23,6 @@ class HealthRecordScreen extends StatelessWidget {
 
     return records;
   }
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,17 +93,15 @@ class HealthRecordCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-            //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
-            TabBarScreen(diagnosisNumberfromPrev: num),
+                //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
+                TabBarScreen(diagnosisNumberfromPrev: num),
           ),
         );
       },
       child: Card(
         margin: EdgeInsets.all(10.0),
         color: customColor,
-
         elevation: 30,
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(19.0), // Rounded corners
         ),
@@ -149,7 +138,8 @@ class HealthRecordCard extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
+                        backgroundImage:
+                            AssetImage('assets/images/doctor_avatar.png'),
                         radius: 30,
                       ),
                       SizedBox(width: 16.0),
