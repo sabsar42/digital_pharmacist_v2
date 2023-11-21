@@ -18,7 +18,7 @@ class _LogInScreenState extends State<LogInScreen> {
         child: SizedBox(
 
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,  //
+            crossAxisAlignment: CrossAxisAlignment.center,  ////
             children: [
               Padding(
 
