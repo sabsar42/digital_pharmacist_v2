@@ -60,16 +60,14 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
               ),
               child: InkWell(
                 onTap: () {
-
-                    _showPicker(context: context);
-
-                  },
-                 // getImage(ImageSource.gallery);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => GalleryImageAccess(),
-                  //     ));
+                  _showPicker(context: context);
+                },
+                // getImage(ImageSource.gallery);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => GalleryImageAccess(),
+                //     ));
 
                 child: Container(
                   margin: EdgeInsets.all(30.0),
@@ -121,19 +119,22 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
           SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context)=>CameraScreen(ImageFile: galleryFile)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CameraScreen(ImageFile: galleryFile)));
             },
             child: Text(
-              'NEXT',
+              'Scan Text',
               style: TextStyle(
-                color: Colors.purple,
+                color: Color.fromRGBO(197, 217, 231, 1.0),
                 fontSize: 20,
               ),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-              minimumSize: Size(200, 20),
+              backgroundColor: Color.fromRGBO(53, 12, 89, 1.0),
+              minimumSize: Size(300, 50),
             ),
           ),
         ],
