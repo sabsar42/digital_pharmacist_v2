@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:digi_pharma_app_test/Camera%20Scanner/camera_screen.dart';
+import 'package:digi_pharma_app_test/Camera%20Scanner/result_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,7 +45,7 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
       body: Column(
         children: [
           SizedBox(
-            height: 180,
+            height: 120,
           ),
           Center(
             child: Container(
