@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'Gallery Image Acces.dart';
 
@@ -10,6 +14,9 @@ class UploadScreenPreview extends StatefulWidget {
 }
 
 class _UploadScreenPreviewState extends State<UploadScreenPreview> {
+  File? galleryFile;
+  final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +42,9 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 180,),
+          SizedBox(
+            height: 180,
+          ),
           Center(
             child: Container(
               margin: EdgeInsets.all(10.0),
@@ -43,16 +52,19 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
               height: 350,
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: Colors.deepPurple,
-                    style: BorderStyle.solid,
+                  color: Colors.deepPurple,
+                  style: BorderStyle.solid,
                 ),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: InkWell(
-                onTap: (){
-                  Navigator.push(context,
-
-                  MaterialPageRoute(builder: (context)=> GalleryImageAccess(),));
+                onTap: () {
+                  getImage(ImageSource.gallery);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => GalleryImageAccess(),
+                  //     ));
                 },
                 child: Container(
                   margin: EdgeInsets.all(30.0),
@@ -65,16 +77,28 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
                   ),
                   child: Center(
                     child: Container(
-                      width: 200, // Adjust the width and height as needed
-                      height: 200,
+                      width: 300, // Adjust the width and height as needed
+                      height: 300,
                       child: Center(
-                        child: Text(
-                          'Upload from Gallery',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w200,
-                            color: Colors.purple,
-                            fontSize: 22,
-                          ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              height: 350.0,
+                              width: 350.0,
+                              child: galleryFile == null
+                                  ? Center(
+                                      child: Text(
+                                        'Upload from Gallery',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.purple,
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    )
+                                  : Center(child: Image.file(galleryFile!)),
+                            ),
+                          ],
                         ),
                       ),
                       decoration: BoxDecoration(
@@ -83,16 +107,17 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
                         ),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-
                     ),
                   ),
                 ),
               ),
             ),
           ),
-         SizedBox(height: 60),
+          SizedBox(height: 60),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              getImage(ImageSource.camera);
+            },
             child: Text(
               'Open Camera',
               style: TextStyle(
@@ -101,14 +126,60 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
               ),
             ),
             style: ElevatedButton.styleFrom(
-
-              backgroundColor:  Color.fromRGBO(236, 220, 248, 1.0),
-
+              backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
             ),
           ),
         ],
       ),
+    );
+  }
 
+  // void _showPicker({
+  //   required BuildContext context,
+  // }) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return SafeArea(
+  //         child: Wrap(
+  //           children: <Widget>[
+  //             ListTile(
+  //               leading: const Icon(Icons.photo_library),
+  //               title: const Text('Photo Library'),
+  //               onTap: () {
+  //                 getImage(ImageSource.gallery);
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: const Icon(Icons.photo_camera),
+  //               title: const Text('Camera'),
+  //               onTap: () {
+  //                 getImage(ImageSource.camera);
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future getImage(
+    ImageSource img,
+  ) async {
+    final pickedFile = await picker.pickImage(source: img);
+    XFile? xfilePick = pickedFile;
+    setState(
+      () {
+        if (xfilePick != null) {
+          galleryFile = File(pickedFile!.path);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+              const SnackBar(content: Text('Nothing is selected')));
+        }
+      },
     );
   }
 }

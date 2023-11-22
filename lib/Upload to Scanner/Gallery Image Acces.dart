@@ -36,6 +36,7 @@ class _GalleryImageAccessState extends State<GalleryImageAccess> {
                   child: const Text('Select Image from Gallery and Camera'),
                   onPressed: () {
                     _showPicker(context: context);
+
                   },
                 ),
                 const SizedBox(
