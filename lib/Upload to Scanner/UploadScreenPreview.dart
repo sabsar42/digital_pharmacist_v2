@@ -59,13 +59,17 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
               ),
               child: InkWell(
                 onTap: () {
-                  getImage(ImageSource.gallery);
+
+                    _showPicker(context: context);
+
+                  },
+                 // getImage(ImageSource.gallery);
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
                   //       builder: (context) => GalleryImageAccess(),
                   //     ));
-                },
+
                 child: Container(
                   margin: EdgeInsets.all(30.0),
                   // Add margin to create space for the inner border
@@ -134,37 +138,37 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
     );
   }
 
-  // void _showPicker({
-  //   required BuildContext context,
-  // }) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return SafeArea(
-  //         child: Wrap(
-  //           children: <Widget>[
-  //             ListTile(
-  //               leading: const Icon(Icons.photo_library),
-  //               title: const Text('Photo Library'),
-  //               onTap: () {
-  //                 getImage(ImageSource.gallery);
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //             ListTile(
-  //               leading: const Icon(Icons.photo_camera),
-  //               title: const Text('Camera'),
-  //               onTap: () {
-  //                 getImage(ImageSource.camera);
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  void _showPicker({
+    required BuildContext context,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () {
+                  getImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () {
+                  getImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Future getImage(
     ImageSource img,
@@ -176,8 +180,12 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
         if (xfilePick != null) {
           galleryFile = File(pickedFile!.path);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-              const SnackBar(content: Text('Nothing is selected')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            // is this context <<<
+            const SnackBar(
+              content: Text('Nothing is selected'),
+            ),
+          );
         }
       },
     );
