@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:digi_pharma_app_test/Camera%20Scanner/camera_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -120,10 +121,11 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
           SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
-              getImage(ImageSource.camera);
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context)=>CameraScreen(ImageFile: galleryFile)));
             },
             child: Text(
-              'Open Camera',
+              'NEXT',
               style: TextStyle(
                 color: Colors.purple,
                 fontSize: 20,
@@ -131,6 +133,7 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+              minimumSize: Size(200, 20),
             ),
           ),
         ],

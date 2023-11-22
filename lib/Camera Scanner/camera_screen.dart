@@ -10,18 +10,23 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:digi_pharma_app_test/Camera Scanner/result_screen.dart';
+import 'dart:io';
 
-
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  File? ImageFile;
+
+  CameraScreen({super.key, required this.ImageFile});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
+class _CameraScreenState extends State<CameraScreen>
+    with WidgetsBindingObserver {
   bool _isPermissionGranted = false;
 
   late final Future<void> _future;
@@ -86,7 +91,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-
                     Navigator.pop(context);
                   },
                 ),
@@ -94,30 +98,30 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
               backgroundColor: _isPermissionGranted ? Colors.transparent : null,
               body: _isPermissionGranted
                   ? Column(
-                children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: _scanImage,
-                        child: const Text('Scan text'),
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 30.0),
+                          child: Center(
+                            child: ElevatedButton(
+                              onPressed: _scanImage,
+                              child: const Text('Scan text'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                        child: const Text(
+                          'Camera permission denied',
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-                  : Center(
-                child: Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: const Text(
-                    'Camera permission denied',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
             ),
           ],
         );
@@ -186,9 +190,11 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     try {
       final pictureFile = await _cameraController!.takePicture();
 
-      final file = File(pictureFile.path);
+      //final file = File(pictureFile.path);
+      final file = widget.ImageFile;
 
-      final inputImage = InputImage.fromFile(file);   // The Input Image Is HERE !!!!!
+      final inputImage =
+          InputImage.fromFile(file!); // The Input Image Is HERE !!!!!
       final recognizedText = await textRecognizer.processImage(inputImage);
 
       await navigator.push(
