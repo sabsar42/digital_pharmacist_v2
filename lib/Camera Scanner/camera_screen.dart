@@ -62,6 +62,7 @@ class _CameraScreenState extends State<CameraScreen>
         _cameraController != null &&
         _cameraController!.value.isInitialized) {
       _startCamera();
+      // _scanImage();
     }
   }
 
@@ -86,43 +87,39 @@ class _CameraScreenState extends State<CameraScreen>
                 },
               ),
             Scaffold(
-              appBar: AppBar(
-                title: const Text('Scan Prescription'),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                appBar: AppBar(
+                  title: const Text('Scan Prescription'),
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
-              ),
-              backgroundColor: _isPermissionGranted ? Colors.transparent : null,
-              body: _isPermissionGranted
-                  ? Column(
-                      children: [
-                        Expanded(
-                          child: Container(),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 30.0),
-                          child: Center(
-                            child: ElevatedButton(
-                              onPressed: _scanImage,
-                              child: const Text('Scan text'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                        child: const Text(
-                          'Camera permission denied',
-                          textAlign: TextAlign.center,
+                //  backgroundColor: _isPermissionGranted ? Colors.transparent : null,
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Center(
+                        child: ElevatedButton(
+                          onPressed: _scanImage,
+                          child: const Text('Scan text'),
                         ),
                       ),
                     ),
-            ),
+                  ],
+                )
+                // : Center(
+                //     child: Container(
+                //       padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                //       child: const Text(
+                //         'Camera permission denied',
+                //         textAlign: TextAlign.center,
+                //       ),
+                //     ),
+                //   ),
+                ),
           ],
         );
       },
