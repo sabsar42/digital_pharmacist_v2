@@ -21,6 +21,7 @@ import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 class ResultInPDFPage extends StatefulWidget {
 
   final String textPdf ;
+
   const ResultInPDFPage({super.key, required this.textPdf});
 
   @override
@@ -58,6 +59,7 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
               child: TextButton(
                 onPressed: () {
                   content = widget.textPdf;
+                  print(content);
                   setState(() {});
                   createPdf();
                 },

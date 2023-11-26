@@ -19,6 +19,14 @@ import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:digi_pharma_app_test/Camera Scanner/result_in_pdf_page.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'dart:convert';
+import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
+import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
+import 'package:http/http.dart' as http;
+
 
 class ResultBardHomePage extends StatefulWidget {
   final String txt;
@@ -38,13 +46,10 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
     f = widget.txt;
   }
 
-  late String ans;
-
   @override
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());
 
-    TextEditingController textField = TextEditingController();
     return Scaffold(
       backgroundColor: Color(0xfff2f1f9),
       body: Padding(
@@ -55,29 +60,12 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
               child: Center(
                 child: IconButton(
                   onPressed: () {
-                    controller.sendPrompt("Given Text : $f\n\n"
+                    String p = "";
+                    controller.sendPrompt("Given Text: $f\n\n"
                         """
-                       Here's a prompt to instruct Bard to organize and summarize the additional medical terms and sections in a medical health record:
-
-"Please organize the following medical information into a comprehensive health record:
-
-1. Vital Signs (including Blood Pressure, Heart Rate, Respiratory Rate, Body Temperature, and Oxygen Saturation).
-2. Medical History (including Allergies, Past Medical Conditions, Surgical History, Family Medical History, and Social History).
-3. Medications (including Current Medications, Dosages, and Frequency).
-4. Laboratory Results (such as Blood Tests, Urinalysis, and Imaging).
-5. Immunizations (Vaccination Record).
-6. Physical Examination (covering General Appearance, Skin, HEENT, Cardiovascular, Respiratory, Gastrointestinal, Musculoskeletal, and Neurological).
-7. Assessment and Plan (including Diagnosis, Treatment Plan, Follow-up Recommendations, and Referrals to Specialists).
-8. Procedures (such as Surgical Procedures and Invasive Treatments).
-9. Progress Notes (daily observations and changes in health status).
-10. Patient Demographics (Date of Birth, Gender, and Contact Information).
-11. Patient Complaints (Presenting Complaints).
-12. Risk Factors (Risk Factors for Disease).
-
-Please provide a well-organized summary of each section. Thank you.
-                        
-                        
-                        """);
+                      "Please organize the following medical information into a comprehensive health record:
+                      // ... (rest of your text)
+                      """);
                   },
                   icon: Icon(Icons.generating_tokens_outlined),
                   iconSize: 90,
@@ -102,20 +90,22 @@ Please provide a well-organized summary of each section. Thank you.
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(
-                      () => controller.isLoading.value
+                          () => controller.isLoading.value
                           ? CircularProgressIndicator()
                           : Column(
                         children: [
                           IconButton(
                             onPressed: () {
-                              String apiResponse = controller.apiResponse;
+                              String apiResponse =
+                                  controller.apiResponse;
 
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ResultInPDFPage(
-                                    textPdf: apiResponse,
-                                  ),
+                                  builder: (context) =>
+                                      ResultInPDFPage(
+                                        textPdf: apiResponse,
+                                      ),
                                 ),
                               );
                             },
@@ -125,12 +115,14 @@ Please provide a well-organized summary of each section. Thank you.
                             ),
                           ),
                           Text(
-                            "Summary Ready ", // Add your desired text
-                            style: TextStyle(fontSize: 16, color: Colors.blue), // Customize the text style
+                            "Summary Ready ",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blue,
+                            ),
                           ),
                         ],
-                      )
-
+                      ),
                     ),
                     SizedBox(width: 10),
                   ],
