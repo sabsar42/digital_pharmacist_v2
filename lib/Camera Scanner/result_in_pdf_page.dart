@@ -77,6 +77,7 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
     _formKey.currentState!.save();
     if (content.isNotEmpty) {
       await Text2Pdf.generatePdf(content);
+
     }
   }
 }

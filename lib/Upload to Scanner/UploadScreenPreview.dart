@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:digi_pharma_app_test/Camera%20Scanner/ResultBardHomePage.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/camera_screen.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/result_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'Gallery Image Acces.dart';
@@ -120,11 +122,7 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
           SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CameraScreen(ImageFile: galleryFile)));
+              _scanImage(galleryFile!);
             },
             child: Text(
               'Scan Text',
@@ -194,5 +192,32 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
         }
       },
     );
+  }
+
+  Future<void> _scanImage(File ImageFile) async {
+    final navigator = Navigator.of(context);
+
+    try {
+      final textRecognizer = TextRecognizer();
+
+      final file = ImageFile;
+
+      final inputImage =
+          InputImage.fromFile(file!); // The Input Image Is HERE !!!!!
+      final recognizedText = await textRecognizer.processImage(inputImage);
+
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              ResultBardHomePage(txt: recognizedText.text),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred when scanning text'),
+        ),
+      );
+    }
   }
 }

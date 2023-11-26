@@ -63,8 +63,14 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
                     String p = "";
                     controller.sendPrompt("Given Text: $f\n\n"
                         """
-                      "Please organize the following medical information into a comprehensive health record:
-                      // ... (rest of your text)
+                      Please organize the following medical information into a comprehensive health record:
+                     0. Doctors Information
+                     1. Vital Signs
+                     2. Medical Summary
+                     3. Diagnosis
+                     4. Prescribed Medicine
+                     5. Future Appointment Date
+
                       """);
                   },
                   icon: Icon(Icons.generating_tokens_outlined),
