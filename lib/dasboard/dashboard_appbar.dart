@@ -147,7 +147,7 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                   right: 3,
                   child: CircleAvatar(
                     radius: 2,
-                    backgroundImage: AssetImage('images/alarm-clock.png'),
+                    backgroundImage: AssetImage('assets/images/logo-one.jpeg'),
                   ),
                 ),
               ],

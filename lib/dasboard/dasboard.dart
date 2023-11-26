@@ -163,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   left: 5,
                                   bottom: 5,
                                   right: 5,
-                                  child: Image.asset('images/dashboard_3.png'))
+                                  child: Image.asset('assets/images/logo-one.jpeg'))
                             ],
                           ),
                         ),

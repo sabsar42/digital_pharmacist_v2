@@ -21,6 +21,7 @@ import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 class ResultInPDFPage extends StatefulWidget {
 
   final String textPdf ;
+
   const ResultInPDFPage({super.key, required this.textPdf});
 
   @override
@@ -44,27 +45,28 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
           title: const Text("Prescription Summary"),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.blue, // Border color
-                  width: 2, // Border width
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.blue, // Border color
+                    width: 2, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                borderRadius: BorderRadius.circular(10),
+                child: TextButton(
+                  onPressed: () {
+                    content = widget.textPdf;
+                    print(content);
+                    setState(() {});
+                    createPdf();
+                  },
+                  child: Text("Generate Pdf", style: TextStyle(fontSize: 18),), // Customize the text and size
+                ),
               ),
-              child: TextButton(
-                onPressed: () {
-                  content = widget.textPdf;
-                  setState(() {});
-                  createPdf();
-                },
-                child: Text("Generate Pdf", style: TextStyle(fontSize: 18),), // Customize the text and size
-              ),
-            ),
-          )
+            )
 
         ),
       ),
