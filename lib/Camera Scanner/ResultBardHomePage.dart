@@ -46,6 +46,7 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
     f = widget.txt;
   }
 
+
   @override
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());
@@ -64,12 +65,12 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
                     controller.sendPrompt("Given Text: $f\n\n"
                         """
                       Please organize the following medical information into a comprehensive health record:
-                     0. Doctors Information
-                     1. Vital Signs
+                      Make the KeyPoints Bold and Rest in Small Letters
+                     0. Doctors Informatin
+                     1. Diagnosis
                      2. Medical Summary
-                     3. Diagnosis
-                     4. Prescribed Medicine
-                     5. Future Appointment Date
+                     3. Prescribed Medicine
+                     4. Future Appointment Date
 
                       """);
                   },

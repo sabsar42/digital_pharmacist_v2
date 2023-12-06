@@ -34,7 +34,7 @@ class _ResultInPDFPageState extends State<ResultInPDFPage> {
 
   String content = '';
 
-
+// diagnosis, summary, medicine
 
   @override
   Widget build(BuildContext context) {
