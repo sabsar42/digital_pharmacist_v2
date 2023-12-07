@@ -35,9 +35,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            shadowColor: Color.fromRGBO(224, 182, 250, 1.0),
             toolbarHeight: 30,
             elevation: 6.0,
-            backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+            backgroundColor: Color.fromRGBO(252, 247, 255, 1.0),
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,

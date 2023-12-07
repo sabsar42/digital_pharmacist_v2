@@ -28,22 +28,43 @@ class HealthRecord {
     required this.timeline,
     required this.prescribedDrugs,
   });
+
+  HealthRecord.fromJson(Map<String, dynamic> json) :
+        diagnosisNumber = json['diagnosisNumber'],
+        diagnosis = json['diagnosis'],
+        summaryOfMedicalRecord = json['summaryOfMedicalRecord'],
+        prescribedDrugs = json['prescribedDrugs'],
+        doctorName = json['doctorName'],
+        hospitalName = json['hospitalName'],
+        date = json['date'],
+        timeline = json['timeline'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'diagnosisNumber': diagnosisNumber,
+      'diagnosis': diagnosis,
+      'summaryOfMedicalRecord': summaryOfMedicalRecord,
+      'prescribedDrugs': prescribedDrugs,
+      'doctorName': doctorName,
+      'hospitalName': hospitalName,
+      'date': date,
+      'timeline': timeline,
+    };
+  }
 }
 
-class HealthRecordDetailScreen extends StatelessWidget {
-
+class patientHealthRecordDetailScreen extends StatelessWidget {
   final String diagnosisNumberfromPrev;
-  HealthRecordDetailScreen({required this.diagnosisNumberfromPrev});
 
+  patientHealthRecordDetailScreen({required this.diagnosisNumberfromPrev});
 
   @override
   Widget build(BuildContext context) {
-
     final record = HealthRecord(
       diagnosisNumber: "D12345",
-      diagnosis : "Asthama",
-      summaryOfMedicalRecord : "This Summary",
-      prescribedDrugs : "Napa",
+      diagnosis: "Asthma",
+      summaryOfMedicalRecord: "This Summary",
+      prescribedDrugs: "Napa",
       doctorName: "Dr. John Doe",
       hospitalName: "ABC Hospital",
       date: "10/25/2023",
@@ -51,36 +72,11 @@ class HealthRecordDetailScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 45,
-      //   elevation: 20.0,
-      //   backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-      //   title: Text(
-      //     '$diagnosisNumberfromPrev - Health Record',
-      //     style: TextStyle(
-      //       fontSize: 22,
-      //       color: Colors.deepPurple,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      //   bottom: PreferredSize(
-      //     preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
-      //     // child: BuildThreeButton(), **** Will Check Later !!!!
-      //     child: TabBarScreen(),
-      //   ),
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(15),
-      //       bottomRight: Radius.circular(15),
-      //     ),
-      //   ),
-      // ),
-
       body: HealthRecordDetailCard(record: record),
-
     );
   }
 }
+
 class HealthRecordDetailCard extends StatelessWidget {
   final HealthRecord record;
   final customColor = Color.fromRGBO(99, 174, 232, 1.0);
@@ -89,23 +85,17 @@ class HealthRecordDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
-
       children: [
-
         Container(
-
           height: 700,
-          color: Color.fromRGBO(255, 255, 255, 1.0),
+          color: Color.fromRGBO(241, 229, 220, 1.0),
           margin: EdgeInsets.all(1.0),
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-
               _buildDoctorInfo(record.doctorName, record.hospitalName),
               _buildDivider(),
               _buildSection("Diagnosis", record.diagnosis),
@@ -113,14 +103,12 @@ class HealthRecordDetailCard extends StatelessWidget {
               _buildSection("Summary of the whole History", record.summaryOfMedicalRecord, textColor: Colors.black),
               _buildDivider(),
               _buildSection("Prescribed Medicine", record.prescribedDrugs),
-
             ],
           ),
         ),
       ],
     );
   }
-
 
   Widget _buildSection(String title, String content, {Color textColor = Colors.black}) {
     return Column(
@@ -131,7 +119,7 @@ class HealthRecordDetailCard extends StatelessWidget {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color:Colors.black
+            color: Colors.black,
           ),
         ),
         SizedBox(height: 8.0),
@@ -156,53 +144,53 @@ class HealthRecordDetailCard extends StatelessWidget {
 
   Widget _buildDoctorInfo(String doctorName, String hospitalName) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(12.0),
-      child : Container(
-      color:Color.fromRGBO(241, 229, 246, 1.0),
-      padding: EdgeInsets.all(20),
-      child: Column(
-      children: [
-        Row(
+      borderRadius: BorderRadius.circular(12.0),
+      child: Container(
+        color: Color.fromRGBO(65, 33, 1, 0.18823529411764706),
+        padding: EdgeInsets.all(20),
+        child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
-              radius: 30,
-            ),
-            SizedBox(width: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  record.doctorName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
+                  radius: 30,
                 ),
-                Text(
-                  record.hospitalName,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      record.doctorName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      record.hospitalName,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+            SizedBox(height: 16.0),
+            Text(
+              'Hospital: $hospitalName',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 16.0),
-        Text(
-          'Hospital: $hospitalName',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    ),
-    ),
+      ),
     );
   }
 }

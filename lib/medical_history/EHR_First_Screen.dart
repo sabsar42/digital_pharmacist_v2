@@ -65,8 +65,9 @@ class EHRScreen extends StatelessWidget {
 
   Widget _buildEHRFolder(BuildContext context, String folderName) {
     return Card(
-      color: Color.fromRGBO(226, 216, 238, 1.0),
+      color: Color.fromRGBO(250, 248, 255, 1.0),
       elevation: 6.0,
+      shadowColor: Color.fromRGBO(199, 126, 252, 1.0),
       margin: EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
@@ -100,7 +101,7 @@ class EHRScreen extends StatelessWidget {
                   Icon(
                     Icons.folder,
                     size: 80.0,
-                    color: Color.fromRGBO(37, 83, 147, 0.7215686274509804),
+                    color: Color.fromRGBO(58, 109, 180, 0.7215686274509804),
                   ),
                   SizedBox(height: 10.0),
                   Text(
