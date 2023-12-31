@@ -5,6 +5,7 @@ import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+
 import 'package:flutter/material.dart';
 import "package:text2pdf/text2pdf.dart";
 import 'package:digi_pharma_app_test/Google Berd/BardAiController.dart';
