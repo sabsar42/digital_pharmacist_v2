@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'TypeOfAccount.dart';
+import '../Registration/TypeOfAccount.dart';
 
 
 class OnBoard extends StatelessWidget {

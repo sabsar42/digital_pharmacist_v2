@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/signUpScreen.dart';
+import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
 import 'Verification.dart';
 

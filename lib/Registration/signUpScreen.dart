@@ -1,4 +1,4 @@
-import 'package:digi_pharma_app_test/GenderType.dart';
+import 'package:digi_pharma_app_test/Registration/GenderType.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {

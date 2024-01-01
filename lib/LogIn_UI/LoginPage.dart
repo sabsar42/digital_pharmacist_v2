@@ -1,7 +1,7 @@
-import 'package:digi_pharma_app_test/ForgotPassword.dart';
+import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/signUpScreen.dart';
+import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -96,7 +96,9 @@ class _LogInScreenState extends State<LogInScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // ADD ABSAR DASHBOARD HEREEE
+                      },
                       child: Text(
                         'Login',
                         style: TextStyle(

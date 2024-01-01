@@ -1,7 +1,7 @@
-import 'package:digi_pharma_app_test/NewPassword.dart';
+import 'package:digi_pharma_app_test/ForgotPassword/NewPassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/signUpScreen.dart';
+import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
