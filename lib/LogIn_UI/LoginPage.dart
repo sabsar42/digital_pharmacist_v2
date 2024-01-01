@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
 
@@ -17,13 +18,11 @@ class _LogInScreenState extends State<LogInScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,  ////
+            crossAxisAlignment: CrossAxisAlignment.center, ////
             children: [
               Padding(
-
-                padding: const EdgeInsets.only(top:90),
+                padding: const EdgeInsets.only(top: 90),
                 child: SizedBox(
                   width: 80.0,
                   height: 80.0,
@@ -34,10 +33,26 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
-              Text('Welcome',style: TextStyle(fontFamily:'FontMain',fontSize: 30, fontWeight: FontWeight.bold),),
-              Text('to MedApp',style: TextStyle(fontFamily:'FontMain',fontSize: 28, fontWeight: FontWeight.w100),),
-              SizedBox(height: 20,) ,
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Welcome',
+                style: TextStyle(
+                    fontFamily: 'FontMain',
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'to MedApp',
+                style: TextStyle(
+                    fontFamily: 'FontMain',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w100),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Column(
                 children: [
                   Padding(
@@ -104,7 +119,6 @@ class _LogInScreenState extends State<LogInScreen> {
                             return DashboardScreen();
                           }),
                         );
-
                       },
                       child: Text(
                         'Login',
