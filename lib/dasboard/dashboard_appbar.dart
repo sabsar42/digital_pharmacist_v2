@@ -2,6 +2,8 @@ import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
+import '../User_Profile/UserProfile.dart';
+
 
 
 
@@ -41,23 +43,30 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                   SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hello Shuvo Sonjoy",
-                          style: siz22White(),
-                        ),
-                        Text(
-                          "ID: 2112s2X",
-                          style: size20White(),
-                        ),
-                        Text(
-                          "Age: 22",
-                          style: size20White(),
-                        )
-                      ],
+                  GestureDetector(
+
+                    onTap: (){
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=>UserProfile()));
+                    },
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hello Shuvo Sonjoy",
+                            style: siz22White(),
+                          ),
+                          Text(
+                            "ID: 2112s2X",
+                            style: size20White(),
+                          ),
+                          Text(
+                            "Age: 22",
+                            style: size20White(),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
