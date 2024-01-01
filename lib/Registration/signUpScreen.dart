@@ -1,6 +1,7 @@
 import 'package:digi_pharma_app_test/Registration/GenderType.dart';
 import 'package:flutter/material.dart';
 
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
