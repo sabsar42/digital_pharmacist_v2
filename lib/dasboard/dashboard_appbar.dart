@@ -1,4 +1,8 @@
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:digi_pharma_app_test/style.dart';
+
+
 
 
 class dashboardAppbar extends StatefulWidget {
@@ -7,7 +11,6 @@ class dashboardAppbar extends StatefulWidget {
   @override
   State<dashboardAppbar> createState() => _dashboardAppbarState();
 }
-
 
 class _dashboardAppbarState extends State<dashboardAppbar> {
   @override
@@ -43,15 +46,15 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                     children: [
                       Text(
                         "Hello Shuvo Sonjoy",
-                        style: TextStyle(fontSize: 20),
+                        style: siz22White(),
                       ),
                       Text(
                         "ID: 2112s2X",
-                        style: TextStyle(fontSize: 20),
+                        style: size20White(),
                       ),
                       Text(
                         "Age: 22",
-                        style: TextStyle(fontSize: 20),
+                        style: size20White(),
                       )
                     ],
                   ),
@@ -145,9 +148,14 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                   top: 3,
                   left: 3,
                   right: 3,
-                  child: CircleAvatar(
-                    radius: 2,
-                    backgroundImage: AssetImage('assets/images/logo-one.jpeg'),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulerScreen()));
+                    },
+                    child: CircleAvatar(
+                      radius: 2,
+                      backgroundImage: AssetImage('images/alarm-clock.png'),
+                    ),
                   ),
                 ),
               ],
