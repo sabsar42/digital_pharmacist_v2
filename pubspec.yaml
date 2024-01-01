@@ -53,6 +53,14 @@ dependencies:
   get_it: ^7.6.4
   image_picker: ^1.0.4
   intl: ^0.18.1
+  introduction_screen: ^3.1.12
+  flutter_native_splash: ^2.3.3
+  ionicons: ^0.2.1
+  google_fonts: ^6.1.0
+  pin_code_fields: ^8.0.1
+  flutter_svg: ^2.0.9
+  animated_weight_picker: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -83,7 +91,9 @@ flutter:
     - assets/images/syrup.png
     - assets/images/dashboard_pharmacy_medicine.png
     - assets/images/alarm-clock.png
-
+    - assets/images/Digi-Pharma-App-Screen-MockUps.png
+    - assets/images/digi-pharma-prussian.svg
+    - assets/images/triangle.svg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
