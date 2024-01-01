@@ -117,7 +117,7 @@ class monthlyMedDetails extends StatelessWidget {
                             height: 100,
                             width: 100,
                             child: Image.asset(
-                              'images/syrup.png',
+                              'assets/images/syrup.png',
                             )),
                       ),
                       Align(
@@ -190,7 +190,7 @@ class monthlyMedDetails extends StatelessWidget {
                             height: 100,
                             width: 100,
                             child: Image.asset(
-                              'images/dashboard_pharmacy_medicine.png',
+                              'assets/images/dashboard_pharmacy_medicine.png',
                             )),
                       ),
                       Align(
@@ -263,7 +263,7 @@ class monthlyMedDetails extends StatelessWidget {
                             height: 100,
                             width: 100,
                             child: Image.asset(
-                              'images/eye-drops.png',
+                              'assets/images/syrup.png',
                             )),
                       ),
                       Align(

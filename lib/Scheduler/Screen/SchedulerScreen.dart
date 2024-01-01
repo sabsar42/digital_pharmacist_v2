@@ -3,7 +3,6 @@ import 'package:digi_pharma_app_test/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../dashboard/dashbaord_appbar.dart';
 
 class SchedulerScreen extends StatefulWidget {
   const SchedulerScreen({super.key});

@@ -61,7 +61,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 ),
                 Center(
                   child: Image.asset(
-                    'images/dashboard_1.png',
+                    'assets/images/dashboard_1.png',
                     height: 202,
                     width: 202,
                   ),

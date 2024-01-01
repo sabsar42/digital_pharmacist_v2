@@ -93,15 +93,15 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
                               width: 350.0,
                               child: galleryFile == null
                                   ? Center(
-                                      child: Text(
-                                        'Upload from Gallery',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          color: Colors.purple,
-                                          fontSize: 22,
-                                        ),
-                                      ),
-                                    )
+                                child: Text(
+                                  'Upload from Gallery',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                    color: Colors.purple,
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              )
                                   : Center(child: Image.file(galleryFile!)),
                             ),
                           ],
@@ -173,13 +173,11 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
     );
   }
 
-  Future getImage(
-    ImageSource img,
-  ) async {
+  Future getImage(ImageSource img,) async {
     final pickedFile = await picker.pickImage(source: img);
     XFile? xfilePick = pickedFile;
     setState(
-      () {
+          () {
         if (xfilePick != null) {
           galleryFile = File(pickedFile!.path);
         } else {
@@ -194,25 +192,28 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
     );
   }
 
+
   Future<void> _scanImage(File ImageFile) async {
     final navigator = Navigator.of(context);
 
     try {
       final textRecognizer = TextRecognizer();
-
       final file = ImageFile;
+      final inputImage = InputImage.fromFile(file!);
 
-      final inputImage =
-          InputImage.fromFile(file!); // The Input Image Is HERE !!!!!
-      final recognizedText = await textRecognizer.processImage(inputImage);
+      final RecognizedText recognizedTexts = await textRecognizer.processImage(
+          inputImage);
+
+      print('Recognized Text: ${recognizedTexts.text}');
 
       await navigator.push(
         MaterialPageRoute(
           builder: (BuildContext context) =>
-              ResultBardHomePage(txt: recognizedText.text),
+              ResultBardHomePage(txt: recognizedTexts.text),
         ),
       );
     } catch (e) {
+      print('Error during text recognition: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('An error occurred when scanning text'),
@@ -221,3 +222,35 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
     }
   }
 }
+
+
+// Future<void> _scanImage() async {
+//     if (_cameraController == null) return;
+//
+//     final navigator = Navigator.of(context);
+//
+//     try {
+//       final pictureFile = await _cameraController!.takePicture();
+//
+//       //final file = File(pictureFile.path);
+//       final file = widget.ImageFile;
+//
+//       final inputImage =
+//           InputImage.fromFile(file!); // The Input Image Is HERE !!!!!
+//       final recognizedText = await textRecognizer.processImage(inputImage);
+//
+//       await navigator.push(
+//         MaterialPageRoute(
+//           builder: (BuildContext context) =>
+//               ResultScreen(text: recognizedText.text),
+//         ),
+//       );
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(
+//           content: Text('An error occurred when scanning text'),
+//         ),
+//       );
+//     }
+//   }
+// }

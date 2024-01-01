@@ -13,7 +13,6 @@ class _SchedulerAppBarState extends State<SchedulerAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Stack(
         children: [
           Container(
@@ -72,15 +71,19 @@ class _SchedulerAppBarState extends State<SchedulerAppBar> {
                       'Create New Schedule',
                       style: siz22White(),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                      ),
-
-
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
                         onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulerSettingsScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SchedulerSettingsScreen()));
                         },
                         child: Text(
                           'Create',

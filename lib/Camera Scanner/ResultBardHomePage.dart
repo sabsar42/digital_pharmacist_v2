@@ -38,7 +38,7 @@ class ResultBardHomePage extends StatefulWidget {
 }
 
 class _ResultBardHomePageState extends State<ResultBardHomePage> {
-  late String f;
+   String? f;
 
   @override
   void initState() {
@@ -62,17 +62,8 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
                 child: IconButton(
                   onPressed: () {
                     String p = "";
-                    controller.sendPrompt("Given Text: $f\n\n"
-                        """
-                      Please organize the following medical information into a comprehensive health record:
-                      Make the KeyPoints Bold and Rest in Small Letters
-                     0. Doctors Informatin
-                     1. Diagnosis
-                     2. Medical Summary
-                     3. Prescribed Medicine
-                     4. Future Appointment Date
-
-                      """);
+                    print('This\n -> ${widget.txt}');
+                    controller.sendPrompt("Given Text: ${widget.txt}\n\n, Please organize the Given Text and provide following medical info to : 0.Doctors Information, 1.Patient Information 2.Medicine, 3.Diagnosis");
                   },
                   icon: Icon(Icons.generating_tokens_outlined),
                   iconSize: 90,

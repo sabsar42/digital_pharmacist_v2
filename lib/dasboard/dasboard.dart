@@ -6,6 +6,7 @@ import '../Camera Scanner/camera_screen.dart';
 import '../Google Berd/BardHomePage.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health_Record_Screen.dart';
+import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import 'dashboard_appbar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -19,59 +20,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.transparent,
-        color:  Colors.transparent,
-        buttonBackgroundColor : Colors.grey,
-        height : 50,
-          animationCurve: Curves.linear,
-        animationDuration: Duration(milliseconds: 290),
-        items: [
+      bottomNavigationBar: SafeArea(
+        child: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          color:  Colors.transparent,
+          buttonBackgroundColor : Colors.grey,
+          height : 50,
+            animationCurve: Curves.linear,
+          animationDuration: Duration(milliseconds: 290),
+          items: [
 
 
 
-          // We Will call UploadScreenPreviw from here
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return UploadScreenPreview();
-                    // return CameraScreen();
-                  },
-                ),
-              );
-            },
-            child: Icon(
-              Icons.camera_alt,
+            // We Will call UploadScreenPreviw from here
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return UploadScreenPreview();
+                      // return CameraScreen();
+                    },
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.camera_alt,
+                color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
+                size: 40,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return BardHomePage();
+                    },
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.mark_chat_unread_outlined,
+                color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
+                size: 40,
+              ),
+            ),
+            Icon(
+              Icons.settings,
               color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
               size: 40,
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BardHomePage();
-                  },
-                ),
-              );
-            },
-            child: Icon(
-              Icons.mark_chat_unread_outlined,
-              color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
-              size: 40,
-            ),
-          ),
-          Icon(
-            Icons.settings,
-            color: Color.fromRGBO(6, 30, 128, 0.7215686274509804),
-            size: 40,
-          ),
-        ],
+          ],
+        ),
       ),
       appBar: AppBar(
         toolbarHeight: 200,
@@ -139,13 +142,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
+
                     Expanded(
                       flex: 25,
                       child: Container(
                         margin: EdgeInsets.only(left: 14),
                         child: InkWell(
                           onTap: () {
-
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => monthlyMed()));
                           },
                           child: Stack(
                             children: [
@@ -163,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   left: 5,
                                   bottom: 5,
                                   right: 5,
-                                  child: Image.asset('assets/images/logo-one.jpeg'))
+                                  child: Image.asset('assets/images/dashboard_3.png'))
                             ],
                           ),
                         ),

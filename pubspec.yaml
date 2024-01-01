@@ -52,7 +52,7 @@ dependencies:
   text2pdf: ^0.0.2
   get_it: ^7.6.4
   image_picker: ^1.0.4
-  intl: ^0.17.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -73,7 +73,17 @@ flutter:
   assets:
     - assets/images/logo-one.jpeg
     - assets/pdf/sample.pdf
-    - assets/images/
+    - assets/images/dashboard_1.png
+    - assets/images/dashboard_2.png
+    - assets/images/dashboard_3.png
+    - assets/images/dashboard_4.png
+    - assets/images/doctor_avatar.png
+    - assets/images/eye-drops.png
+    - assets/images/logo-one.jpeg
+    - assets/images/syrup.png
+    - assets/images/dashboard_pharmacy_medicine.png
+    - assets/images/alarm-clock.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
