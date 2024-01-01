@@ -212,6 +212,7 @@ class _UploadScreenPreviewState extends State<UploadScreenPreview> {
               ResultBardHomePage(txt: recognizedTexts.text),
         ),
       );
+
     } catch (e) {
       print('Error during text recognition: $e');
       ScaffoldMessenger.of(context).showSnackBar(
