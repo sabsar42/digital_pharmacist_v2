@@ -1,4 +1,5 @@
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
+import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
@@ -97,7 +98,13 @@ class _LogInScreenState extends State<LogInScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        // ADD ABSAR DASHBOARD HEREEE
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return DashboardScreen();
+                          }),
+                        );
+
                       },
                       child: Text(
                         'Login',

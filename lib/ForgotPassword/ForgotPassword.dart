@@ -64,12 +64,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
-                  onPressed: () {Navigator.push(
+                  onPressed: () {
+                    Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
                       return Verification();
                     }),
-                  );},
+                  );
+
+                    },
                   child: Text(
                     'Continue',
                     style: TextStyle(
