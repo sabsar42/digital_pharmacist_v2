@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:digi_pharma_app_test/LogIn_UI/Auth_Page.dart';
 import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

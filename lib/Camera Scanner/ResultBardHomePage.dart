@@ -54,7 +54,8 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
                 child: IconButton(
                   onPressed: () {
                     print('This\n -> ${widget.txt}');
-                    controller.sendPrompt('${widget.txt},Organize the Given Text and provide following medical info to : 2.Medicine Summary');
+                    controller.sendPrompt('${widget.txt},Organize the Given Text and provide following medical info to : Diagnosis,Medicine Scheduler');
+
                   },
                   icon: Icon(Icons.generating_tokens_outlined),
                   iconSize: 90,

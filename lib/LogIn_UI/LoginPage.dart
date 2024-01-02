@@ -1,9 +1,23 @@
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:digi_pharma_app_test/OnBoard/OnBoard.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
+import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -13,13 +27,32 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future loginUser() async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    )
+        .then((value) {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DashboardScreen()));
+      print("Successs");
+
+    }).onError((error, stackTrace) {
+      print("Failed");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, ////
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 90),
@@ -29,7 +62,8 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Align(
                     alignment: Alignment.center,
                     child: SvgPicture.asset(
-                        'assets/images/digi-pharma-prussian.svg'),
+                      'assets/images/digi-pharma-prussian.svg',
+                    ),
                   ),
                 ),
               ),
@@ -39,16 +73,18 @@ class _LogInScreenState extends State<LogInScreen> {
               Text(
                 'Welcome',
                 style: TextStyle(
-                    fontFamily: 'FontMain',
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+                  fontFamily: 'FontMain',
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'to MedApp',
                 style: TextStyle(
-                    fontFamily: 'FontMain',
-                    fontSize: 28,
-                    fontWeight: FontWeight.w100),
+                  fontFamily: 'FontMain',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w100,
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -58,6 +94,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -73,6 +110,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -91,21 +129,22 @@ class _LogInScreenState extends State<LogInScreen> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return ForgotPassword();
-                              }),
-                            );
-                          },
-                          child: const Text(
-                            'forgot password?',
-                            style: TextStyle(
-                              color: Colors.black26,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return ForgotPassword();
+                            }),
+                          );
+                        },
+                        child: const Text(
+                          'forgot password?',
+                          style: TextStyle(
+                            color: Colors.black26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -113,12 +152,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return DashboardScreen();
-                          }),
-                        );
+                        loginUser();
                       },
                       child: Text(
                         'Login',
@@ -193,10 +227,12 @@ class _LogInScreenState extends State<LogInScreen> {
                       InkWell(
                         onTap: () {},
                         child: CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.white,
-                            child: Image.network(
-                                "https://cdn-icons-png.flaticon.com/512/5968/5968764.png")),
+                          radius: 18,
+                          backgroundColor: Colors.white,
+                          child: Image.network(
+                            "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                          ),
+                        ),
                       ),
                     ],
                   ),
