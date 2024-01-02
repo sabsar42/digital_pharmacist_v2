@@ -39,7 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return UploadScreenPreview();
+                      return CameraScreen();
                       // return CameraScreen();
                     },
                   ),

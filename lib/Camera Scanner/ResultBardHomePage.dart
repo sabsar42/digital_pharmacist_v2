@@ -38,14 +38,6 @@ class ResultBardHomePage extends StatefulWidget {
 }
 
 class _ResultBardHomePageState extends State<ResultBardHomePage> {
-   String? f;
-
-  @override
-  void initState() {
-    super.initState();
-    f = widget.txt;
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +53,8 @@ class _ResultBardHomePageState extends State<ResultBardHomePage> {
               child: Center(
                 child: IconButton(
                   onPressed: () {
-                    String p = "";
                     print('This\n -> ${widget.txt}');
-                    controller.sendPrompt("Given Text: ${widget.txt}\n\n, Please organize the Given Text and provide following medical info to : 0.Doctors Information, 1.Patient Information 2.Medicine, 3.Diagnosis");
+                    controller.sendPrompt('${widget.txt},Organize the Given Text and provide following medical info to : 2.Medicine Summary');
                   },
                   icon: Icon(Icons.generating_tokens_outlined),
                   iconSize: 90,

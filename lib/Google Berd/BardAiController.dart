@@ -46,8 +46,8 @@ class BardAIController extends GetxController {
       body: jsonEncode(body),
     );
 
-    final response = jsonDecode(request.body);
-    final bardReplay = response["candidates"][0]["output"];
+    final response =  jsonDecode(request.body);
+    final bardReplay =  response["candidates"][0]["output"];
     String ans = bardReplay.toString();
     print(ans);
     updateApiResponse(ans);
