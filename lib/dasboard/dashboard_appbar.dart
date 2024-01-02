@@ -1,11 +1,9 @@
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
 import '../User_Profile/UserProfile.dart';
-
-
-
 
 class dashboardAppbar extends StatefulWidget {
   const dashboardAppbar({super.key});
@@ -15,6 +13,8 @@ class dashboardAppbar extends StatefulWidget {
 }
 
 class _dashboardAppbarState extends State<dashboardAppbar> {
+  final user = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,18 +44,19 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                     width: 10,
                   ),
                   GestureDetector(
-
-                    onTap: (){
-                      Navigator.push(context,
-                      MaterialPageRoute(builder: (context)=>UserProfile()));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserProfile()));
                     },
                     child: Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hello Shuvo Sonjoy",
-                            style: siz22White(),
+                            '${user.email}',
+                            style: size20White(),
                           ),
                           Text(
                             "ID: 2112s2X",
@@ -122,7 +123,7 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                                 height: 35,
                                 decoration: BoxDecoration(
                                   border:
-                                  Border.all(color: Colors.black, width: 1),
+                                      Border.all(color: Colors.black, width: 1),
                                   color: Color(0xffF68D8D),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -159,12 +160,16 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                     left: 3,
                     right: 3,
                     child: InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulerScreen()));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SchedulerScreen()));
                       },
                       child: CircleAvatar(
                         radius: 2,
-                        backgroundImage: AssetImage('assets/images/alarm-clock.png'),
+                        backgroundImage:
+                            AssetImage('assets/images/alarm-clock.png'),
                       ),
                     ),
                   ),

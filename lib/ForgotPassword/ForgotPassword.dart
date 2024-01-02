@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
+import 'NewPassword.dart';
 import 'Verification.dart';
-
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -13,16 +14,52 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  final TextEditingController emailController = TextEditingController();
+
+  Future passwordReset() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+               'Password Reset Link Sent to Your Email',
+              ),
+            );
+          });
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                e.message.toString(),
+              ),
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Forgot Password", style: TextStyle(color: Colors.black),),
+        title: Text(
+          "Forgot Password",
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
         ),
       ),
       body: Column(
@@ -31,10 +68,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             height: 50,
           ),
           Container(
-            child: Text("Enter your Email Address", style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-      ),),
+            child: Text(
+              "Enter your Email Address",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
           ),
           SizedBox(
             height: 20,
@@ -42,6 +82,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Padding(
             padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
@@ -54,10 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
           ),
-
-
           SizedBox(height: 20),
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(18.0),
@@ -65,14 +103,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return Verification();
-                    }),
-                  );
-
-                    },
+                    passwordReset(); // Call resetPassword method
+                  },
                   child: Text(
                     'Continue',
                     style: TextStyle(
@@ -86,19 +118,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     elevation: 10.0,
                     backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                    fixedSize:
-                    Size(350.0, 60.0),
+                    fixedSize: Size(350.0, 60.0),
                   ),
                 ),
               ),
             ),
           ),
-
-
-
         ],
       ),
     );
   }
 }
-

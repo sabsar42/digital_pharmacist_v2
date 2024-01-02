@@ -38,7 +38,7 @@ class _LogInScreenState extends State<LogInScreen> {
       password: passwordController.text,
     )
         .then((value) {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>DashboardScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashboardScreen()));
       print("Successs");
 
     }).onError((error, stackTrace) {

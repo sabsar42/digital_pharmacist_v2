@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatefulWidget {
@@ -8,6 +9,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +44,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("UserName"),
+              child: Text('${user.email}'),
             ),
 
             Padding(
@@ -187,7 +189,10 @@ class _UserProfileState extends State<UserProfile> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios_sharp),
-                onTap: () {},
+
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                },
               ),
             ),
           ],
