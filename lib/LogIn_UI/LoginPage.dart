@@ -19,6 +19,8 @@ import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
+import '../style.dart';
+
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
 
@@ -138,10 +140,10 @@ class _LogInScreenState extends State<LogInScreen> {
                           );
                         },
                         child: const Text(
-                          'forgot password?',
+                          'FORGOT PASSWORD ?',
                           style: TextStyle(
                             color: Colors.black26,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 13
                           ),
                         ),
                       ),
@@ -151,6 +153,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
+
                       onPressed: () {
                         loginUser();
                       },
@@ -165,7 +168,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        elevation: 10.0,
+                        elevation: 4.0,
                         backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
                         fixedSize: Size(
                             350.0, 60.0), // Set the width and height as desired
@@ -176,7 +179,11 @@ class _LogInScreenState extends State<LogInScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('New user?'),
+                      Text('NEW USER ?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      )),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -187,8 +194,10 @@ class _LogInScreenState extends State<LogInScreen> {
                           );
                         },
                         child: Text(
-                          'Sign Up',
-                          style: TextStyle(color: Colors.blue),
+                          'Regsiter Here',
+                          style: TextStyle(color: Colors.blue,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 13,),
                         ),
                       ),
                     ],
@@ -213,11 +222,11 @@ class _LogInScreenState extends State<LogInScreen> {
                         onTap: () {},
                         child: CircleAvatar(
                           radius: 20,
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.transparent,
                           child: Image.network(
                             "https://cdn-teams-slug.flaticon.com/google.jpg",
-                            height: 40,
-                            width: 40,
+                            height: 50,
+                            width: 50,
                           ),
                         ),
                       ),
@@ -227,8 +236,8 @@ class _LogInScreenState extends State<LogInScreen> {
                       InkWell(
                         onTap: () {},
                         child: CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.white,
+                          radius: 15,
+                          backgroundColor: Colors.transparent,
                           child: Image.network(
                             "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
                           ),

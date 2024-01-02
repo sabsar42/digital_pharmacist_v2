@@ -1,15 +1,12 @@
+import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+import 'User_Account_screen/user_account_screen.dart';
 
-  @override
-  State<UserProfile> createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
+class UserProfile extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,173 +26,126 @@ class _UserProfileState extends State<UserProfile> {
           color: Colors.blue,
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          //Whole
-          //mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.greenAccent[400],
-                radius: 50,
-                child: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/3607/3607444.png"),
+            CircleAvatar(
+              backgroundColor: Colors.greenAccent[400],
+              radius: 50,
+              child: Image.network(
+                "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('${user.email}'),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.black12,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: [
-                              Text("Age"),
-                              Text(
-                                "40 Years",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.black12,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: [
-                              Text("Age"),
-                              Text(
-                                "40 Years",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.black12,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: [
-                              Text("Age"),
-                              Text(
-                                "40 Years",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            SizedBox(height: 16.0),
+            Text(
+              '${user.email}',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/6542/6542983.png"),
-                title: const Text(
-                  'My Account',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios_sharp),
-                onTap: () {},
-              ),
-            ), //
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/1090/1090923.png"),
-                title: const Text(
-                  'My Subscription',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios_sharp),
-                onTap: () {},
-              ),
-            ), //
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/1827/1827312.png"),
-                title: const Text(
-                  'Notification',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios_sharp),
-                onTap: () {},
-              ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildInfoCard("Age", "40 Years"),
+                buildInfoCard("Gender", "Male"),
+                buildInfoCard("Location", "City"),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/3756/3756534.png"),
-                title: const Text(
-                  'Settings',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios_sharp),
-                onTap: () {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/3596/3596125.png"),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios_sharp),
-
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                },
-              ),
-            ),
+            SizedBox(height: 16.0),
+            buildListTile("My Account", Icons.account_circle, () {
+              // Navigate to MyAccountScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
+              );
+            }),
+            buildListTile("My Subscription", Icons.subscriptions, () {
+              // Handle tile tap
+            }),
+            buildListTile("Notification", Icons.notifications, () {
+              // Handle tile tap
+            }),
+            buildListTile("Settings", Icons.settings, () {
+              // Handle tile tap
+            }),
+            SizedBox(height: 16.0),
+            buildLogoutTile(context),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildInfoCard(String label, String value) {
+    return Container(
+      height: 80.0,
+      width: 100.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        color: Colors.black12,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 4.0),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildListTile(String title, IconData icon, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, size: 30.0),
+      title: Text(
+        title,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      trailing: Icon(Icons.arrow_forward_ios_sharp),
+      onTap: onTap,
+    );
+  }
+
+  Widget buildLogoutTile(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        try {
+          await FirebaseAuth.instance.signOut();
+          // Navigate to the login screen or another destination.
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LogInScreen()),
+          );
+        } catch (e) {
+          print("Sign out error: $e");
+          // Display an error message to the user if sign out fails.
+        }
+      },
+      child: Text(
+        'Logout',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.red,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
     );

@@ -64,6 +64,8 @@ dependencies:
   animated_weight_picker: ^1.0.0
   firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
+  cloud_firestore: ^4.13.6
+
 
 dev_dependencies:
   flutter_test:
