@@ -43,7 +43,7 @@ class _LogInScreenState extends State<LogInScreen> {
       );
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashboardScreen()));
-      print("Successs");
+     showSnackBar("Login Successfull");
     } catch (e) {
       print("Failed: $e");
       showSnackBar("Invalid email or password");

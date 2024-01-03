@@ -24,12 +24,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       await userCredential.user?.updateDisplayName(name);
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {
           return LogInScreen();
         }),
       );
+      showSnackBar('Registration Successfull');
     } on FirebaseAuthException catch (e) {
       print('FirebaseAuthException: $e');
       showDialog(
@@ -50,6 +52,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       );
     }
+  }
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   @override
