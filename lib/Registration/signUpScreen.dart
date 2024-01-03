@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +18,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
   Future<void> signUpWithEmailAndPassword(
       String email, String password, String name) async {
     try {
@@ -24,6 +30,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       await userCredential.user?.updateDisplayName(name);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
+        'email': email,
+        'full_name': name,
+      });
 
       Navigator.push(
         context,
@@ -52,10 +66,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       );
     }
-  }
-  void showSnackBar(String message) {
-    var snackbar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
@@ -19,104 +18,76 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController bloodGroupController = TextEditingController();
 
+  late User currentUser;
 
-  late SharedPreferences prefs;
-
-  Future<Map<String, dynamic>> getUserInfo(String userId) async {
-    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-
-    if (userDoc.exists) {
-      return userDoc.data() as Map<String, dynamic>;
-    } else {
-      return {};
-    }
-  }
   @override
   void initState() {
     super.initState();
-    initPrefs();
+    getCurrentUser();
   }
 
-  Future<void> initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    setState(() {
-      fullNameController.text = prefs.getString('fullName') ?? '';
-      emailController.text = prefs.getString('email') ?? '';
-      phoneController.text = prefs.getString('phone') ?? '';
-      passwordController.text = prefs.getString('password') ?? '';
-      ageController.text = prefs.getString('age') ?? '';
-      weightController.text = prefs.getString('weight') ?? '';
-      genderController.text = prefs.getString('gender') ?? '';
-      heightController.text = prefs.getString('height') ?? '';
-      bloodGroupController.text = prefs.getString('bloodGroup') ?? '';
-    });
-  }
-
-  Future<void> saveUserData() async {
-    prefs.setString('fullName', fullNameController.text);
-    prefs.setString('email', emailController.text);
-    prefs.setString('phone', phoneController.text);
-    prefs.setString('password', passwordController.text);
-    prefs.setString('age', ageController.text);
-    prefs.setString('weight', weightController.text);
-    prefs.setString('gender', genderController.text);
-    prefs.setString('height', heightController.text);
-    prefs.setString('bloodGroup', bloodGroupController.text);
-  }
-
-  Future<void> addUserDetails() async {
+  Future<void> getCurrentUser() async {
     User? user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
-      String userID = user.uid;
-
-      var userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userID)
-          .get();
-
-      if (userDoc.exists) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userID)
-            .update({
-          'full_name': fullNameController.text,
-          'age': ageController.text,
-          'email': emailController.text,
-          'phone': phoneController.text,
-          'height': weightController.text,
-          'weight': heightController.text,
-          'gender': genderController.text,
-          'blood_group': bloodGroupController.text,
-          'password': passwordController.text
-        });
-      } else {
-        await FirebaseFirestore.instance.collection('users').doc(userID).set({
-          'full_name': fullNameController.text,
-          'age': ageController.text,
-          'email': emailController.text,
-          'height': heightController.text,
-          'gender': genderController.text,
-          'blood_group': bloodGroupController.text,
-        });
-      }
-    } else {
-      print("User not logged in");
+      setState(() {
+        currentUser = user;
+      });
+      loadUserData();
     }
   }
 
-  void getUserID() {
-    User? user = FirebaseAuth.instance.currentUser;
+  Future<void> loadUserData() async {
+    String userID = currentUser.uid;
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
-    if (user != null) {
-      String userID = user.uid;
-      print("User ID: $userID");
+    if (userDoc.exists) {
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      setState(() {
+        fullNameController.text = userData['full_name'] ?? '';
+        emailController.text = userData['email'] ?? '';
+        phoneController.text = userData['phone'] ?? '';
+        passwordController.text = userData['password'] ?? '';
+        ageController.text = userData['age'] ?? '';
+        weightController.text = userData['weight'] ?? '';
+        genderController.text = userData['gender'] ?? '';
+        heightController.text = userData['height'] ?? '';
+        bloodGroupController.text = userData['blood_group'] ?? '';
+      });
+    }
+  }
+
+  Future<void> addUserDetails() async {
+    String userID = currentUser.uid;
+
+    var userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .get();
+
+    if (userDoc.exists) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .update({
+        'full_name': fullNameController.text,
+        'age': ageController.text,
+        'email': emailController.text,
+        'phone': phoneController.text,
+        'height': weightController.text,
+        'weight': heightController.text,
+        'gender': genderController.text,
+        'blood_group': bloodGroupController.text,
+        'password': passwordController.text,
+      });
     } else {
-      print("User not logged in");
+      await FirebaseFirestore.instance.collection('users').doc(userID).set({
+        'full_name': fullNameController.text,
+        'age': ageController.text,
+        'email': emailController.text,
+        'height': heightController.text,
+        'gender': genderController.text,
+        'blood_group': bloodGroupController.text,
+      });
     }
   }
 
@@ -130,8 +101,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back),
         ),
-        title:
-            Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
+        title: Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -147,7 +117,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: const Image(
-                          image: AssetImage("assets/profile_image.jpg")),
+                        image: AssetImage("assets/profile_image.jpg"),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -160,8 +131,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blue, // Change to your desired color
                       ),
-                      child: const Icon(Icons.camera,
-                          color: Colors.black, size: 20),
+                      child: const Icon(Icons.camera, color: Colors.black, size: 20),
                     ),
                   ),
                 ],
@@ -203,9 +173,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         labelText: "Password",
                         prefixIcon: Icon(Icons.fingerprint),
                         suffixIcon: IconButton(
-                          icon: Icon(obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off),
+                          icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
                           onPressed: () {
                             togglePasswordVisibility();
                           },
@@ -259,7 +227,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          saveUserData();
                           addUserDetails();
                           Navigator.pop(context);
                         },
