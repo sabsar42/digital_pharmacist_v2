@@ -19,6 +19,7 @@ import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
+import '../dasboard/dashboard_whole.dart';
 import '../style.dart';
 
 class LogInScreen extends StatefulWidget {

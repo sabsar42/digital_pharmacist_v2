@@ -56,16 +56,6 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    drawer: CustomDrawer();
-                  },
-                  child: Icon(
-                    Icons.menu,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
                 SizedBox(
                   width: 10,
                 ),
