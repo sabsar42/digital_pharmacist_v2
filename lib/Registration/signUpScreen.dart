@@ -51,7 +51,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,15 +196,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 height: 50,
               ),
-              Align(
-                child: Text(
-                  'Or Continue with',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
-                  ),
+              Text(
+                'Or Continue with',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
                 ),
-                alignment: Alignment.bottomCenter,
               ),
               SizedBox(
                 height: 20,
@@ -215,48 +211,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   InkWell(
                     onTap: () {},
-                    child: Container(
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-teams-slug.flaticon.com/google.jpg",
                         height: 50,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black12,
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/2504/2504739.png"),
-                            ),
-                            Text("Google"),
-                          ],
-                        )),
+                        width: 50,
+                      ),
+                    ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 20,
                   ),
                   InkWell(
                     onTap: () {},
-                    child: Container(
-                        height: 50,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black12,
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/5968/5968764.png"),
-                            ),
-                            Text("Facebook"),
-                          ],
-                        )),
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                      ),
+                    ),
                   ),
                 ],
               ),
