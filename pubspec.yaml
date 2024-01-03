@@ -99,6 +99,9 @@ flutter:
     - assets/images/Digi-Pharma-App-Screen-MockUps.png
     - assets/images/digi-pharma-prussian.svg
     - assets/images/triangle.svg
+    - assets/images/onboard_1.png
+    - assets/images/onboard_2.png
+    - assets/images/onboard_3.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
