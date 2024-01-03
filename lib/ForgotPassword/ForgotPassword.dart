@@ -29,6 +29,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             );
           });
+
     } on FirebaseAuthException catch (e) {
       print(e);
       showDialog(

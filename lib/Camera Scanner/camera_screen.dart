@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:camera/camera.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 
 import 'dart:io';
+
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';

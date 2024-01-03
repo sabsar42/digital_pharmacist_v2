@@ -20,7 +20,11 @@ class _WeightState extends State<Weight> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
         ),
       ),
       body: Column(
@@ -39,10 +43,13 @@ class _WeightState extends State<Weight> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-            child: Text('Let us know your weight', style: TextStyle(
-              fontSize: 15,
-              color: Colors.grey,
-            ),),
+            child: Text(
+              'Let us know your weight',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey,
+              ),
+            ),
           ),
           SizedBox(
             height: 50,
@@ -55,8 +62,7 @@ class _WeightState extends State<Weight> {
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('Continue'),
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -67,11 +73,8 @@ class _WeightState extends State<Weight> {
                   fixedSize: Size(350.0, 60.0)),
             ),
           ),
-
         ],
       ),
-
     );
   }
 }
-

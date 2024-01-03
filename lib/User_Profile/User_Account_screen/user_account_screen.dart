@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class UpdateProfileScreen extends StatefulWidget {
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -57,28 +58,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     prefs.setString('bloodGroup', bloodGroupController.text);
   }
 
-
-
-
-
   Future<void> addUserDetails() async {
-    // Get the current user ID
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       String userID = user.uid;
 
-
-      // Check if the document already exists
-      var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .get();
 
       if (userDoc.exists) {
-        // If the document exists, update its fields
-        await FirebaseFirestore.instance.collection('users').doc(userID).update({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .update({
           'full_name': fullNameController.text,
           'age': ageController.text,
           'email': emailController.text,
-          'phone' : phoneController.text,
+          'phone': phoneController.text,
           'height': weightController.text,
           'weight': heightController.text,
           'gender': genderController.text,
@@ -86,7 +85,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           'password': passwordController.text
         });
       } else {
-        // If the document doesn't exist, create a new one
         await FirebaseFirestore.instance.collection('users').doc(userID).set({
           'full_name': fullNameController.text,
           'age': ageController.text,
@@ -107,14 +105,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (user != null) {
       String userID = user.uid;
       print("User ID: $userID");
-      // You can use this userID to associate data in Firestore with the user.
     } else {
       print("User not logged in");
     }
   }
 
-
   bool obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +120,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
+        title:
+            Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -138,7 +136,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     height: 120,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: const Image(image: AssetImage("assets/profile_image.jpg")),
+                      child: const Image(
+                          image: AssetImage("assets/profile_image.jpg")),
                     ),
                   ),
                   Positioned(
@@ -151,7 +150,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blue, // Change to your desired color
                       ),
-                      child: const Icon(Icons.camera, color: Colors.black, size: 20),
+                      child: const Icon(Icons.camera,
+                          color: Colors.black, size: 20),
                     ),
                   ),
                 ],
@@ -193,7 +193,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         labelText: "Password",
                         prefixIcon: Icon(Icons.fingerprint),
                         suffixIcon: IconButton(
-                          icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                          icon: Icon(obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                           onPressed: () {
                             togglePasswordVisibility();
                           },
