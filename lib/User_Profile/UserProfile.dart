@@ -1,84 +1,40 @@
-import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../LogIn_UI/LoginPage.dart';
 import 'User_Account_screen/user_account_screen.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
+  @override
+  _UserProfileState createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   final user = FirebaseAuth.instance.currentUser!;
+  Map<String, dynamic> userInfo = {};
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Profile",
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-          color: Colors.blue,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
-              radius: 50,
-              child: Image.network(
-                "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              '${user.email}',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildInfoCard("Age", "40 Years"),
-                buildInfoCard("Gender", "Male"),
-                buildInfoCard("Location", "City"),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            buildListTile("My Account", Icons.account_circle, () {
-              // Navigate to MyAccountScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
-              );
-            }),
-            buildListTile("My Subscription", Icons.subscriptions, () {
-              // Handle tile tap
-            }),
-            buildListTile("Notification", Icons.notifications, () {
-              // Handle tile tap
-            }),
-            buildListTile("Settings", Icons.settings, () {
-              // Handle tile tap
-            }),
-            SizedBox(height: 16.0),
-            buildLogoutTile(context),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    loadUserInfo();
+  }
+
+  Future<void> loadUserInfo() async {
+    String userID = user.uid;
+    userInfo = await getUserInfo(userID);
+    setState(() {});
+  }
+
+  Future<Map<String, dynamic>> getUserInfo(String userId) async {
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    if (userDoc.exists) {
+      return userDoc.data() as Map<String, dynamic>;
+    } else {
+      return {};
+    }
   }
 
   Widget buildInfoCard(String label, String value) {
@@ -147,6 +103,79 @@ class UserProfile extends StatelessWidget {
         primary: Colors.red,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Profile",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.greenAccent[400],
+              radius: 50,
+              child: Image.network(
+                "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              userInfo['full_name'] ?? 'Name not available',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildInfoCard("Age", userInfo['age'] ?? "N/A"),
+                buildInfoCard("Gender", userInfo['gender'] ?? "N/A"),
+                buildInfoCard("Location", userInfo['city'] ?? "N/A"),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            buildListTile("My Account", Icons.account_circle, () {
+              // Navigate to MyAccountScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
+              );
+            }),
+            buildListTile("My Subscription", Icons.subscriptions, () {
+              // Handle tile tap
+            }),
+            buildListTile("Notification", Icons.notifications, () {
+              // Handle tile tap
+            }),
+            buildListTile("Settings", Icons.settings, () {
+              // Handle tile tap
+            }),
+            SizedBox(height: 16.0),
+            buildLogoutTile(context),
+          ],
         ),
       ),
     );

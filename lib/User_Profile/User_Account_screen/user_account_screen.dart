@@ -21,6 +21,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   late SharedPreferences prefs;
 
+  Future<Map<String, dynamic>> getUserInfo(String userId) async {
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    if (userDoc.exists) {
+      return userDoc.data() as Map<String, dynamic>;
+    } else {
+      return {};
+    }
+  }
   @override
   void initState() {
     super.initState();

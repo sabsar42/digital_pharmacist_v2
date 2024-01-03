@@ -7,6 +7,14 @@ TextStyle siz31Black() {
   );
 }
 
+TextStyle size16White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 16,
+  );
+}
+
 
 
 TextStyle siz30White() {
