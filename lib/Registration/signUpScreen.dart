@@ -51,7 +51,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,82 +84,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Registration",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "Please enter your email id, phone and your full name, then we will send you an OTP",
-                      style: TextStyle(color: Colors.black45),
-                    ),
-                  ],
+                padding: const EdgeInsets.fromLTRB(30.0,10,30,20),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Registration",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Column(
                 children: [
+
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         labelText: 'Email',
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Enter your email',
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
+                        hintText: '',
                       ),
                     ),
                   ),
+
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        filled: true,
                         fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
                         labelText: 'Full name',
-                        hintText: 'Enter your name',
+                        hintText: '',
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        filled: true,
                         fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         labelText: 'Password',
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Enter your secure password',
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
+                        hintText: '',
                       ),
                     ),
                   ),
@@ -197,15 +183,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 height: 50,
               ),
-              Align(
-                child: Text(
-                  'Or Continue with',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
-                  ),
+              Text(
+                'Or Continue with',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
                 ),
-                alignment: Alignment.bottomCenter,
               ),
               SizedBox(
                 height: 20,
@@ -215,48 +198,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   InkWell(
                     onTap: () {},
-                    child: Container(
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-teams-slug.flaticon.com/google.jpg",
                         height: 50,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black12,
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/2504/2504739.png"),
-                            ),
-                            Text("Google"),
-                          ],
-                        )),
+                        width: 50,
+                      ),
+                    ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 20,
                   ),
                   InkWell(
                     onTap: () {},
-                    child: Container(
-                        height: 50,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black12,
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/5968/5968764.png"),
-                            ),
-                            Text("Facebook"),
-                          ],
-                        )),
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                      ),
+                    ),
                   ),
                 ],
               ),
