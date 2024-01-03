@@ -36,43 +36,23 @@ class _LogInScreenState extends State<LogInScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future loginUser() async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    )
-        .then((value) {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashboardScreen()));
       print("Successs");
-    }).onError((error, stackTrace) {
-      print("Failed");
-    });
+    } catch (e) {
+      print("Failed: $e");
+      showSnackBar("Invalid email or password");
+    }
   }
 
-  Future<void> createUser() async {
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      )
-          .then((authResult) async {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(authResult.user!.uid)
-            .set({
-          'email': emailController.text,
-        });
-
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => DashboardScreen()));
-
-        print("User created successfully");
-      });
-    } catch (error) {
-      print("Failed to create user: $error");
-    }
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   @override
@@ -209,7 +189,6 @@ class _LogInScreenState extends State<LogInScreen> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               loginUser();
-                              createUser();
                             }
                           },
                           child: Icon(
