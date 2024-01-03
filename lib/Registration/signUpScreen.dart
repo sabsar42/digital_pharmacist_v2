@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("OK"),
+                child: Text("OK "),
               ),
             ],
           );
