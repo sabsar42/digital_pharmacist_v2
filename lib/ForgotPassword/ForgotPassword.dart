@@ -15,6 +15,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future passwordReset() async {
     try {
@@ -75,31 +76,53 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           SizedBox(
             height: 30,
           ),
-          Container(
-            child: Text(
-              "Enter your Email Address",
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 20,
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            child: Container(
+              child: Text(
+                "Enter your Email Address",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
           SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              child: TextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  labelText: 'Email',
+                  floatingLabelStyle: TextStyle(
+                    color: Color.fromRGBO(147, 18, 18, 1.0),
+                  ),
+                  hintText: '',
                 ),
-                labelText: 'email',
-                floatingLabelStyle: TextStyle(
-                  color: Color.fromRGBO(147, 18, 18, 1.0),
-                ),
-                hintText: '',
+                validator: (String? value) {
+                  if (value?.trim().isEmpty ?? true) {
+                    return 'Eneter an email';
+                  }
+            
+                  bool emailValid = RegExp(
+                      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                      .hasMatch(value!);
+                  if (emailValid == false) {
+                    return 'Enter valid Email';
+                  }
+            
+                  return null;
+                },
               ),
             ),
           ),
@@ -114,7 +137,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   child: ElevatedButton(
 
                     onPressed: () {
-                      passwordReset();
+                      if(_formKey.currentState!.validate()){passwordReset();}
                     },
                     child: Icon(
                       Icons.arrow_forward_ios,
