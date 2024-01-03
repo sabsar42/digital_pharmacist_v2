@@ -48,32 +48,38 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Forgot Password",
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-          color: Colors.blue,
-        ),
-      ),
+
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 70,),
+          Row(
+            children: [
+              SizedBox(width: 15,),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back_ios),
+                color: Colors.blue,
+              ),
+              SizedBox(width: 10,),
+              Text(
+                "Forgot Password",
+                style: TextStyle(color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                fontSize: 20),
+              ),
+            ],
+          ),
           SizedBox(
-            height: 50,
+            height: 30,
           ),
           Container(
             child: Text(
               "Enter your Email Address",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
                 fontSize: 20,
               ),
             ),
@@ -87,7 +93,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               controller: emailController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 labelText: 'email',
                 floatingLabelStyle: TextStyle(
@@ -97,7 +103,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
           ),
-          SizedBox(height: 20),
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(18.0),

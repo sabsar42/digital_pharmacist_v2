@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
 import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
-
 
 import '../style.dart';
 
@@ -42,12 +42,37 @@ class _LogInScreenState extends State<LogInScreen> {
       password: passwordController.text,
     )
         .then((value) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashboardScreen()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => DashboardScreen()));
       print("Successs");
-
     }).onError((error, stackTrace) {
       print("Failed");
     });
+  }
+
+  Future<void> createUser() async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      )
+          .then((authResult) async {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(authResult.user!.uid)
+            .set({
+          'email': emailController.text,
+        });
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
+
+        print("User created successfully");
+      });
+    } catch (error) {
+      print("Failed to create user: $error");
+    }
   }
 
   @override
@@ -117,14 +142,14 @@ class _LogInScreenState extends State<LogInScreen> {
                             if (value?.trim().isEmpty ?? true) {
                               return 'Eneter an email';
                             }
-                  
+
                             bool emailValid = RegExp(
-                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                                    r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
                                 .hasMatch(value!);
                             if (emailValid == false) {
                               return 'Enter valid Email';
                             }
-                  
+
                             return null;
                           },
                         ),
@@ -155,7 +180,6 @@ class _LogInScreenState extends State<LogInScreen> {
                           },
                         ),
                       ),
-                  
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                         child: Align(
@@ -172,9 +196,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: const Text(
                               'FORGOT PASSWORD ?',
                               style: TextStyle(
-                                color:Color.fromRGBO(131, 136, 138, 1.0),
-                                fontSize: 13
-                              ),
+                                  color: Color.fromRGBO(131, 136, 138, 1.0),
+                                  fontSize: 13),
                             ),
                           ),
                         ),
@@ -183,9 +206,11 @@ class _LogInScreenState extends State<LogInScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
-                  
                           onPressed: () {
-                           if(_formKey.currentState!.validate()){ loginUser();}
+                            if (_formKey.currentState!.validate()) {
+                              loginUser();
+                              createUser();
+                            }
                           },
                           child: Icon(
                             Icons.arrow_forward_ios,
@@ -197,8 +222,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                             elevation: 4.0,
                             backgroundColor: Color.fromRGBO(13, 44, 82, 1.0),
-                            fixedSize: Size(
-                                350.0, 60.0), // Set the width and height as desired
+                            fixedSize: Size(350.0,
+                                60.0), // Set the width and height as desired
                           ),
                         ),
                       ),
@@ -207,10 +232,10 @@ class _LogInScreenState extends State<LogInScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('NEW USER ?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                          )),
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              )),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -222,9 +247,11 @@ class _LogInScreenState extends State<LogInScreen> {
                             },
                             child: Text(
                               'Regsiter Here',
-                              style: TextStyle(color: Colors.blue,
+                              style: TextStyle(
+                                color: Colors.blue,
                                 fontWeight: FontWeight.normal,
-                                fontSize: 13,),
+                                fontSize: 13,
+                              ),
                             ),
                           ),
                         ],
