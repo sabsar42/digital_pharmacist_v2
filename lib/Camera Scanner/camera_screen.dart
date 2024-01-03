@@ -6,6 +6,7 @@ import '../medical_history/Api_Health_Record_Screen.dart';
 
 import 'dart:io';
 
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
