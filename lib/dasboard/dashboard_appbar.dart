@@ -67,7 +67,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     child: Icon(
                       Icons.menu,
                       size: 30,
-                      color: Colors.black,
+                      color: Color.fromRGBO(175, 184, 196, 1.0),
                     ),
                   ),
                 ),

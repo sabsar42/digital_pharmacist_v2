@@ -103,24 +103,26 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               padding: const EdgeInsets.all(18.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  onPressed: () {
-                    passwordReset(); // Call resetPassword method
-                  },
-                  child: Text(
-                    'Continue',
-                    style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+
+                    onPressed: () {
+                      passwordReset();
+                    },
+                    child: Icon(
+                      Icons.arrow_forward_ios,
                       color: Colors.white,
-                      fontSize: 20,
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 4.0,
+                      backgroundColor: Color.fromRGBO(13, 44, 82, 1.0),
+                      fixedSize: Size(
+                          350.0, 60.0), // Set the width and height as desired
                     ),
-                    elevation: 10.0,
-                    backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                    fixedSize: Size(350.0, 60.0),
                   ),
                 ),
               ),

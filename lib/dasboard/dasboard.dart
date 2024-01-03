@@ -52,20 +52,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       drawer: CustomDrawer(),
-
       body: Column(
         children: [
-
-
-
-
-          SizedBox(height: 170,
-
-              child: DashboardAppbar()
-          ),
-
+          SizedBox(height: 170, child: DashboardAppbar()),
           Container(
             margin: EdgeInsets.only(left: 20, top: 18),
             child: Column(

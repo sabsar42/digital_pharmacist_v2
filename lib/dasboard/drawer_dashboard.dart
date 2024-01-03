@@ -59,7 +59,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Icon(
                     Icons.person,
                     size: 30,
-                    color: Colors.black,
+                    color: Color.fromRGBO(227, 209, 236, 1.0),
                   ),
                 ),
                 SizedBox(height: 10),
