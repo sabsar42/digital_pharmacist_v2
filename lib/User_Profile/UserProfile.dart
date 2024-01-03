@@ -85,6 +85,7 @@ class _UserProfileState extends State<UserProfile> {
     return ElevatedButton(
       onPressed: () async {
         try {
+
           await FirebaseAuth.instance.signOut();
           // Navigate to the login screen or another destination.
           Navigator.pushReplacement(
