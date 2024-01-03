@@ -68,6 +68,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (user != null) {
       String userID = user.uid;
 
+
       // Check if the document already exists
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
