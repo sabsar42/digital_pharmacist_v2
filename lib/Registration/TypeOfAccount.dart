@@ -8,6 +8,14 @@ class TypeOfAccount extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          color: Color.fromRGBO(
+              12, 57, 93, 1.0),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -29,39 +37,36 @@ class TypeOfAccount extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 90),
           buildAccountCard(
             context,
             title: 'I am a Patient',
             description:
-            'Find doctors, access medical records, and get medicine delivery',
-            imageUrl:
-            'https://cdn-icons-png.flaticon.com/512/1430/1430453.png',
+                'Find Medicine, access Medical records, schedule medicine reminders',
+            imageUrl: 'assets/images/patient.png',
           ),
           SizedBox(height: 20),
           buildAccountCard(
             context,
             title: 'I am a Doctor',
             description: 'The easiest way to reach your patients',
-            imageUrl:
-            'https://cdn-icons-png.flaticon.com/512/3774/3774299.png',
+            imageUrl: 'assets/images/doctor.png',
           ),
         ],
       ),
     );
   }
 
-
   @override
-  Widget buildAccountCard(BuildContext context,{
+  Widget buildAccountCard(
+    BuildContext context, {
     required String title,
     required String description,
     required String imageUrl,
   }) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: GestureDetector(
-
+      child: InkWell(
         onTap: () {
           Navigator.push(
             context,
@@ -70,7 +75,10 @@ class TypeOfAccount extends StatelessWidget {
             }),
           );
         },
-
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        splashColor: Color.fromRGBO(110, 10, 161, 1.0),
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(
@@ -110,7 +118,7 @@ class TypeOfAccount extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 40,
                   backgroundColor: Colors.grey,
-                  child: Image.network(imageUrl),
+                  child: Image.asset(imageUrl),
                 ),
               ),
             ],

@@ -50,15 +50,19 @@ class OnBoard extends StatelessWidget {
             color: Colors.white,
           ),
       ),
-            animationDuration: 900,
-            autoScrollDuration: 1000,
-            infiniteAutoScroll: true,
+            animationDuration: 300,
+            autoScrollDuration: 500,
+            infiniteAutoScroll: false,
             isProgress: true,
             showSkipButton: true,
             showNextButton: false,
-            skip: const Text("Skip"),
+            skip: const Text("Skip",
+            style: TextStyle(
+              color: Color.fromRGBO(110, 10, 161, 1.0),
+            ),),
 
-            doneStyle: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue, elevation: 10),
+            doneStyle: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(
+                12, 57, 93, 1.0), elevation: 10),
             onDone: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
