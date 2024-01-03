@@ -84,82 +84,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Registration",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "Please enter your email id, phone and your full name, then we will send you an OTP",
-                      style: TextStyle(color: Colors.black45),
-                    ),
-                  ],
+                padding: const EdgeInsets.fromLTRB(30.0,10,30,20),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Registration",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               Column(
                 children: [
+
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         labelText: 'Email',
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Enter your email',
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
+                        hintText: '',
                       ),
                     ),
                   ),
+
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        filled: true,
                         fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
                         labelText: 'Full name',
-                        hintText: 'Enter your name',
+                        hintText: '',
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: TextField(
                       controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        filled: true,
                         fillColor: Color.fromRGBO(242, 242, 242, 1.0),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         labelText: 'Password',
-                        labelStyle: TextStyle(
-                            color: Color.fromRGBO(73, 73, 73, 1),
-                            fontWeight: FontWeight.bold),
-                        hintText: 'Enter your secure password',
+                        floatingLabelStyle: TextStyle(
+                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        ),
+                        hintText: '',
                       ),
                     ),
                   ),
