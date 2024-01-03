@@ -13,6 +13,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -84,101 +85,130 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30.0,10,30,20),
+                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 20),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Registration",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              Column(
-                children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelText: 'Email',
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
+                          ),
+                          hintText: '',
+                        ),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter an email';
+                          }
 
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        labelText: 'Email',
-                        floatingLabelStyle: TextStyle(
-                          color: Color.fromRGBO(147, 18, 18, 1.0),
-                        ),
-                        hintText: '',
-                      ),
-                    ),
-                  ),
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(value!);
+                          if (emailValid == false) {
+                            return 'Enter valid Email';
+                          }
 
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        fillColor: Color.fromRGBO(242, 242, 242, 1.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        floatingLabelStyle: TextStyle(
-                          color: Color.fromRGBO(147, 18, 18, 1.0),
-                        ),
-                        labelText: 'Full name',
-                        hintText: '',
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        fillColor: Color.fromRGBO(242, 242, 242, 1.0),
-                        border: OutlineInputBorder(
-
-                          borderRadius: BorderRadius.circular(10.0),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelText: 'Full Name',
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
+                          ),
+                          hintText: '',
                         ),
-                        labelText: 'Password',
-                        floatingLabelStyle: TextStyle(
-                          color: Color.fromRGBO(147, 18, 18, 1.0),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter your First Name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelText: 'Passwords',
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
+                          ),
+                          hintText: '',
                         ),
-                        hintText: '',
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Eneter a Password';
+                          }
+                          if (value!.length < 6) {
+                            return 'Enter Password more than 6 letters';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      signUpWithEmailAndPassword(
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                        nameController.text.trim(),
-                      );
-                    },
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          signUpWithEmailAndPassword(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                            nameController.text.trim(),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: 10.0,
+                        backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
+                        fixedSize: Size(
+                            350.0, 60.0), // Set the width and height as desired
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 10.0,
-                      backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                      fixedSize: Size(
-                          350.0, 60.0), // Set the width and height as desired
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 height: 50,
