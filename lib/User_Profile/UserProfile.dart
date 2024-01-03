@@ -36,48 +36,76 @@ class _UserProfileState extends State<UserProfile> {
       return {};
     }
   }
-
-  Widget buildInfoCard(String label, String value) {
-    return Container(
-      height: 80.0,
-      width: 100.0,
-      decoration: BoxDecoration(
+  Widget buildBannerCard() {
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
-        color: Colors.black12,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/images/card_background.png",  // Replace with the URL of your image
             ),
+            fit: BoxFit.cover,
           ),
-          SizedBox(height: 4.0),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
+        ),
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.greenAccent[400],
+              radius: 50,
+              child: Image.asset(
+                "assets/images/patient.png",
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 16.0),
+            Text(
+              userInfo['full_name'] ?? 'Name not available',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,  // Adjust text color based on background
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                UserDetailCard(label: "Age", value: userInfo['age'] ?? "N/A"),
+                SizedBox(width: 16.0),
+                UserDetailCard(label: "Gender", value: userInfo['gender'] ?? "N/A"),
+                SizedBox(width: 16.0),
+                UserDetailCard(label: "Location", value: userInfo['city'] ?? "N/A"),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
 
   Widget buildListTile(String title, IconData icon, VoidCallback onTap) {
-    return ListTile(
-      leading: Icon(icon, size: 30.0),
-      title: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      trailing: Icon(Icons.arrow_forward_ios_sharp),
-      onTap: onTap,
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(icon, size: 30.0),
+          title: Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          trailing: Icon(Icons.arrow_forward_ios_sharp),
+          onTap: onTap,
+        ),
+        Divider(
+          thickness: 1.0,
+          color: Colors.grey,
+        ),
+      ],
     );
   }
 
@@ -85,7 +113,6 @@ class _UserProfileState extends State<UserProfile> {
     return ElevatedButton(
       onPressed: () async {
         try {
-
           await FirebaseAuth.instance.signOut();
           // Navigate to the login screen or another destination.
           Navigator.pushReplacement(
@@ -104,7 +131,7 @@ class _UserProfileState extends State<UserProfile> {
       style: ElevatedButton.styleFrom(
         primary: Colors.red,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
         ),
       ),
     );
@@ -119,13 +146,13 @@ class _UserProfileState extends State<UserProfile> {
           "Profile",
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios),
           color: Colors.blue,
         ),
       ),
@@ -134,30 +161,7 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
-              radius: 50,
-              child: Image.network(
-                "https://cdn-icons-png.flaticon.com/512/3607/3607444.png",
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              userInfo['full_name'] ?? 'Name not available',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildInfoCard("Age", userInfo['age'] ?? "N/A"),
-                buildInfoCard("Gender", userInfo['gender'] ?? "N/A"),
-                buildInfoCard("Location", userInfo['city'] ?? "N/A"),
-              ],
-            ),
+            buildBannerCard(),
             SizedBox(height: 16.0),
             buildListTile("My Account", Icons.account_circle, () {
               // Navigate to MyAccountScreen
@@ -175,6 +179,46 @@ class _UserProfileState extends State<UserProfile> {
             }),
             SizedBox(height: 16.0),
             buildLogoutTile(context),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class UserDetailCard extends StatelessWidget {
+  final String label;
+  final String value;
+
+  UserDetailCard({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 4.0),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

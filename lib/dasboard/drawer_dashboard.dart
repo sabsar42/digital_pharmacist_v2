@@ -48,7 +48,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(13, 44, 82, 1.0),
+              borderRadius: BorderRadius.circular(8.0),
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/dashboard_card.png",  // Replace with the URL of your image
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

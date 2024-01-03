@@ -32,7 +32,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
 
   Future<Map<String, dynamic>> getUserInfo(String userId) async {
     var userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     if (userDoc.exists) {
       return userDoc.data() as Map<String, dynamic>;
@@ -41,13 +41,12 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Stack(
         children: [
-
           Container(
             padding: EdgeInsets.only(top: 30, left: 10),
             // color: Colors.green,
@@ -103,8 +102,11 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                           ),
                         ),
                         Text(
-                          userInfo['age'] ?? "N/A",
-                          style: size16White(),
+                          'Age :  ${userInfo['age']}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
                         )
                       ],
                     ),
@@ -164,7 +166,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                               height: 35,
                               decoration: BoxDecoration(
                                 border:
-                                Border.all(color: Colors.black, width: 1),
+                                    Border.all(color: Colors.black, width: 1),
                                 color: Color(0xffF68D8D),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -210,7 +212,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     child: CircleAvatar(
                       radius: 2,
                       backgroundImage:
-                      AssetImage('assets/images/alarm-clock.png'),
+                          AssetImage('assets/images/alarm-clock.png'),
                     ),
                   ),
                 ),
@@ -220,7 +222,13 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
         ],
       ),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(12, 57, 93, 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+        image: DecorationImage(
+          image: AssetImage(
+            "assets/images/dashboard_card.png",  // Replace with the URL of your image
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
