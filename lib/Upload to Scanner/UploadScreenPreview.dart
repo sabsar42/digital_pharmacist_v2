@@ -17,6 +17,7 @@ class UploadScreenPreview extends StatefulWidget {
   State<UploadScreenPreview> createState() => _UploadScreenPreviewState();
 }
 
+
 class _UploadScreenPreviewState extends State<UploadScreenPreview> {
   File? galleryFile;
   final picker = ImagePicker();

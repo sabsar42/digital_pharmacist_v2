@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "754686821526",
+    "project_id": "digipharma-login-signup-auth",
+    "storage_bucket": "digipharma-login-signup-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754686821526:android:16e347cdf612972db6aeb7",
+        "android_client_info": {
+          "package_name": "com.example.digi_pharma_app_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoD_4CuJjvKZeOLpkLqjXWcPS190LN0Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,13 +18,17 @@ class _AgeState extends State<Age> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
+        ),
       ),
-    ),
       body: SingleChildScrollView(
         child: Column(
           //Whole
@@ -42,18 +46,21 @@ class _AgeState extends State<Age> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-              child: Text('Let us know your age', style: TextStyle(
-                fontSize: 15,
-                color: Colors.grey,
-              ),),
+              child: Text(
+                'Let us know your age',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey,
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
             ),
             CarouselSlider(
-              options:  CarouselOptions(
+              options: CarouselOptions(
                 height: 50,
-                aspectRatio: 1/1,
+                aspectRatio: 1 / 1,
                 viewportFraction: 0.2,
                 initialPage: 0,
                 enableInfiniteScroll: true,
@@ -67,7 +74,6 @@ class _AgeState extends State<Age> {
                 //onPageChanged: callbackFunction,
                 scrollDirection: Axis.horizontal,
               ),
-
               items: [for (var i = 1; i <= 100; i++) i].map((i) {
                 return Builder(
                   builder: (BuildContext context) {
@@ -76,10 +82,13 @@ class _AgeState extends State<Age> {
                         margin: EdgeInsets.symmetric(horizontal: 5.0),
                         //height: 50,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)
-                        ),
-                        child: Center(child: Text('$i', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),))
-                    );
+                            border: Border.all(color: Colors.black)),
+                        child: Center(
+                            child: Text(
+                          '$i',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        )));
                   },
                 );
               }).toList(),
@@ -112,7 +121,7 @@ class _AgeState extends State<Age> {
                       return Weight();
                     }),
                   );
-                },//
+                }, //
                 child: Text('Continue'),
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -127,20 +136,14 @@ class _AgeState extends State<Age> {
           ],
         ),
       ),
-
     );
   }
 }
 
 //
 
-
 /*
 */
-
-
-
-
 
 /*
 Scaffold(

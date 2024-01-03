@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class monthlyMedDetails extends StatelessWidget {
   const monthlyMedDetails({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

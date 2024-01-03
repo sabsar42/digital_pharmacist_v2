@@ -6,6 +6,7 @@ import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+
 import 'package:digi_pharma_app_test/Camera Scanner/result_in_pdf_page.dart';
 import 'BardModel.dart';
 import 'package:get_it/get_it.dart';
@@ -46,8 +47,8 @@ class BardAIController extends GetxController {
       body: jsonEncode(body),
     );
 
-    final response = jsonDecode(request.body);
-    final bardReplay = response["candidates"][0]["output"];
+    final response =  jsonDecode(request.body);
+    final bardReplay =  response["candidates"][0]["output"];
     String ans = bardReplay.toString();
     print(ans);
     updateApiResponse(ans);

@@ -1,6 +1,7 @@
-import 'package:digi_pharma_app_test/Registration/GenderType.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -10,6 +11,63 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  Future<void> signUpWithEmailAndPassword(
+      String email, String password, String name) async {
+    try {
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await userCredential.user?.updateDisplayName(name);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
+        'email': email,
+        'full_name': name,
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return LogInScreen();
+        }),
+      );
+      showSnackBar('Registration Successfull');
+    } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException: $e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Registration Failed"),
+            content: Text(e.message ?? "An error occurred."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,16 +75,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
         ),
       ),
-      body:
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: SizedBox(
           height: 1000,
           child: Column(
             children: [
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
                 child: Align(
@@ -35,107 +95,116 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 50,
                     width: 50,
                     child: Image.network(
-                    "https://cdn-icons-png.flaticon.com/512/270/270013.png"),
+                      "https://cdn-icons-png.flaticon.com/512/270/270013.png",
+                    ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Registration", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text("Please enter your email id, phone and your full name, then we will send you an OTP", style: TextStyle(color: Colors.black45),),
-                  ],
+                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 20),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Registration",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-
-
-              Column(
+              Form(
+                key: _formKey,
+                child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(5),
-                      child: TextField(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(242, 242, 242,1.0),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          labelText: 'Name',
-                          labelStyle: TextStyle(color: Color.fromRGBO(73, 73, 73,1),
-                              fontWeight: FontWeight.bold),
-                          hintText: 'Enter your name',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(242, 242, 242,1.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           labelText: 'Email',
-                          labelStyle: TextStyle(color: Color.fromRGBO(73, 73, 73,1),
-                              fontWeight: FontWeight.bold),
-                          hintText: 'Enter your email',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(242, 242, 242,1.0),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(20.0),
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
                           ),
-                          labelStyle: TextStyle(color: Color.fromRGBO(73, 73, 73,1),
-                              fontWeight: FontWeight.bold),
-                          labelText: 'Full name',
-                          hintText: 'Enter your name',
+                          hintText: '',
                         ),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter an email';
+                          }
+
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(value!);
+                          if (emailValid == false) {
+                            return 'Enter valid Email';
+                          }
+
+                          return null;
+                        },
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(5),
-                      child: TextField(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelText: 'Full Name',
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
+                          ),
+                          hintText: '',
+                        ),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter your First Name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      child: TextFormField(
+                        controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(242, 242, 242,1.0),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(color: Color.fromRGBO(73, 73, 73,1),
-                              fontWeight: FontWeight.bold),
-                          hintText: 'Enter your secure password',
+                          labelText: 'Passwords',
+                          floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(147, 18, 18, 1.0),
+                          ),
+                          hintText: '',
                         ),
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Eneter a Password';
+                          }
+                          if (value!.length < 6) {
+                            return 'Enter Password more than 6 letters';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     SizedBox(
-                      height:20,
+                      height: 20,
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return GenderType();
-                          }),
-                        );
+                        if (_formKey.currentState!.validate()) {
+                          signUpWithEmailAndPassword(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                            nameController.text.trim(),
+                          );
+                        }
                       },
                       child: Text(
                         'Register',
@@ -150,85 +219,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         elevation: 10.0,
                         backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                        fixedSize:
-                        Size(350.0, 60.0), // Set the width and height as desired
+                        fixedSize: Size(
+                            350.0, 60.0), // Set the width and height as desired
                       ),
                     ),
                   ],
                 ),
-              //),
+              ),
               SizedBox(
                 height: 50,
               ),
-              Align(
-                child: Text(
-                  'Or Continue with',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
-                  ),
+              Text(
+                'Or Continue with',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
                 ),
-                alignment: Alignment.bottomCenter,
               ),
-
-//
               SizedBox(
                 height: 20,
               ),
-
-               Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: (){},
-                      child: Container(
-                          height: 50,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color : Colors.black12,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                    "https://cdn-icons-png.flaticon.com/512/2504/2504739.png"),
-                              ),
-                              Text("Google"),
-                            ],
-                          )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-teams-slug.flaticon.com/google.jpg",
+                        height: 50,
+                        width: 50,
+                      ),
                     ),
-                    SizedBox(
-                      width: 10,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.transparent,
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                      ),
                     ),
-                    InkWell(
-                      onTap: (){},
-                      child: Container(
-                          height: 50,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color : Colors.black12,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                    "https://cdn-icons-png.flaticon.com/512/5968/5968764.png"),
-                              ),
-                              Text("Facebook"),
-                            ],
-                          )),
-                    ),
-
-
-                  ],
-                ),
-              //),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

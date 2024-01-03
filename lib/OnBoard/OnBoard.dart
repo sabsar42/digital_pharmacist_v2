@@ -8,7 +8,8 @@ class OnBoard extends StatelessWidget {
   List<PageViewModel>getPages(){
     return [
       PageViewModel(
-        image: Image.network('https://cdn-icons-png.flaticon.com/512/7310/7310705.png'),  //
+       // image: Image.network('https://cdn-icons-png.flaticon.com/512/7310/7310705.png'),
+        image:Image.asset('assets/images/onboard_1.png'),
         title: "Get medical Consultation",
         body: "Commmunicate with the finest doctors in your area",
           decoration: PageDecoration(
@@ -17,19 +18,22 @@ class OnBoard extends StatelessWidget {
 
       ),
       PageViewModel(
-        image: Image.network('https://cdn-icons-png.flaticon.com/512/1546/1546140.png'),
-        title: "Buy medicines Online",
-        body: "Most conveneient way to get medicine at your doorstep",
+        // image: Image.network('https://cdn-icons-png.flaticon.com/512/1546/1546140.png'),
+        image:Image.asset('assets/images/onboard_3.png'),
+        title: "Medication Reminders",
+        body: "Stay on top of your health effortlessly with our Medication Reminders",
 
       ),
       PageViewModel(
-        image: Image.network('https://cdn-icons-png.flaticon.com/512/4003/4003759.png'),
+       // image: Image.network('https://cdn-icons-png.flaticon.com/512/4003/4003759.png'),
+        image:Image.asset('assets/images/onboard_2.png'),
         title: "Keep EHR files",
         body: "Store all of your EHR files in one place",
 
       )
     ];
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,15 +50,19 @@ class OnBoard extends StatelessWidget {
             color: Colors.white,
           ),
       ),
-            animationDuration: 500,
-            autoScrollDuration: 2000,
-            infiniteAutoScroll: true,
-            isProgress: false,
-            showSkipButton: false,
+            animationDuration: 300,
+            autoScrollDuration: 500,
+            infiniteAutoScroll: false,
+            isProgress: true,
+            showSkipButton: true,
             showNextButton: false,
-            skip: const Text("Skip"),
+            skip: const Text("Skip",
+            style: TextStyle(
+              color: Color.fromRGBO(110, 10, 161, 1.0),
+            ),),
 
-            doneStyle: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue, elevation: 10),
+            doneStyle: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(
+                12, 57, 93, 1.0), elevation: 10),
             onDone: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
