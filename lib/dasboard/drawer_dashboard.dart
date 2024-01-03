@@ -1,22 +1,61 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/User_Profile/UserProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class CustomDrawer extends StatelessWidget {
+import '../LogIn_UI/LoginPage.dart';
+
+class CustomDrawer extends StatefulWidget {
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  final user = FirebaseAuth.instance.currentUser!;
+  Map<String, dynamic> userInfo = {};
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserInfo();
+  }
+
+  Future<void> loadUserInfo() async {
+    String userID = user.uid;
+    userInfo = await getUserInfo(userID);
+    setState(() {});
+  }
+
+  Future<Map<String, dynamic>> getUserInfo(String userId) async {
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    if (userDoc.exists) {
+      return userDoc.data() as Map<String, dynamic>;
+    } else {
+      return {};
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: MediaQuery.of(context).size.width * 0.6,
+      backgroundColor: Color.fromRGBO(243, 231, 252, 1.0),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color.fromRGBO(13, 44, 82, 1.0),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Color.fromRGBO(175, 184, 196, 1.0),
                   child: Icon(
                     Icons.person,
                     size: 30,
@@ -25,17 +64,19 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'User Name',
+                  userInfo['full_name'] ?? 'Name not available',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  'user@example.com',
+                  userInfo['email'] ?? 'Email not available',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ],
@@ -54,9 +95,10 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.account_circle),
             title: Text('Profile'),
             onTap: () {
-              // Handle drawer item tap
-              Navigator.pop(context); // Close the drawer
-              // Perform the action you want when Profile is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
             },
           ),
           ListTile(
@@ -69,13 +111,32 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-            onTap: () {
-              // Handle drawer item tap
-              Navigator.pop(context); // Close the drawer
-              // Perform the action you want when Logout is tapped
-            },
+            leading:
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await FirebaseAuth.instance.signOut();
+                    // Navigate to the login screen or another destination.
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LogInScreen()),
+                    );
+                  } catch (e) {
+                    print("Sign out error: $e");
+                    // Display an error message to the user if sign out fails.
+                  }
+                },
+                child: Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
           ),
         ],
       ),

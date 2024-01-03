@@ -46,18 +46,32 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
     return Container(
       child: Stack(
         children: [
+
           Container(
-            padding: EdgeInsets.only(top: 40, left: 15),
+            padding: EdgeInsets.only(top: 30, left: 10),
             // color: Colors.green,
           ),
           Positioned(
             top: 45,
-            left: 25,
+            left: 15,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Icon(
+                      Icons.menu,
+                      size: 30,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
                 SizedBox(
-                  width: 10,
+                  width: 4,
                 ),
                 CircleAvatar(
                   radius: 20,
@@ -99,8 +113,8 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
             ),
           ),
           Positioned(
-            top: 100,
-            left: 40,
+            top: 110,
+            left: 60,
             right: 49,
             child: Stack(
               children: [

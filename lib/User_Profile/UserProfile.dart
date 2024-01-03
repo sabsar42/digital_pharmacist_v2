@@ -144,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
               userInfo['full_name'] ?? 'Name not available',
               style: TextStyle(
                 fontSize: 18.0,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
               ),
             ),
             SizedBox(height: 16.0),
@@ -164,9 +164,7 @@ class _UserProfileState extends State<UserProfile> {
                 MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
               );
             }),
-            buildListTile("My Subscription", Icons.subscriptions, () {
-              // Handle tile tap
-            }),
+
             buildListTile("Notification", Icons.notifications, () {
               // Handle tile tap
             }),
