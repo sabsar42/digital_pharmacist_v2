@@ -13,6 +13,7 @@ import 'BardAiController.dart';
 class BardHomePage extends StatelessWidget {
   const BardHomePage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());

@@ -30,6 +30,7 @@ class HealthRecord {
   });
 }
 
+
 class HealthRecordDetailScreen extends StatelessWidget {
 
   final String diagnosisNumberfromPrev;

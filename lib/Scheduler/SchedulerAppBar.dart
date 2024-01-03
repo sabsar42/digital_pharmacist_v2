@@ -5,6 +5,7 @@ import 'package:digi_pharma_app_test/style.dart';
 class SchedulerAppBar extends StatefulWidget {
   const SchedulerAppBar({super.key});
 
+
   @override
   State<SchedulerAppBar> createState() => _SchedulerAppBarState();
 }

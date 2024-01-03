@@ -7,6 +7,8 @@ TextStyle siz31Black() {
   );
 }
 
+
+
 TextStyle siz30White() {
   return const TextStyle(
     color: Colors.white,

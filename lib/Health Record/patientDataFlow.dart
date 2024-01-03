@@ -6,6 +6,7 @@ class patientDataFlow {
   String? futureAppointmentDate;
   List<String>? additionalNotes;
 
+
   patientDataFlow(
       {this.doctorInformation,
         this.diagnosis,

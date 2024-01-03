@@ -51,6 +51,7 @@ class TypeOfAccount extends StatelessWidget {
     );
   }
 
+
   @override
   Widget buildAccountCard(BuildContext context,{
     required String title,

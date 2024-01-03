@@ -12,7 +12,11 @@ class BloodGroup extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-         onPressed: () { Navigator.pop(context); }, icon: Icon(Icons.arrow_back), color: Colors.blue,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blue,
         ),
       ),
       body: Column(
@@ -277,27 +281,26 @@ class BloodGroup extends StatelessWidget {
             height: 100,
           ),
           Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return Age();
-                    }),
-                  );
-                },
-                child: Text('Continue'),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 10.0,
-                    backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                    fixedSize: Size(350.0, 60.0)),
-              ),
+            alignment: Alignment.bottomCenter,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return Age();
+                  }),
+                );
+              },
+              child: Text('Continue'),
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 10.0,
+                  backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
+                  fixedSize: Size(350.0, 60.0)),
             ),
-
+          ),
         ],
       ),
     );

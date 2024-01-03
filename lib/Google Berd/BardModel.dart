@@ -3,6 +3,7 @@ class BardModel {
   String? system;
   String? message;
 
+
   BardModel({this.system, this.message});
 
   BardModel.fromJson(Map<String, dynamic> json) {

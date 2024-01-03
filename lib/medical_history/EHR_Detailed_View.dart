@@ -15,6 +15,7 @@ class EHRArticleDetailScreen extends StatelessWidget {
 
 
 
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

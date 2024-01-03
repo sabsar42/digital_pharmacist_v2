@@ -7,6 +7,7 @@ Matrix4 getTransformMatrix(TransformableListItem item) {
   final animationProgress = item.visibleExtent / item.size.height;
   final paintTransform = Matrix4.identity();
 
+
   if (item.position != TransformableListItemPosition.middle) {
     final scale = endScaleBound + ((1- endScaleBound) * animationProgress);
 

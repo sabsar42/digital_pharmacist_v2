@@ -5,6 +5,7 @@ import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart
 import 'TabBar_View.dart';
 import 'TranformableListView_Packagea_Method.dart';
 
+
 class HealthRecordScreen extends StatelessWidget {
   List<HealthRecord> generateHealthRecords() {
     List<HealthRecord> records = [];

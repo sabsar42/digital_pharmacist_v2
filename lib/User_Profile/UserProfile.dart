@@ -46,6 +46,7 @@ class UserProfile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

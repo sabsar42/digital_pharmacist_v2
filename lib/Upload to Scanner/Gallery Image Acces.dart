@@ -18,6 +18,7 @@ class _GalleryImageAccessState extends State<GalleryImageAccess> {
   Widget build(BuildContext context) {
     //display image selected from gallery
 
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gallery and Camera Access'),

@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 class ResultInPDFPage extends StatefulWidget {
   final String textPdf;
 
+
   const ResultInPDFPage({Key? key, required this.textPdf}) : super(key: key);
 
   @override

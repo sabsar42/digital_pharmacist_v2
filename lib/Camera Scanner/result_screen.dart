@@ -10,6 +10,7 @@ import 'result_in_pdf_page.dart';
 class ResultScreen extends StatelessWidget {
   final String text;
 
+
   const ResultScreen({super.key, required this.text});
 
   @override

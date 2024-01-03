@@ -50,6 +50,7 @@ class _dashboardAppbarState extends State<dashboardAppbar> {
                           MaterialPageRoute(
                               builder: (context) => UserProfile()));
                     },
+
                     child: Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
