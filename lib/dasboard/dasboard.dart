@@ -120,22 +120,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             child: Center(
                               child: index == 0
-                                  ? Image.asset(
-                                      'assets/images/syrup.png',
-                                      width: 40,
-                                      height: 40,
-                                    )
+                                  ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                          'assets/images/syrup.png',
+                                          width: 60,
+                                          height: 60,
+                                        ),
+                                      Text('Health Records',style: TextStyle(color: Color.fromRGBO(62, 34, 148, 1.0),fontWeight: FontWeight.bold,fontSize: 15),),
+                                    ],
+                                  )
                                   : index == 1
-                                      ? Image.asset(
-                                          'assets/images/dashboard_4.png',
-                                          width: 40,
-                                          height: 40,
-                                        )
+                                      ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/dashboard_4.png',
+                                              width: 60,
+                                              height: 60,
+                                            ),
+                                          Text('Monthlt Med',style: TextStyle(color: Color.fromRGBO(62, 34, 148, 1.0),fontSize: 15,fontWeight: FontWeight.bold),)
+                                        ],
+                                      )
                                       : index == 2
                                           ? Image.asset(
                                               'assets/images/alarm-clock.png',
                                               width: 40,
-                                              height: 40,
+                                              height: 60,
                                             )
                                           : Text(
                                               "Item $index",
