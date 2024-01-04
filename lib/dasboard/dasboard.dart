@@ -59,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             SizedBox(height: 200, child: DashboardAppbar()),
             Container(
-              margin: EdgeInsets.only(left: 20, top: 18),
+              margin: EdgeInsets.only(left: 20, top: 18,right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
