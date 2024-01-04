@@ -4,7 +4,6 @@ import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-
 import '../Camera Scanner/camera_screen.dart';
 import '../Google Berd/BardHomePage.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
