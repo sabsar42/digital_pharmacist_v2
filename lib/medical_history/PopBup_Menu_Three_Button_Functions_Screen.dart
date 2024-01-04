@@ -1,5 +1,3 @@
-
-
 import 'package:popover/popover.dart';
 import 'EHR_Detailed_View.dart';
 import 'Health_Record_Screen.dart';
@@ -20,17 +18,12 @@ import 'PopBup_Menu_Three_Button_Functions_Screen.dart';
 class PopUpMenuThreeButton extends StatelessWidget {
   const PopUpMenuThreeButton({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:() =>
-      showPopover(
+      onTap: () => showPopover(
         context: context,
         bodyBuilder: (context) => PopUpMenuItems(),
-
-
-
         height: 130,
         width: 120,
         arrowHeight: 5,
@@ -57,12 +50,14 @@ class PopUpMenuItems extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Container(
-             // padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("Edit",
+              // padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Edit",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),),
+                ),
+              ),
             ),
           ),
         ),
@@ -73,12 +68,14 @@ class PopUpMenuItems extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Container(
-            //  padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("View",
+              //  padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "View",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),),
+                ),
+              ),
             ),
           ),
         ),
@@ -89,12 +86,14 @@ class PopUpMenuItems extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Container(
-             // padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("Info",
+              // padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Info",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),),
+                ),
+              ),
             ),
           ),
         ),
