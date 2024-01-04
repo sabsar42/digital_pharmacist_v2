@@ -140,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               width: 60,
                                               height: 60,
                                             ),
-                                          Text('Monthlt Med',style: TextStyle(color: Color.fromRGBO(62, 34, 148, 1.0),fontSize: 15,fontWeight: FontWeight.bold),)
+                                          Text('Monthly Med',style: TextStyle(color: Color.fromRGBO(62, 34, 148, 1.0),fontSize: 15,fontWeight: FontWeight.bold),)
                                         ],
                                       )
                                       : index == 2
