@@ -32,7 +32,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
 
   Future<Map<String, dynamic>> getUserInfo(String userId) async {
     var userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     if (userDoc.exists) {
       return userDoc.data() as Map<String, dynamic>;
@@ -41,15 +41,14 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Stack(
         children: [
-
           Container(
-            padding: EdgeInsets.only(top: 30, left: 10),
+            padding: EdgeInsets.only(top: 50, left: 10),
             // color: Colors.green,
           ),
           Positioned(
@@ -103,8 +102,11 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                           ),
                         ),
                         Text(
-                          userInfo['age'] ?? "N/A",
-                          style: size16White(),
+                          'Age :  ${userInfo['age']}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
                         )
                       ],
                     ),
@@ -114,23 +116,23 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
             ),
           ),
           Positioned(
-            top: 110,
+            top: 130,
             left: 60,
             right: 49,
             child: Stack(
               children: [
                 Container(
                   height: 40,
-                  width: 235,
+                  width: 280,
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2),
-                      color: Color(0xffB3C3FD),
+                      border: Border.all(color: Colors.black54, width: 1),
+                      color: Color.fromRGBO(238, 217, 217, 1.0),
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 Positioned(
                     bottom: 5,
                     top: 5,
-                    left: 10,
+                    left: 40,
                     child: Row(
                       children: [
                         Container(
@@ -164,8 +166,8 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                               height: 35,
                               decoration: BoxDecoration(
                                 border:
-                                Border.all(color: Colors.black, width: 1),
-                                color: Color(0xffF68D8D),
+                                    Border.all(color: Colors.black26, width: 0.9),
+                                color: Color.fromRGBO(227, 209, 236, 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
@@ -181,46 +183,17 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
               ],
             ),
           ),
-          Positioned(
-            top: 80,
-            left: 300,
-            child: Stack(
-              children: [
-                Container(
-                  height: 45,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xffFFEF99),
-                  ),
-                ),
-                Positioned(
-                  bottom: 3,
-                  top: 3,
-                  left: 3,
-                  right: 3,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SchedulerScreen()));
-                    },
-                    child: CircleAvatar(
-                      radius: 2,
-                      backgroundImage:
-                      AssetImage('assets/images/alarm-clock.png'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+
         ],
       ),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(12, 57, 93, 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+        image: DecorationImage(
+          image: AssetImage(
+            "assets/images/dashboard_card.png",  // Replace with the URL of your image
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

@@ -38,7 +38,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   Future<void> loadUserData() async {
     String userID = currentUser.uid;
-    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    var userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
@@ -59,16 +60,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
 
-    var userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .get();
+    var userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userID)
-          .update({
+      await FirebaseFirestore.instance.collection('users').doc(userID).update({
         'full_name': fullNameController.text,
         'age': ageController.text,
         'email': emailController.text,
@@ -101,7 +97,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
+        title:
+            Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -116,8 +113,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     height: 120,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: const Image(
-                        image: AssetImage("assets/profile_image.jpg"),
+                      child: Image(
+                        image: AssetImage("assets/images/patient.png"),
                       ),
                     ),
                   ),
@@ -131,7 +128,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blue, // Change to your desired color
                       ),
-                      child: const Icon(Icons.camera, color: Colors.black, size: 20),
+                      child: const Icon(Icons.camera,
+                          color: Colors.black, size: 20),
                     ),
                   ),
                 ],
@@ -173,7 +171,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         labelText: "Password",
                         prefixIcon: Icon(Icons.fingerprint),
                         suffixIcon: IconButton(
-                          icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                          icon: Icon(obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                           onPressed: () {
                             togglePasswordVisibility();
                           },

@@ -43,7 +43,7 @@ class _LogInScreenState extends State<LogInScreen> {
       );
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashboardScreen()));
-     showSnackBar("Login Successfull");
+      showSnackBar("Login Successfull");
     } catch (e) {
       print("Failed: $e");
       showSnackBar("Invalid email or password");
@@ -51,7 +51,11 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void showSnackBar(String message) {
-    var snackbar = SnackBar(content: Text(message));
+    var snackbar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 

@@ -1,4 +1,6 @@
 
+import 'package:digi_pharma_app_test/Upload%20to%20Scanner/UploadScreenPreview.dart';
+import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
@@ -10,14 +12,21 @@ import 'package:http/http.dart' as http;
 
 import 'BardAiController.dart';
 
-class BardHomePage extends StatelessWidget {
+class BardHomePage extends StatefulWidget {
   const BardHomePage({super.key});
 
+  @override
+  State<BardHomePage> createState() => _BardHomePageState();
+}
 
+class _BardHomePageState extends State<BardHomePage> {
+  int _selectedIndex = 2;
   @override
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());
     TextEditingController textField = TextEditingController();
+
+
     return Scaffold(
       backgroundColor: Color(0xfff2f1f9),
       appBar: AppBar(
@@ -106,6 +115,61 @@ class BardHomePage extends StatelessWidget {
             SizedBox(height: 10),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            print(_selectedIndex);
+          });
+
+          switch (_selectedIndex) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DashboardScreen(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UploadScreenPreview(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BardHomePage(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+          }
+        },
+        currentIndex: _selectedIndex,
+
+       selectedItemColor: Color.fromRGBO(62, 34, 148, 1.0),
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Camera'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline), label: 'DigiBOT'),
+        ],
       ),
     );
   }
