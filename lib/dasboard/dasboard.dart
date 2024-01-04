@@ -173,7 +173,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               );
 
-
             case 1:
               Navigator.push(
                 context,
@@ -189,7 +188,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   builder: (context) => BardHomePage(),
                 ),
               );
-
           }
         },
         selectedItemColor: Color.fromRGBO(62, 34, 148, 1.0),
