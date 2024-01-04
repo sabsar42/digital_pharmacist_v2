@@ -35,7 +35,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
       return {};
     }
   }
-
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
 
 
   @override

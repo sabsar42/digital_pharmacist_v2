@@ -26,6 +26,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final user = FirebaseAuth.instance.currentUser!;
   Map<String, dynamic> userInfo = {};
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -57,129 +58,149 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: CommonBackground(
         child: Column(
           children: [
-            SizedBox(height: 170, child: DashboardAppbar()),
+            SizedBox(height: 200, child: DashboardAppbar()),
             Container(
               margin: EdgeInsets.only(left: 20, top: 18),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Medical History",
                     style: TextStyle(fontSize: 31, color: Colors.black),
                   ),
                   Container(
-                    margin: EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 50,
-                          child: InkWell(
-                            onTap: () {
+                    margin: EdgeInsets.all(5),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 2.0,
+                        mainAxisSpacing: 2.0,
+                      ),
+                      itemCount: 9,
+                      // Adjust based on your data
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          splashColor: Colors.purple,
+                          onTap: () {
+                            if (index == 0) {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          HealthRecordScreen()));
-                            },
-                            child: Container(
-                              child: Container(
-                                child: Text(
-                                  "Medical History",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.black),
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HealthRecordScreen(),
                                 ),
-                                height: 68,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xffFACE8C),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 1.1,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 25,
+                              );
+                            } else if (index == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => monthlyMed(),
+                                ),
+                              );
+                            } else if (index == 2) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SchedulerScreen(),
+                                ),
+                              );
+                            }
+                            // Add more conditions for other grid items
+                          },
                           child: Container(
-                            margin: EdgeInsets.only(left: 12),
-                            child: Container(
-                              height: 69,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(0xffa0d28f),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black),
+                            height: 68,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 0.99,
                               ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 25,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 14),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => monthlyMed()));
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    height: 69,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Color(0x5453405e),
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.black),
-                                    ),
-                                  ),
-                                  Positioned(
-                                      top: 5,
-                                      left: 5,
-                                      bottom: 5,
-                                      right: 5,
-                                      child: Image.asset(
-                                          'assets/images/dashboard_3.png'))
-                                ],
-                              ),
+                            child: Center(
+                              child: index == 0
+                                  ? Image.asset(
+                                      'assets/images/syrup.png',
+                                      width: 40,
+                                      height: 40,
+                                    )
+                                  : index == 1
+                                      ? Image.asset(
+                                          'assets/images/dashboard_4.png',
+                                          width: 40,
+                                          height: 40,
+                                        )
+                                      : index == 2
+                                          ? Image.asset(
+                                              'assets/images/alarm-clock.png',
+                                              width: 40,
+                                              height: 40,
+                                            )
+                                          : Text(
+                                              "Item $index",
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                              ),
+                                            ),
                             ),
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 40, 5, 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Medicine", style: TextStyle(fontSize: 31)),
-                        SizedBox(
-                          height: 18,
-                        ),
-                        Container(
-                          width: 154,
-                          height: 128,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.black),
-                            color: Color(0xff90b6f0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          switch (_selectedIndex) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DashboardScreen(),
+                ),
+              );
+
+
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UploadScreenPreview(),
+                ),
+              );
+
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BardHomePage(),
+                ),
+              );
+
+          }
+        },
+        selectedItemColor: Color.fromRGBO(62, 34, 148, 1.0),
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Camera'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline), label: 'DigiBOT'),
+        ],
       ),
     );
   }
