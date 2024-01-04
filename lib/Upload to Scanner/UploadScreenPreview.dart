@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:digi_pharma_app_test/Camera%20Scanner/ResultBardHomePage.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/camera_screen.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/result_screen.dart';
+import 'package:digi_pharma_app_test/Google%20Berd/BardHomePage.dart';
+import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -19,12 +21,68 @@ class UploadScreenPreview extends StatefulWidget {
 
 
 class _UploadScreenPreviewState extends State<UploadScreenPreview> {
+  int _selectedIndex=1;
   File? galleryFile;
   final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            print(_selectedIndex);
+          });
+
+          switch (_selectedIndex) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DashboardScreen(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UploadScreenPreview(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BardHomePage(),
+                ),
+              );setState(() {
+                _selectedIndex=index;
+              });
+              break;
+          }
+        },
+        currentIndex: _selectedIndex,
+
+        selectedItemColor: Color.fromRGBO(62, 34, 148, 1.0),
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Camera'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline), label: 'DigiBOT'),
+        ],
+      ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0),
         child: ClipRRect(
