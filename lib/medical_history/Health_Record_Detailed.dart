@@ -96,10 +96,8 @@ class _HealthRecordDetailCardState extends State<HealthRecordDetailCard> {
       'prescribedDrugs': widget.record.prescribedDrugs,
     };
 
-
-    //await _firestore.collection('users').doc(userID).collection('healthRecords').doc(widget.record.diagnosisNumber).set(addDetails);
-    await _firestore.collection('users').doc(userID).collection('healthRecords').doc(widget.record.diagnosisNumber).update(addDetails);
-
+    // Use add to automatically generate a unique document ID
+    await _firestore.collection('users').doc(userID).collection('healthRecords').add(addDetails);
   }
 
   @override
