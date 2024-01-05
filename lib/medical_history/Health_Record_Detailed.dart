@@ -1,81 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'EHR_First_Screen.dart';
-import 'Health_Record_Screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/medical_history/PopBup_Menu_Three_Button_Functions_Screen.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
-import 'TabBar_View.dart';
-
-class HealthRecord {
-  final String diagnosisNumber;
-  final String doctorName;
-  final String hospitalName;
-  final String date;
-  final String timeline;
-  late final String diagnosis;
-  late final String summaryOfMedicalRecord;
-  late final String prescribedDrugs;
-
-  HealthRecord({
-    required this.diagnosisNumber,
-    required this.diagnosis,
-    required this.summaryOfMedicalRecord,
-    required this.doctorName,
-    required this.hospitalName,
-    required this.date,
-    required this.timeline,
-    required this.prescribedDrugs,
-  });
-}
-
-class HealthRecordDetailScreen extends StatelessWidget {
-  final String diagnosisNumberfromPrev;
-  HealthRecordDetailScreen({required this.diagnosisNumberfromPrev});
+class HealthRecordDetailScreen extends StatefulWidget {
+  HealthRecordDetailScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final record = HealthRecord(
-      diagnosisNumber: "D12345",
-      diagnosis: "Asthama",
-      summaryOfMedicalRecord: "This Summary",
-      prescribedDrugs: "Napa",
-      doctorName: "Dr. John Doe",
-      hospitalName: "ABC Hospital",
-      date: "10/25/2023",
-      timeline: "8:00 AM - 9:30 AM",
-    );
-
-    return Scaffold(
-      body: HealthRecordDetailCard(record: record),
-    );
-  }
+  State<HealthRecordDetailScreen> createState() => _HealthRecordDetailScreenState();
 }
 
-
-
-
-class HealthRecordDetailCard extends StatefulWidget {
-  final HealthRecord record;
-
-  HealthRecordDetailCard({required this.record});
-
-  @override
-  State<HealthRecordDetailCard> createState() => _HealthRecordDetailCardState();
-}
-
-class _HealthRecordDetailCardState extends State<HealthRecordDetailCard> {
+class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   late User currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _diagnosisController = TextEditingController();
+  final TextEditingController _summaryController = TextEditingController();
+  final TextEditingController _prescriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    loadHealthRecordDetails();
   }
 
   Future<void> getCurrentUser() async {
@@ -87,66 +33,102 @@ class _HealthRecordDetailCardState extends State<HealthRecordDetailCard> {
     }
   }
 
+  Future<void> loadHealthRecordDetails() async {
+    String userID = currentUser.uid;
+
+    try {
+      var snapshot = await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('healthRecords')
+          .orderBy('timestamp', descending: true)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        var latestRecord = snapshot.docs.first.data();
+        setState(() {
+          _diagnosisController.text = latestRecord['diagnosis'] ?? '';
+          _summaryController.text = latestRecord['summaryOfMedicalRecord'] ?? '';
+          _prescriptionController.text = latestRecord['prescribedDrugs'] ?? '';
+        });
+      }
+    } catch (e) {
+      print("Error loading health record details: $e");
+    }
+  }
+
   Future<void> addHealthRecordDetails() async {
     String userID = currentUser.uid;
 
     Map<String, dynamic> addDetails = {
-      'diagnosis': widget.record.diagnosis,
-      'summaryOfMedicalRecord': widget.record.summaryOfMedicalRecord,
-      'prescribedDrugs': widget.record.prescribedDrugs,
+      'diagnosis': _diagnosisController.text,
+      'summaryOfMedicalRecord': _summaryController.text,
+      'prescribedDrugs': _prescriptionController.text,
+      'timestamp': FieldValue.serverTimestamp(),
     };
 
-    // Use add to automatically generate a unique document ID
-    await _firestore.collection('users').doc(userID).collection('healthRecords').add(addDetails);
+    // Use add to let Firestore generate a unique document ID
+    await _firestore
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords')
+        .add(addDetails);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Container(
-          height: 700,
-          color: Color.fromRGBO(255, 255, 255, 1.0),
-          margin: EdgeInsets.all(1.0),
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildDoctorInfo(widget.record.doctorName, widget.record.hospitalName),
-              _buildDivider(),
-              _buildEditableSection("Diagnosis", widget.record.diagnosis, (value) {
-                setState(() {
-                  widget.record.diagnosis = value;
-                });
-              }),
-              //_buildDivider(),
-              _buildEditableSection("Summary of the whole History", widget.record.summaryOfMedicalRecord, (value) {
-                setState(() {
-                  widget.record.summaryOfMedicalRecord = value;
-                });
-              }, textColor: Colors.black),
-             // _buildDivider(),
-              _buildEditableSection("Prescribed Medicine", widget.record.prescribedDrugs, (value) {
-                setState(() {
-                  widget.record.prescribedDrugs = value;
-                });
-              }),
-              SizedBox(height: 20,),
-              _buildDivider(),
-              ElevatedButton(
-                onPressed: () {
-                  addHealthRecordDetails();
-                },
-                child: Text("SAVE"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Health Record Details'),
+      ),
+      body: ListView(
+        children: [
+          Container(
+            height: 700,
+            color: Color.fromRGBO(255, 255, 255, 1.0),
+            margin: EdgeInsets.all(1.0),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDoctorInfo('Shakib Absar', 'Khan'),
+                _buildDivider(),
+                _buildEditableSection("Diagnosis", _diagnosisController.text, (value) {
+                  setState(() {
+                    _diagnosisController.text = value;
+                  });
+                }),
+                _buildDivider(),
+                _buildEditableSection("Summary of the whole History", _summaryController.text, (value) {
+                  setState(() {
+                    _summaryController.text = value;
+                  });
+                }, textColor: Colors.black),
+                _buildDivider(),
+                _buildEditableSection("Prescribed Medicine", _prescriptionController.text, (value) {
+                  setState(() {
+                    _prescriptionController.text = value;
+                  });
+                }),
+                SizedBox(height: 20,),
+                _buildDivider(),
+                ElevatedButton(
+                  onPressed: () {
+                    addHealthRecordDetails();
+
+                  },
+                  child: Text("SAVE"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -203,7 +185,7 @@ class _HealthRecordDetailCardState extends State<HealthRecordDetailCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.record.doctorName,
+                      'Shakib Hospital',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -211,7 +193,7 @@ class _HealthRecordDetailCardState extends State<HealthRecordDetailCard> {
                       ),
                     ),
                     Text(
-                      widget.record.hospitalName,
+                      'Shakib Hospital',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black,

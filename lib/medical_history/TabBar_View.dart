@@ -102,7 +102,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           ),
           body: TabBarView(
             children: [
-              HealthRecordDetailScreen(diagnosisNumberfromPrev: '1'),
+              HealthRecordDetailScreen(),
               EHRScreen(diagnosisNumberfromPrev: "1"),
               PDFViewerScreen(),
             ],

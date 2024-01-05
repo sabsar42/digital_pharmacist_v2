@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/LogIn_UI/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -78,8 +79,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back),
-          color: Colors.blue,
+          icon: Icon(Icons.arrow_back_ios),
+          color: Color.fromRGBO(13, 44, 82, 1.0),
         ),
       ),
       body: SingleChildScrollView(
@@ -88,14 +89,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                padding: const EdgeInsets.fromLTRB(30, 80, 0, 0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
                     height: 50,
                     width: 50,
-                    child: Image.network(
-                      "https://cdn-icons-png.flaticon.com/512/270/270013.png",
+                    child: SvgPicture.asset(
+                      'assets/images/digi-pharma-prussian.svg',
                     ),
                   ),
                 ),
@@ -215,12 +216,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        elevation: 10.0,
-                        backgroundColor: Color.fromRGBO(19, 68, 130, 1.0),
-                        fixedSize: Size(
-                            350.0, 60.0), // Set the width and height as desired
+                        elevation: 4.0,
+                        backgroundColor: Color.fromRGBO(13, 44, 82, 1.0),
+                        fixedSize: Size(350.0,
+                            60.0), // Set the width and height as desired
                       ),
                     ),
                   ],
