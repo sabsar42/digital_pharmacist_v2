@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -89,92 +90,94 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Health Record Details'),
-      ),
-      body: ListView(
-        children: [
-          Container(
-            height: 700,
-            color: Color.fromRGBO(255, 255, 255, 1.0),
-            margin: EdgeInsets.all(1.0),
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildDoctorInfo('Shakib Absar', 'Khan'),
-                _buildDivider(),
-                Text(
-                  "Diagnosis",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 700,
+              color: Color.fromRGBO(255, 255, 255, 1.0),
+              margin: EdgeInsets.all(1.0),
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDoctorInfo('Shakib Absar', 'Khan'),
+                  _buildDivider(),
+
+                  SizedBox(height: 30.0),
+                  Text(
+                    "Diagnosis",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  maxLength: null,
-                  controller: _diagnosisController,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    maxLines: null,
+                    controller: _diagnosisController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                _buildDivider(),
-                Text(
-                  "Summary of the whole History",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                  SizedBox(height: 16.0),
+                //  _buildDivider(),
+                  Text(
+                    "Summary of the whole History",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  maxLength: null,
-                  controller: _summaryController,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                      maxLines: null,
+                    controller: _summaryController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                _buildDivider(),
-                Text(
-                  "Prescribed Medicine",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                  SizedBox(height: 16.0),
+              //    _buildDivider(),
+                  Text(
+                    "Prescribed Medicine",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  maxLength: null,
-                  controller: _prescriptionController,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    maxLines: null,
+                    controller: _prescriptionController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                _buildDivider(),
-                ElevatedButton(
-                  onPressed: () {
-                    addHealthRecordDetails();
-                  },
-                  child: Text("SAVE"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
+                  SizedBox(height: 20),
+                 // _buildDivider(),
+                  ElevatedButton(
+                    onPressed: () {
+                      addHealthRecordDetails();
+                    },
+                    child: Text("SAVE"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -198,7 +201,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               children: [
                 CircleAvatar(
                   backgroundImage:
-                  AssetImage('assets/images/doctor_avatar.png'),
+                  AssetImage('assets/images/doctor.png'),
                   radius: 30,
                 ),
                 SizedBox(width: 16.0),

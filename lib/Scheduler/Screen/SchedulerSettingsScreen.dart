@@ -192,7 +192,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             CustomDropdown(
                               items: ['Today', 'Yesterdat'],
                               initialValue: 'Today',
-                              onChanged: (String newValue) {},
+                              onChanged: (String newValue) {
+                              },
                             ),
                             Icon(Icons.add),
                           ],
