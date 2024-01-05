@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
-  HealthRecordDetailScreen({Key? key}) : super(key: key);
+  final String diagnosisNumber;
+
+  HealthRecordDetailScreen({Key? key, required this.diagnosisNumber});
 
   @override
-  State<HealthRecordDetailScreen> createState() => _HealthRecordDetailScreenState();
+  State<HealthRecordDetailScreen> createState() =>
+      _HealthRecordDetailScreenState();
 }
 
 class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
@@ -21,7 +24,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-    loadHealthRecordDetails();
+    loadHealthRecordData();
   }
 
   Future<void> getCurrentUser() async {
@@ -30,36 +33,43 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       setState(() {
         currentUser = user;
       });
+      loadHealthRecordData();
     }
   }
 
-  Future<void> loadHealthRecordDetails() async {
+  Future<void> loadHealthRecordData() async {
     String userID = currentUser.uid;
+    String uniqueDiagnosisNumber = widget.diagnosisNumber;
+
+    String uniqueID = '$userID+$uniqueDiagnosisNumber';
 
     try {
-      var snapshot = await _firestore
+      DocumentSnapshot documentSnapshot = await _firestore
           .collection('users')
           .doc(userID)
           .collection('healthRecords')
-          .orderBy('timestamp', descending: true)
-          .limit(1)
+          .doc(uniqueID)
           .get();
 
-      if (snapshot.docs.isNotEmpty) {
-        var latestRecord = snapshot.docs.first.data();
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+        documentSnapshot.data() as Map<String, dynamic>;
         setState(() {
-          _diagnosisController.text = latestRecord['diagnosis'] ?? '';
-          _summaryController.text = latestRecord['summaryOfMedicalRecord'] ?? '';
-          _prescriptionController.text = latestRecord['prescribedDrugs'] ?? '';
+          _diagnosisController.text = data['diagnosis'] ?? '';
+          _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
+          _prescriptionController.text = data['prescribedDrugs'] ?? '';
         });
       }
-    } catch (e) {
-      print("Error loading health record details: $e");
+    } catch (error) {
+      print("Error loading health record data: $error");
     }
   }
 
   Future<void> addHealthRecordDetails() async {
     String userID = currentUser.uid;
+    String uniqueDiagnosisNumber = widget.diagnosisNumber;
+
+    String uniqueID = '$userID+$uniqueDiagnosisNumber';
 
     Map<String, dynamic> addDetails = {
       'diagnosis': _diagnosisController.text,
@@ -68,12 +78,12 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       'timestamp': FieldValue.serverTimestamp(),
     };
 
-    // Use add to let Firestore generate a unique document ID
     await _firestore
         .collection('users')
         .doc(userID)
         .collection('healthRecords')
-        .add(addDetails);
+        .doc(uniqueID)
+        .set(addDetails);
   }
 
   @override
@@ -95,33 +105,70 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               children: [
                 _buildDoctorInfo('Shakib Absar', 'Khan'),
                 _buildDivider(),
-                _buildEditableSection("Diagnosis", _diagnosisController.text, (value) {
-                  setState(() {
-                    _diagnosisController.text = value;
-                  });
-                }),
+                Text(
+                  "Diagnosis",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  maxLength: null,
+                  controller: _diagnosisController,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 16.0),
                 _buildDivider(),
-                _buildEditableSection("Summary of the whole History", _summaryController.text, (value) {
-                  setState(() {
-                    _summaryController.text = value;
-                  });
-                }, textColor: Colors.black),
+                Text(
+                  "Summary of the whole History",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  maxLength: null,
+                  controller: _summaryController,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 16.0),
                 _buildDivider(),
-                _buildEditableSection("Prescribed Medicine", _prescriptionController.text, (value) {
-                  setState(() {
-                    _prescriptionController.text = value;
-                  });
-                }),
-                SizedBox(height: 20,),
+                Text(
+                  "Prescribed Medicine",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  maxLength: null,
+                  controller: _prescriptionController,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 20),
                 _buildDivider(),
                 ElevatedButton(
                   onPressed: () {
                     addHealthRecordDetails();
-
                   },
                   child: Text("SAVE"),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple
+                    backgroundColor: Colors.purple,
                   ),
                 ),
               ],
@@ -129,33 +176,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEditableSection(String title, String content, Function(String) onChanged, {Color textColor = Colors.black}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        SizedBox(height: 8.0),
-        TextFormField(
-          maxLength: null,
-          initialValue: content,
-          onChanged: onChanged,
-          style: TextStyle(
-            fontSize: 18,
-            color: textColor,
-          ),
-        ),
-        SizedBox(height: 16.0),
-      ],
     );
   }
 
@@ -177,7 +197,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
+                  backgroundImage:
+                  AssetImage('assets/images/doctor_avatar.png'),
                   radius: 30,
                 ),
                 SizedBox(width: 16.0),
