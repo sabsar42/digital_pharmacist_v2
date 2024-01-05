@@ -109,7 +109,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          padding: EdgeInsets.fromLTRB(28, 10, 28, 10),
                           child: TextFormField(
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -140,7 +140,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          padding: EdgeInsets.fromLTRB(28, 10, 28, 10),
                           child: TextFormField(
                             controller: passwordController,
                             obscureText: true,
@@ -166,7 +166,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -182,7 +182,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                 'FORGOT PASSWORD ?',
                                 style: TextStyle(
                                     color: Color.fromRGBO(131, 136, 138, 1.0),
-                                    fontSize: 13),
+                                    fontSize: 11.1),
                               ),
                             ),
                           ),
@@ -244,7 +244,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           height: 50,
                         ),
                         Text(
-                          'Or Continue with',
+                          'Or continue with',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
@@ -259,10 +259,10 @@ class _LogInScreenState extends State<LogInScreen> {
                             InkWell(
                               onTap: () {},
                               child: CircleAvatar(
-                                radius: 20,
+                                radius: 13.7,
                                 backgroundColor: Colors.transparent,
-                                child: Image.network(
-                                  "https://cdn-teams-slug.flaticon.com/google.jpg",
+                                child: Image.asset(
+                                  "assets/images/google.png",
                                   height: 50,
                                   width: 50,
                                 ),
@@ -274,10 +274,10 @@ class _LogInScreenState extends State<LogInScreen> {
                             InkWell(
                               onTap: () {},
                               child: CircleAvatar(
-                                radius: 15,
+                                radius: 15.3,
                                 backgroundColor: Colors.transparent,
-                                child: Image.network(
-                                  "https://cdn-icons-png.flaticon.com/512/5968/5968764.png",
+                                child: Image.asset(
+                                  "assets/images/facebook.png",
                                 ),
                               ),
                             ),
