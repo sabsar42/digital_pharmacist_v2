@@ -72,7 +72,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                     height: 10,
                   ),
                   Text(
-                    'Reminder',
+                    'Reminderx',
                     style: size30Black(),
                   ),
                   SizedBox(height: 10),
