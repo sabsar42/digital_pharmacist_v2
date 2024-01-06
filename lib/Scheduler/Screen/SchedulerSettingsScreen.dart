@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({super.key});
-
 
   @override
   State<SchedulerSettingsScreen> createState() =>
@@ -11,6 +12,73 @@ class SchedulerSettingsScreen extends StatefulWidget {
 }
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
+
+  late User currentUser;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
+  final TextEditingController newValueController = TextEditingController();
+  final TextEditingController typeController = TextEditingController();
+  final TextEditingController durationController =TextEditingController();
+  final TextEditingController frequencyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    loadHealthRecordDetails();
+  }
+
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
+
+  Future<void> loadHealthRecordDetails() async {
+    String userID = currentUser.uid;
+
+    try {
+      var snapshot = await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('healthRecords')
+          .orderBy('timestamp', descending: true)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        var latestRecord = snapshot.docs.first.data();
+        setState(() {
+
+        });
+      }
+    } catch (e) {
+      print("Error loading health record details: $e");
+    }
+  }
+
+  Future<void> addUserDetails() async {
+    String userID = currentUser.uid;
+
+    Map<String, dynamic> addDetails = {
+      'medicineName': newValueController.text,
+      'type': typeController.text,
+      'duration': durationController.text,
+      'frequency': frequencyController.text,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    // Use add to let Firestore generate a unique document ID
+    await _firestore
+        .collection('users')
+        .doc(userID)
+        .collection('remindersSet')
+        .add(addDetails);
+  }
   String dropdownvalue = 'Item 1';
 
   var items = [
@@ -20,6 +88,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     'Item 4',
     'Item 5',
   ];
+
   var colors = [
     Color(0x5903593f),
     Color(0x59F11212),
@@ -33,9 +102,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          onTap: (){
-
-          },
+          onTap: () {},
           child: Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -94,6 +161,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
+                        newValueController.text=newValue!;
                         dropdownvalue = newValue!;
                       });
                     },
@@ -162,11 +230,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff08346D)
-                          ),
-
-
-                          onPressed: () {}, child: Icon(Icons.add))
+                              backgroundColor: Color(0xff08346D)),
+                          onPressed: () {},
+                          child: Icon(Icons.add))
                     ],
                   ),
                 ),
@@ -213,7 +279,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                                 '2 Month'
                               ],
                               initialValue: '3 Days',
-                              onChanged: (String newValue) {},
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  durationController.text=newValue!;
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -230,7 +300,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                                 'Thrice a Day'
                               ],
                               initialValue: 'Everyday',
-                              onChanged: (String newValue) {},
+                              onChanged: (String? newValue) {
+                              setState(() {
+                                frequencyController.text=newValue!;
+                              });
+                              },
                             ),
                             Icon(Icons.add),
                           ],
@@ -258,7 +332,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        addUserDetails();
+                        print(newValueController.text);
+                        print(frequencyController.text);
+                        print(durationController.text);
+                        print('pressed');
+                      },
                       child: Text(
                         "Add Reminders",
                         style: size20White(),
