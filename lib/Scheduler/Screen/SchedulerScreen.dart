@@ -1,4 +1,4 @@
-import 'package:digi_pharma_app_test/Scheduler/SchedulerAppBar.dart';
+import 'package:digi_pharma_app_test/Scheduler/widget/SchedulerAppBar.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
