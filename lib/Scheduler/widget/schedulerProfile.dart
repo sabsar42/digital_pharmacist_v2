@@ -138,7 +138,7 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
         borderRadius: BorderRadius.circular(8.0),
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/dashboard_card.png",  // Replace with the URL of your image
+            "assets/images/dashboard_card.png",
           ),
           fit: BoxFit.cover,
         ),
