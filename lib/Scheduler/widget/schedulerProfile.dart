@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 
 
-
 class schedulerProfileBar extends StatefulWidget {
   const schedulerProfileBar({super.key});
 
