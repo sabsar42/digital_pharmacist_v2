@@ -91,6 +91,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     'Item 3',
     'Item 4',
     'Item 5',
+    'Item 6'
   ];
 
   var colors = [
