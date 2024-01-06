@@ -52,8 +52,8 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
             // color: Colors.green,
           ),
           Positioned(
-            top: 30,
-            left: 10,
+            top: 50,
+            left: 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -102,7 +102,7 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
           ),
           Positioned(
               top: 110,
-              left: 200,
+              left: 180,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -124,9 +124,14 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
                                   builder: (context) =>
                                       SchedulerSettingsScreen()));
                         },
-                        child: Text(
-                          'Create',
-                          style: siz20System(),
+                        child: SizedBox(
+                          width: 140,
+                          child: Center(
+                            child: Text(
+                              'Create',
+                              style: siz20System(),
+                            ),
+                          ),
                         ))
                   ],
                 ),
