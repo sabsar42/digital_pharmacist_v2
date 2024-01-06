@@ -1,4 +1,6 @@
 import 'package:digi_pharma_app_test/Scheduler/widget/SchedulerAppBar.dart';
+import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard_appbar.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,7 +58,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           children: [
           Expanded(
             flex:25,
-            child:SafeArea(child: SchedulerAppBar()),),
+            child:SafeArea(child: SizedBox(
+                height: 200,
+                child: schedulerProfileBar())),),
+
 
             Expanded(
               flex: 15,
