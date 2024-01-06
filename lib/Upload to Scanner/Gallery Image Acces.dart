@@ -16,6 +16,7 @@ class _GalleryImageAccessState extends State<GalleryImageAccess> {
   final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
+    
     //display image selected from gallery
 
 
