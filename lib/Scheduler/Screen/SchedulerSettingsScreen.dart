@@ -67,6 +67,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     String userID = currentUser.uid;
 
     Map<String, dynamic> addDetails = {
+
       'medicineName': newValueController.text,
       'type': typeController.text,
       'duration': durationController.text,
@@ -90,6 +91,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     'Item 3',
     'Item 4',
     'Item 5',
+    'Item 6'
   ];
 
   var colors = [
