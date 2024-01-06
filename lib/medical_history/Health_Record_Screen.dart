@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/common_background.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
@@ -5,61 +8,122 @@ import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart
 import 'TabBar_View.dart';
 import 'TranformableListView_Packagea_Method.dart';
 
+class HealthRecordScreen extends StatefulWidget {
 
-class HealthRecordScreen extends StatelessWidget {
-  List<HealthRecord> generateHealthRecords() {
-    List<HealthRecord> records = [];
+  HealthRecordScreen({Key? key});
+  @override
+  State<HealthRecordScreen> createState() => _HealthRecordScreenState();
+}
 
-    for (int i = 1; i <= 15; i++) {
-      records.add(
-        HealthRecord(
-          diagnosisNumber: "00$i",
-          doctorName: "Dr. Doctor $i",
-          hospitalName: "Hospital/Clinic $i",
-          date: "10/${16 + i}/2023",
-          timeline: "${8 + i}:00 AM - ${9 + i}:30 AM",
-        ),
-      );
+class _HealthRecordScreenState extends State<HealthRecordScreen> {
+  var cardCounter = 1;
+  List<HealthRecord> records = [];
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+      fetchHealthRecords();
     }
+  }
 
-    return records;
+  Future<void> fetchHealthRecords() async {
+    String userID = currentUser.uid;
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords')
+        .limit(cardCounter)
+        .get();
+
+    setState(() {
+      records = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+        return HealthRecord(
+          diagnosisNumber: data['diagnosis'] ?? '',
+          doctorName: data['doctorName'] ?? '',
+          hospitalName: data['hospitalName'] ?? '',
+          date: data['date'] ?? '',
+          timeline: data['timeline'] ?? '',
+        );
+      }).toList();
+    });
+  }
+
+  Future<void> addHealthRecord() async {
+    String userID = currentUser.uid;
+
+    CollectionReference<Map<String, dynamic>> healthRecordsCollection =
+    FirebaseFirestore.instance.collection('users').doc(userID).collection('healthRecords');
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await healthRecordsCollection.get();
+
+    // Calculate the new diagnosis number based on the length of the nested collection
+    String newDiagnosisNumber = (querySnapshot.docs.length + 1).toString();
+
+    Map<String, dynamic> newRecord = {
+      'diagnosis': newDiagnosisNumber,
+      'doctorName': 'New Doctor',
+      'hospitalName': 'New Hospital',
+      'date': 'New Date',
+      'timeline': 'New Timeline',
+    };
+
+    // Add the new record to the nested collection
+    await healthRecordsCollection.add(newRecord);
+
+    // Fetch updated data
+    fetchHealthRecords();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<HealthRecord> records = generateHealthRecords();
-
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
-          ),
-          child: AppBar(
-            elevation: 10,
-            backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-            title: Text(
-              '\nHealth Records',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.deepPurple,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+      appBar: AppBar(
+        elevation: 10,
+        backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+        title: Text(
+          '\nHealth Records',
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.deepPurple,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      body: TransformableListView.builder(
-        getTransformMatrix: getTransformMatrix,
-        itemCount: records.length,
-        itemBuilder: (context, index) {
-          return HealthRecordCard(record: records[index]);
+      body: CommonBackground(
+        child: TransformableListView.builder(
+          getTransformMatrix: getTransformMatrix,
+          itemCount: records.length,
+          itemBuilder: (context, index) {
+            return HealthRecordCard(record: records[index]);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        splashColor: Colors.purple,
+        backgroundColor: Colors.white70,
+        onPressed: () {
+          addHealthRecord(); // Call the addHealthRecord function
         },
       ),
     );
   }
 }
+
 
 class HealthRecord {
   final String diagnosisNumber;
@@ -77,25 +141,29 @@ class HealthRecord {
   });
 }
 
-class HealthRecordCard extends StatelessWidget {
+class HealthRecordCard extends StatefulWidget {
   final HealthRecord record;
   final String num;
 
   HealthRecordCard({required this.record}) : num = record.diagnosisNumber;
+
+  @override
+  State<HealthRecordCard> createState() => _HealthRecordCardState();
+}
+
+class _HealthRecordCardState extends State<HealthRecordCard> {
   final customColor = Color.fromRGBO(8, 52, 109, 1.0);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigate to the HealthRecord Detailed screen here
-
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) =>
-                //HealthRecordDetailScreen(diagnosisNumberfromPrev: num),
-                TabBarScreen(diagnosisNumberfromPrev: num),
+               // HealthRecordDetailScreen(diagnosisNumber: widget.record.diagnosisNumber),
+                TabBarScreen(diagnosisNumberfromPrev: widget.num),
           ),
         );
       },
@@ -106,57 +174,38 @@ class HealthRecordCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(19.0), // Rounded corners
         ),
-        child: Padding(
-          padding: EdgeInsets.all(35.0),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Diagnosis Number: ${record.diagnosisNumber}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          'Date: ${record.date}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/doctor_avatar.png'),
-                        radius: 30,
-                      ),
-                      SizedBox(width: 16.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/images/card_background.png", // Replace with the URL of your image
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(35.0),
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            record.doctorName,
+                            'Diagnosis Number: ${widget.record.diagnosisNumber}',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
                           Text(
-                            record.hospitalName,
+                            'Date: ${widget.record.date}',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -164,30 +213,60 @@ class HealthRecordCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      'Timeline: ${record.timeline}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                    ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              AssetImage('assets/images/doctor.png'),
+                          radius: 30,
+                        ),
+                        SizedBox(width: 16.0),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.record.doctorName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              widget.record.hospitalName,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Timeline: ${widget.record.timeline}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 0.0,
-                    right: 8.0,
-                    child: Icon(
-                      Icons.link,
-                      color: Colors.white,
-                      size: 24,
+                    Positioned(
+                      top: 0.0,
+                      right: 8.0,
+                      child: Icon(
+                        Icons.link,
+                        color: Colors.white,
+                        size: 24,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
