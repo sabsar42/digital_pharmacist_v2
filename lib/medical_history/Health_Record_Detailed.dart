@@ -1,150 +1,184 @@
-import 'EHR_First_Screen.dart';
-import 'Health_Record_Screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/medical_history/PopBup_Menu_Three_Button_Functions_Screen.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/common_background.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'TabBar_View.dart';
-
-class HealthRecord {
+class HealthRecordDetailScreen extends StatefulWidget {
   final String diagnosisNumber;
-  final String doctorName;
-  final String hospitalName;
-  final String date;
-  final String timeline;
-  final String diagnosis;
-  final String summaryOfMedicalRecord;
-  final String prescribedDrugs;
 
-  HealthRecord({
-    required this.diagnosisNumber,
-    required this.diagnosis,
-    required this.summaryOfMedicalRecord,
-    required this.doctorName,
-    required this.hospitalName,
-    required this.date,
-    required this.timeline,
-    required this.prescribedDrugs,
-  });
+  HealthRecordDetailScreen({Key? key, required this.diagnosisNumber});
+
+  @override
+  State<HealthRecordDetailScreen> createState() =>
+      _HealthRecordDetailScreenState();
 }
 
+class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
+  late User currentUser;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-class HealthRecordDetailScreen extends StatelessWidget {
+  final TextEditingController _diagnosisController = TextEditingController();
+  final TextEditingController _summaryController = TextEditingController();
+  final TextEditingController _prescriptionController = TextEditingController();
 
-  final String diagnosisNumberfromPrev;
-  HealthRecordDetailScreen({required this.diagnosisNumberfromPrev});
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    loadHealthRecordData();
+  }
 
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+      loadHealthRecordData();
+    }
+  }
+
+  Future<void> loadHealthRecordData() async {
+    String userID = currentUser.uid;
+    String uniqueDiagnosisNumber = widget.diagnosisNumber;
+
+    String uniqueID = '$userID+$uniqueDiagnosisNumber';
+
+    try {
+      DocumentSnapshot documentSnapshot = await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('healthRecords')
+          .doc(uniqueID)
+          .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+        documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          _diagnosisController.text = data['diagnosis'] ?? '';
+          _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
+          _prescriptionController.text = data['prescribedDrugs'] ?? '';
+        });
+      }
+    } catch (error) {
+      print("Error loading health record data: $error");
+    }
+  }
+
+  Future<void> addHealthRecordDetails() async {
+    String userID = currentUser.uid;
+    String uniqueDiagnosisNumber = widget.diagnosisNumber;
+
+    String uniqueID = '$userID+$uniqueDiagnosisNumber';
+
+    Map<String, dynamic> addDetails = {
+      'diagnosis': _diagnosisController.text,
+      'summaryOfMedicalRecord': _summaryController.text,
+      'prescribedDrugs': _prescriptionController.text,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    await _firestore
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords')
+        .doc(uniqueID)
+        .set(addDetails);
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    final record = HealthRecord(
-      diagnosisNumber: "D12345",
-      diagnosis : "Asthama",
-      summaryOfMedicalRecord : "This Summary",
-      prescribedDrugs : "Napa",
-      doctorName: "Dr. John Doe",
-      hospitalName: "ABC Hospital",
-      date: "10/25/2023",
-      timeline: "8:00 AM - 9:30 AM",
-    );
-
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 45,
-      //   elevation: 20.0,
-      //   backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-      //   title: Text(
-      //     '$diagnosisNumberfromPrev - Health Record',
-      //     style: TextStyle(
-      //       fontSize: 22,
-      //       color: Colors.deepPurple,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      //   bottom: PreferredSize(
-      //     preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
-      //     // child: BuildThreeButton(), **** Will Check Later !!!!
-      //     child: TabBarScreen(),
-      //   ),
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(15),
-      //       bottomRight: Radius.circular(15),
-      //     ),
-      //   ),
-      // ),
 
-      body: HealthRecordDetailCard(record: record),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 700,
+              color: Color.fromRGBO(255, 255, 255, 1.0),
+              margin: EdgeInsets.all(1.0),
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDoctorInfo('Shakib Absar', 'Khan'),
+                  _buildDivider(),
 
-    );
-  }
-}
-class HealthRecordDetailCard extends StatelessWidget {
-  final HealthRecord record;
-  final customColor = Color.fromRGBO(99, 174, 232, 1.0);
-
-  HealthRecordDetailCard({required this.record});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListView(
-
-      children: [
-
-        Container(
-
-          height: 700,
-          color: Color.fromRGBO(255, 255, 255, 1.0),
-          margin: EdgeInsets.all(1.0),
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-
-              _buildDoctorInfo(record.doctorName, record.hospitalName),
-              _buildDivider(),
-              _buildSection("Diagnosis", record.diagnosis),
-              _buildDivider(),
-              _buildSection("Summary of the whole History", record.summaryOfMedicalRecord, textColor: Colors.black),
-              _buildDivider(),
-              _buildSection("Prescribed Medicine", record.prescribedDrugs),
-
-            ],
-          ),
+                  SizedBox(height: 30.0),
+                  Text(
+                    "Diagnosis",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    maxLines: null,
+                    controller: _diagnosisController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                //  _buildDivider(),
+                  Text(
+                    "Summary of the whole History",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                      maxLines: null,
+                    controller: _summaryController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+              //    _buildDivider(),
+                  Text(
+                    "Prescribed Medicine",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    maxLines: null,
+                    controller: _prescriptionController,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                 // _buildDivider(),
+                  ElevatedButton(
+                    onPressed: () {
+                      addHealthRecordDetails();
+                    },
+                    child: Text("SAVE"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
-
-
-  Widget _buildSection(String title, String content, {Color textColor = Colors.black}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color:Colors.black
-          ),
-        ),
-        SizedBox(height: 8.0),
-        Text(
-          content,
-          style: TextStyle(
-            fontSize: 18,
-            color: textColor,
-          ),
-        ),
-        SizedBox(height: 16.0),
-      ],
+      ),
     );
   }
 
@@ -157,53 +191,54 @@ class HealthRecordDetailCard extends StatelessWidget {
 
   Widget _buildDoctorInfo(String doctorName, String hospitalName) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(12.0),
-      child : Container(
-      color:Color.fromRGBO(241, 229, 246, 1.0),
-      padding: EdgeInsets.all(20),
-      child: Column(
-      children: [
-        Row(
+      borderRadius: BorderRadius.circular(12.0),
+      child: Container(
+        color: Color.fromRGBO(241, 229, 246, 1.0),
+        padding: EdgeInsets.all(20),
+        child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/images/doctor_avatar.png'),
-              radius: 30,
-            ),
-            SizedBox(width: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  record.doctorName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                CircleAvatar(
+                  backgroundImage:
+                  AssetImage('assets/images/doctor.png'),
+                  radius: 30,
                 ),
-                Text(
-                  record.hospitalName,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Shakib Hospital',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'Shakib Hospital',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+            SizedBox(height: 16.0),
+            Text(
+              'Hospital: $hospitalName',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 16.0),
-        Text(
-          'Hospital: $hospitalName',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    ),
-    ),
+      ),
     );
   }
 }

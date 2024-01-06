@@ -1,4 +1,6 @@
-import 'package:digi_pharma_app_test/Scheduler/SchedulerAppBar.dart';
+import 'package:digi_pharma_app_test/Scheduler/widget/SchedulerAppBar.dart';
+import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard_appbar.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -43,41 +45,82 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     List<String> upComingDays = _upComingDays();
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 200,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: SchedulerAppBar(),
-      ),
+      // appBar: AppBar(
+      //   toolbarHeight: 200,
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   flexibleSpace: SchedulerAppBar(),
+      // ),
       body: Container(
-        margin: EdgeInsets.all(15),
+      //  margin: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+          Expanded(
+            flex:25,
+            child:SizedBox(
+                height: 200,
+                child: schedulerProfileBar()),),
+
+
             Expanded(
-              flex: 30,
-              child: Column(children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Reminder',
-                  style: size30Black(),
-                ),
-                SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: last7Days
-                            .map(
-                              (date) => GestureDetector(
-                                onTap: () {
-                                  print('Clicked on date');
-                                },
-                                child: Container(
+              flex: 15,
+              child: Container(
+                margin: EdgeInsets.only(left: 5,right: 5),
+                child: Column(children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Reminder',
+                    style: size30Black(),
+                  ),
+                  SizedBox(height: 10),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: last7Days
+                              .map(
+                                (date) => GestureDetector(
+                                  onTap: () {
+                                    print('Clicked on date');
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: date.contains(DateFormat('dd MMM')
+                                                .format(DateTime.now()))
+                                            ? Colors.blue
+                                            : Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      date,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: date.contains(DateFormat('dd MMM')
+                                                .format(DateTime.now()))
+                                            ? Colors.blue
+                                            : null,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: upComingDays
+                              .map(
+                                (date) => Container(
                                   padding: EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     border: Border.all(
@@ -101,49 +144,19 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: upComingDays
-                            .map(
-                              (date) => Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: date.contains(DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Colors.blue
-                                        : Colors.transparent,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  date,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: date.contains(DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Colors.blue
-                                        : null,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             ),
             Expanded(
-              flex: 70,
+              flex:60,
               child: Container(
+                margin: EdgeInsets.only(left: 10,right: 10),
                 height: 500, // Set a fixed height
                 child: ListView.separated(
                   itemCount: 10,
