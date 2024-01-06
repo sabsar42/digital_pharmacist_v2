@@ -49,31 +49,16 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
       child: Stack(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 50, left: 5),
+            padding: EdgeInsets.only(top: 50, left:0 ),
             // color: Colors.green,
           ),
           Positioned(
             top: 30,
-            left: 0,
+            left: 10,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: Icon(
-                      Icons.menu,
-                      size: 30,
-                      color: Color.fromRGBO(175, 184, 196, 1.0),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
+
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.white,
