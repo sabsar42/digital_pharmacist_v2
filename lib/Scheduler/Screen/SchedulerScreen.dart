@@ -58,9 +58,9 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           children: [
           Expanded(
             flex:25,
-            child:SafeArea(child: SizedBox(
+            child:SizedBox(
                 height: 200,
-                child: schedulerProfileBar())),),
+                child: schedulerProfileBar()),),
 
 
             Expanded(

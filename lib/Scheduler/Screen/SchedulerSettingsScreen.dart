@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import 'package:digi_pharma_app_test/Scheduler/widget/settingsDropdown.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,7 +104,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => SchedulerScreen()));
+          },
           child: Icon(
             Icons.arrow_back,
             color: Colors.black,
