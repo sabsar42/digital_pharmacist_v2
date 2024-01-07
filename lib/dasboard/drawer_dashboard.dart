@@ -126,14 +126,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onPressed: () async {
                   try {
                     await FirebaseAuth.instance.signOut();
-                    // Navigate to the login screen or another destination.
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => LogInScreen()),
                     );
                   } catch (e) {
                     print("Sign out error: $e");
-                    // Display an error message to the user if sign out fails.
+                \
                   }
                 },
                 child: Text(
@@ -141,7 +141,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
+                  primary: Color.fromRGBO(154, 5, 5, 1.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

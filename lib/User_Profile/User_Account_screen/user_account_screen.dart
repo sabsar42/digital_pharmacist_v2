@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -93,182 +94,201 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Image.asset(
+          'assets/images/common_background.png',
+          fit: BoxFit.cover,
+        ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios,
+          color: Color.fromRGBO(13, 44, 82, 1.0),),
         ),
-        title:
-            Text("Edit Profile", style: Theme.of(context).textTheme.headline4),
+        title: Text("EDIT PROFILE",
+            style: Theme.of(context).textTheme.titleMedium),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // Image with Icon
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image(
-                        image: AssetImage("assets/images/patient.png"),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.blue, // Change to your desired color
-                      ),
-                      child: const Icon(Icons.camera,
-                          color: Colors.black, size: 20),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-
-              // Form Fields
-              Form(
-                child: Column(
+      body: CommonBackground(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Image with Icon
+                Stack(
                   children: [
-                    TextFormField(
-                      controller: fullNameController,
-                      decoration: InputDecoration(
-                        labelText: "Full Name",
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        prefixIcon: Icon(Icons.email),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: phoneController,
-                      decoration: InputDecoration(
-                        labelText: "Phone Number",
-                        prefixIcon: Icon(Icons.phone),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: obscurePassword,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        prefixIcon: Icon(Icons.fingerprint),
-                        suffixIcon: IconButton(
-                          icon: Icon(obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onPressed: () {
-                            togglePasswordVisibility();
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: ageController,
-                      decoration: InputDecoration(
-                        labelText: "Age",
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: weightController,
-                      decoration: InputDecoration(
-                        labelText: "Weight",
-                        prefixIcon: Icon(Icons.accessibility),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: genderController,
-                      decoration: InputDecoration(
-                        labelText: "Gender",
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: heightController,
-                      decoration: InputDecoration(
-                        labelText: "Height",
-                        prefixIcon: Icon(Icons.height),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: bloodGroupController,
-                      decoration: InputDecoration(
-                        labelText: "Blood Group",
-                        prefixIcon: Icon(Icons.local_hospital),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Form Submit Button
                     SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          addUserDetails();
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          // Change to your desired color
-                          shape: const StadiumBorder(),
-                        ),
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(color: Colors.white),
+                      width: 100,
+                      height: 100,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image(
+                          image: AssetImage("assets/images/patient.png"),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-
-                    // Created Date and Delete Button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Joined 01/01/2024",
-                          style: TextStyle(fontSize: 12),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(60),
+                          color: Color.fromRGBO(22, 82, 131, 1.0),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Handle delete profile logic
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent.withOpacity(0.1),
-                            elevation: 0,
-                            foregroundColor: Colors.red,
-                            shape: const StadiumBorder(),
-                          ),
-                          child: const Text("Delete"),
-                        ),
-                      ],
+                        child: const Icon(Icons.camera_alt_outlined,
+                            color: Colors.white70, size: 20),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 50),
+
+                // Form Fields
+                Form(
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: fullNameController,
+                        decoration: InputDecoration(
+                          labelText: "Full Name",
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          prefixIcon: Icon(Icons.email),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          labelText: "Phone Number",
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          prefixIcon: Icon(Icons.fingerprint),
+                          suffixIcon: IconButton(
+                            icon: Icon(obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              togglePasswordVisibility();
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: ageController,
+                        decoration: InputDecoration(
+                          labelText: "Age",
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: weightController,
+                        decoration: InputDecoration(
+                          labelText: "Weight",
+                          prefixIcon: Icon(Icons.accessibility),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: genderController,
+                        decoration: InputDecoration(
+                          labelText: "Gender",
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: heightController,
+                        decoration: InputDecoration(
+                          labelText: "Height",
+                          prefixIcon: Icon(Icons.height),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: bloodGroupController,
+                        decoration: InputDecoration(
+                          labelText: "Blood Group",
+                          prefixIcon: Icon(Icons.local_hospital),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Form Submit Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            addUserDetails();
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 4.0,
+                            backgroundColor: Color.fromRGBO(13, 44, 82, 1.0),
+                            fixedSize: Size(350.0, 50.0),
+                          ),
+                          child: const Text(
+                            "Edit Profile",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Created Date and Delete Button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Joined 01/01/2024",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Handle delete profile logic
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 4.0,
+                              backgroundColor:
+                                  Color.fromRGBO(188, 166, 199, 1.0),
+                              fixedSize: Size(90.0,
+                                  12.0), // Set the width and height as desired
+                            ),
+                            child: const Text(
+                              "Delete",
+                              style: TextStyle(
+                                color: Colors.purple,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
