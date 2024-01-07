@@ -1,5 +1,4 @@
-import 'package:digi_pharma_app_test/Scheduler/widget/SchedulerAppBar.dart';
-import 'package:digi_pharma_app_test/Scheduler/widget/calenderSchedul.dart';
+
 import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
 import 'package:digi_pharma_app_test/dasboard/dashboard_appbar.dart';
 import 'package:digi_pharma_app_test/style.dart';
