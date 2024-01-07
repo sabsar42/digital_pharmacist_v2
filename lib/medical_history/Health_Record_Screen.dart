@@ -171,6 +171,7 @@ class HealthRecordCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
+
             builder: (context) => TabBarScreen(diagnosisNumberfromPrev: num),
           ),
         );
