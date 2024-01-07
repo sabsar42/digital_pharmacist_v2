@@ -287,7 +287,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             CustomDropdown(
                               items: [
                                 '3',
-                                '7',
+                                 '7',
                                 '10',
                                 '15',
                                 '20',

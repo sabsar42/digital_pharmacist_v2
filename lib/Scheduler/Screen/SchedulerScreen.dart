@@ -188,9 +188,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>CalenderScreen()));
-            }, child: Text('date')),
+
           ],
         ),
       ),
