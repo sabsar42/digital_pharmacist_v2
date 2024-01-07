@@ -9,19 +9,20 @@ import 'BookMark_List_Screen.dart';
 
 
 class TabBarScreen extends StatefulWidget {
-  final String diagnosisNumberfromPrev;
+  final String uniqueDocID;
 
 
-  TabBarScreen({required this.diagnosisNumberfromPrev});
+  TabBarScreen({required this.uniqueDocID});
 
   @override
   _TabBarScreenState createState() => _TabBarScreenState();
 }
 
 class _TabBarScreenState extends State<TabBarScreen> {
-  String get diagnosisNumberfromPrev => widget.diagnosisNumberfromPrev;
+  String  uniqueDocIdNumber = widget.uniqueDocID;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool currentState = true ;
+  String uniqueIdNumber  = uniqueDocIdNumber[uniqueDocIdNumber.length];
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
               ),
             ],
             title: Text(
-              '$diagnosisNumberfromPrev -> Health Record',
+              '$uniqueDocIdNumber -> Health Record',
               style: TextStyle(
                 fontSize: 22,
                 color: Color.fromRGBO(124, 67, 166, 1.0),
@@ -102,7 +103,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           ),
           body: TabBarView(
             children: [
-              HealthRecordDetailScreen( diagnosisNumber: '1',),
+              HealthRecordDetailScreen( diagnosisNumber: uniqueDocIdNumber,),
               EHRScreen(diagnosisNumberfromPrev: "1"),
               PDFViewerScreen(),
             ],

@@ -41,7 +41,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     String userID = currentUser.uid;
     String uniqueDiagnosisNumber = widget.diagnosisNumber;
 
-    String uniqueID = '$userID+$uniqueDiagnosisNumber';
+   // String uniqueID = '$userID+$uniqueDiagnosisNumber';
+    String uniqueID = widget.diagnosisNumber;;
 
     try {
       DocumentSnapshot documentSnapshot = await _firestore
@@ -77,7 +78,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         .get();
     int uniqueDiagnosisNumber = querySnapshot.size;
 
-    String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
+    //String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
+    String uniqueID =  widget.diagnosisNumber;
 
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
@@ -87,8 +89,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         .collection('healthRecords');
 
     Map<String, dynamic> newRecord = {
-      'diagnosis': uniqueDiagnosisNumber,
-      'doctorName': 'New Doctor',
+      'diagnosis': uniqueID,
+      'doctorName':  uniqueID.toString(),
       'hospitalName': 'New Hospital',
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
