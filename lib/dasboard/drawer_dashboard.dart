@@ -133,7 +133,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     );
                   } catch (e) {
                     print("Sign out error: $e");
-                \
+
                   }
                 },
                 child: Text(
@@ -141,7 +141,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(154, 5, 5, 1.0),
+                  backgroundColor: Color.fromRGBO(154, 5, 5, 1.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
