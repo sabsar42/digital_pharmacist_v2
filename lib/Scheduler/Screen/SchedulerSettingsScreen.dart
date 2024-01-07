@@ -15,6 +15,7 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
+
   late User currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -23,6 +24,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   final TextEditingController typeController = TextEditingController();
   final TextEditingController durationController =TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
+  final TextEditingController futureDateController = TextEditingController();
 
   @override
   void initState() {
@@ -72,6 +74,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       'type': typeController.text,
       'duration': durationController.text,
       'frequency': frequencyController.text,
+      'validtill':futureDateController.text,
       'timestamp': FieldValue.serverTimestamp(),
     };
 
@@ -104,6 +107,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -289,6 +293,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   durationController.text=newValue!;
+                                  calculateDate();
                                 });
                               },
                             ),
@@ -345,6 +350,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         print(frequencyController.text);
                         print(durationController.text);
                         print('pressed');
+                        print(futureDateController.text);
                       },
                       child: Text(
                         "Add Reminders",
@@ -357,6 +363,12 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
         ],
       ),
     );
+  }
+  void calculateDate(){
+    DateTime currentDate = DateTime.now();
+    DateTime futureDate = currentDate.add(Duration(days: 25));
+    futureDateController.text=futureDate.toString();
+    print(futureDateController.text);
   }
 }
 
