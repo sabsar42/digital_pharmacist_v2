@@ -281,18 +281,25 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               'Duration',
                               style: siz20Black(),
                             ),
+                            SizedBox(width: 10,),
+
+
                             CustomDropdown(
                               items: [
-                                '3 Days',
-                                '7 Days',
-                                '15 Days',
-                                '1 Month',
-                                '2 Month'
+                                '3',
+                                '7',
+                                '10',
+                                '15',
+                                '20',
+                                '25',
+                                '30',
+                                '40',
+                                '60',
                               ],
-                              initialValue: '3 Days',
-                              onChanged: (String? newValue) {
+                              initialValue: '3',
+                              onChanged: (value) {
                                 setState(() {
-                                  durationController.text=newValue!;
+                                  durationController.text=value;
                                   calculateDate();
                                 });
                               },
@@ -366,7 +373,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   }
   void calculateDate(){
     DateTime currentDate = DateTime.now();
-    DateTime futureDate = currentDate.add(Duration(days: 25));
+   int durationInDays = int.parse(durationController.text);
+    DateTime futureDate = currentDate.add(Duration(days: durationInDays));
     futureDateController.text=futureDate.toString();
     print(futureDateController.text);
   }
