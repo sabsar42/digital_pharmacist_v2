@@ -4,6 +4,7 @@ import 'package:digi_pharma_app_test/Scheduler/widget/settingsDropdown.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({super.key});
@@ -25,6 +26,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   final TextEditingController durationController =TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController futureDateController = TextEditingController();
+  late final DateTime futureTime;
+
 
   @override
   void initState() {
@@ -67,14 +70,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
-
+print(futureTime);
     Map<String, dynamic> addDetails = {
 
       'medicineName': newValueController.text,
       'type': typeController.text,
       'duration': durationController.text,
       'frequency': frequencyController.text,
-      'validtill':futureDateController.text,
+      'validtill':futureTime,
       'timestamp': FieldValue.serverTimestamp(),
     };
 
@@ -358,6 +361,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         print(durationController.text);
                         print('pressed');
                         print(futureDateController.text);
+                        print(futureTime);
                       },
                       child: Text(
                         "Add Reminders",
@@ -375,8 +379,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     DateTime currentDate = DateTime.now();
    int durationInDays = int.parse(durationController.text);
     DateTime futureDate = currentDate.add(Duration(days: durationInDays));
-    futureDateController.text=futureDate.toString();
-    print(futureDateController.text);
+    futureTime=futureDate;
+
   }
 }
 

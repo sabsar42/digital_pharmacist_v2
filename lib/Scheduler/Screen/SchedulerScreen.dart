@@ -1,7 +1,7 @@
-
 import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
-import 'package:digi_pharma_app_test/dasboard/dashboard_appbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +15,34 @@ class SchedulerScreen extends StatefulWidget {
 }
 
 class _SchedulerScreenState extends State<SchedulerScreen> {
+  late User currentUser;
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+
+  }
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
+
+  Future<void> getRecord() async {
+    String userID = currentUser.uid;
+
+
+   var result= await FirebaseFirestore.instance
+       .collection('users')
+       .doc(userID)
+       .collection('remindersSet')
+       .where("validtill",isGreaterThanOrEqualTo: Timestamp.now())
+       .get();
+
+ }
   List<String> _generateLast7Days() {
     List<String> last7Days = [];
     for (int i = 3; i >= 0; i--) {
@@ -86,6 +114,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               .map(
                                 (date) => GestureDetector(
                                   onTap: () {
+                                    getRecord();
                                     print('Clicked on date');
                                   },
                                   child: Container(
