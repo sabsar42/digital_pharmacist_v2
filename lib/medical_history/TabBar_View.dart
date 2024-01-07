@@ -74,7 +74,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
               ),
             ],
             title: Text(
-              '${id[id.length - 1]} -> Health Record',
+              '${id[id.length-1]} : Health Record',
               style: TextStyle(
                 fontSize: 22,
                 color: Color.fromRGBO(124, 67, 166, 1.0),

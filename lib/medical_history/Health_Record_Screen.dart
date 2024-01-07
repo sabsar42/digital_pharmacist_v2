@@ -41,13 +41,13 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userID)
-            .collection('healthRecords');
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await healthRecordsCollection.get();
+    await healthRecordsCollection.get();
 
     List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -76,13 +76,13 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userID)
-            .collection('healthRecords');
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await healthRecordsCollection.get();
+    await healthRecordsCollection.get();
 
     int uniqueDiagnosisNumber = querySnapshot.size;
 
@@ -120,15 +120,15 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
       body: CommonBackground(
         child: isAddingRecord
             ? Center(
-                child: CircularProgressIndicator(),
-              )
+          child: CircularProgressIndicator(),
+        )
             : TransformableListView.builder(
-                getTransformMatrix: getTransformMatrix,
-                itemCount: records.length,
-                itemBuilder: (context, index) {
-                  return HealthRecordCard(record: records[index]);
-                },
-              ),
+          getTransformMatrix: getTransformMatrix,
+          itemCount: records.length,
+          itemBuilder: (context, index) {
+            return HealthRecordCard(record: records[index]);
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -229,7 +229,7 @@ class HealthRecordCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/doctor.png'),
+                          AssetImage('assets/images/doctor.png'),
                           radius: 30,
                         ),
                         SizedBox(width: 16.0),

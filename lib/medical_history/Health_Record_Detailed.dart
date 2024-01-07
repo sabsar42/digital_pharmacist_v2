@@ -90,7 +90,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
     Map<String, dynamic> newRecord = {
       'diagnosis': uniqueID,
-      'doctorName':  uniqueID.toString(),
+      'doctorName': _buildDoctorInfo('doctorName', 'ospitalName'),
       'hospitalName': 'New Hospital',
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
