@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
-
 class SchedulerScreen extends StatefulWidget {
   const SchedulerScreen({super.key});
 
@@ -16,12 +14,13 @@ class SchedulerScreen extends StatefulWidget {
 
 class _SchedulerScreenState extends State<SchedulerScreen> {
   late User currentUser;
+
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-
   }
+
   Future<void> getCurrentUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -31,18 +30,34 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     }
   }
 
-  Future<void> getRecord() async {
-    String userID = currentUser.uid;
+  Future<List<String>> getMedicineNames() async {
+    try {
+      String userID = currentUser.uid;
+
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('remindersSet')
+          .where("validtill", isGreaterThanOrEqualTo: Timestamp.now())
+          .get();
+
+      List<String> medicineNames = [];
+
+      result.docs.forEach((DocumentSnapshot document) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        // Assuming 'medicineName' is the field containing the medicine name
+        String medicineName = data['medicineName'];
+        medicineNames.add(medicineName);
+      });
+
+      return medicineNames;
+    } catch (error) {
+      print("Error fetching medicine names: $error");
+      return [];
+    }
+  }
 
 
-   var result= await FirebaseFirestore.instance
-       .collection('users')
-       .doc(userID)
-       .collection('remindersSet')
-       .where("validtill",isGreaterThanOrEqualTo: Timestamp.now())
-       .get();
-
- }
   List<String> _generateLast7Days() {
     List<String> last7Days = [];
     for (int i = 3; i >= 0; i--) {
@@ -80,21 +95,18 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       //   flexibleSpace: SchedulerAppBar(),
       // ),
       body: Container(
-      //  margin: EdgeInsets.all(15),
+        //  margin: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Expanded(
-            flex:25,
-            child:SizedBox(
-                height: 200,
-                child: schedulerProfileBar()),),
-
-
+            Expanded(
+              flex: 25,
+              child: SizedBox(height: 200, child: schedulerProfileBar()),
+            ),
             Expanded(
               flex: 15,
               child: Container(
-                margin: EdgeInsets.only(left: 5,right: 5),
+                margin: EdgeInsets.only(left: 5, right: 5),
                 child: Column(children: [
                   SizedBox(
                     height: 10,
@@ -114,15 +126,16 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               .map(
                                 (date) => GestureDetector(
                                   onTap: () {
-                                    getRecord();
+
                                     print('Clicked on date');
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: date.contains(DateFormat('dd MMM')
-                                                .format(DateTime.now()))
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
                                             ? Colors.blue
                                             : Colors.transparent,
                                       ),
@@ -134,8 +147,9 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: date.contains(DateFormat('dd MMM')
-                                                .format(DateTime.now()))
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
                                             ? Colors.blue
                                             : null,
                                       ),
@@ -183,39 +197,47 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
               ),
             ),
             Expanded(
-              flex:60,
+              flex: 60,
               child: Container(
-                margin: EdgeInsets.only(left: 10,right: 10),
-                height: 500, // Set a fixed height
-                child: ListView.separated(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 70,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.black, width: 2),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Item $index',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    // This widget will be used as a separator between the items.
-                    return Divider(
-                      height: 10,
-                    );
-                  },
+                margin: EdgeInsets.only(left: 10, right: 10),
+                height: 500,
+                child: FutureBuilder<List<String>>(
+                  future: getMedicineNames(),
+                  builder: (context, snapshot) {
+
+                      List<String> medicineNames = snapshot.data ?? [];
+                      return ListView.separated(
+                        itemCount: medicineNames.length,
+                        itemBuilder: (context, index) {
+                          String medicineName = medicineNames[index];
+
+                          return Container(
+                            height: 70,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.transparent,
+                              border: Border.all(color: Colors.black, width: 2),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Medicine Name: $medicineName',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+
+                          return Divider(height: 10);
+                        },
+                      );
+                    }
+
                 ),
               ),
             ),
+
 
           ],
         ),
