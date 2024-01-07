@@ -9,12 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
-
-
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
-
 import 'PopBup_Menu_Three_Button_Functions_Screen.dart';
+
 
 class EHRScreen extends StatelessWidget {
   final String diagnosisNumberfromPrev;

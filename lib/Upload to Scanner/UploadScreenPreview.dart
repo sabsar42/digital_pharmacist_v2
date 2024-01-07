@@ -4,7 +4,7 @@ import 'package:digi_pharma_app_test/Camera%20Scanner/ResultBardHomePage.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/camera_screen.dart';
 import 'package:digi_pharma_app_test/Camera%20Scanner/result_screen.dart';
 import 'package:digi_pharma_app_test/Google%20Berd/BardHomePage.dart';
-import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';

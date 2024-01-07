@@ -1,8 +1,8 @@
-import 'package:digi_pharma_app_test/OnBoard/OnBoard.dart';
+import 'package:digi_pharma_app_test/OnBoard/first_Onboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'dasboard/dasboard.dart';
+import 'dasboard/dashboard.dart';
 import 'medical_history/Health_Record_Screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
