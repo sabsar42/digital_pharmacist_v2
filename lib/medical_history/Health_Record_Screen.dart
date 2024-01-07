@@ -41,13 +41,13 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await healthRecordsCollection.get();
+        await healthRecordsCollection.get();
 
     List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -76,13 +76,13 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await healthRecordsCollection.get();
+        await healthRecordsCollection.get();
 
     int uniqueDiagnosisNumber = querySnapshot.size;
 
@@ -106,36 +106,60 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.edit_note_outlined,
+              size: 35,
+              color: Color.fromRGBO(6, 36, 59, 1.0),
+            ),
+          ),
+        ],
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios,
+              color: Color.fromRGBO(6, 36, 59, 1.0),)),
         elevation: 10,
+        centerTitle: true,
         backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
         title: Text(
-          '\nHealth Records',
+          'HEALTH RECORDS',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             color: Colors.deepPurple,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),
       body: CommonBackground(
-        child: isAddingRecord
-            ? Center(
-          child: CircularProgressIndicator(),
-        )
-            : TransformableListView.builder(
-          getTransformMatrix: getTransformMatrix,
-          itemCount: records.length,
-          itemBuilder: (context, index) {
-            return HealthRecordCard(record: records[index]);
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await fetchHealthRecords();
           },
+          child: isAddingRecord
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : TransformableListView.builder(
+                  getTransformMatrix: getTransformMatrix,
+                  itemCount: records.length,
+                  itemBuilder: (context, index) {
+                    return HealthRecordCard(record: records[index]);
+                  },
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         splashColor: Colors.purple,
         backgroundColor: Colors.white70,
-        onPressed: () {
-          addHealthRecord();
+        onPressed: () async {
+          await addHealthRecord();
+          await fetchHealthRecords();
+          setState(() {});
         },
       ),
     );
@@ -179,6 +203,7 @@ class HealthRecordCard extends StatelessWidget {
         );
       },
       child: Card(
+        shadowColor: Color.fromRGBO(199, 126, 252, 1.0),
         margin: EdgeInsets.all(10.0),
         color: customColor,
         elevation: 30,
@@ -229,7 +254,7 @@ class HealthRecordCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           backgroundImage:
-                          AssetImage('assets/images/doctor.png'),
+                              AssetImage('assets/images/doctor.png'),
                           radius: 30,
                         ),
                         SizedBox(width: 16.0),
