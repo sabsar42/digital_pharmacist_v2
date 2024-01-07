@@ -45,7 +45,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
       result.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        // Assuming 'medicineName' is the field containing the medicine name
+
         String medicineName = data['medicineName'];
         medicineNames.add(medicineName);
       });
