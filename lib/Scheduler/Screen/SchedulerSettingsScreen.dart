@@ -4,6 +4,7 @@ import 'package:digi_pharma_app_test/Scheduler/widget/settingsDropdown.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({super.key});
@@ -15,6 +16,7 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
+
   late User currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -23,6 +25,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   final TextEditingController typeController = TextEditingController();
   final TextEditingController durationController =TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
+  final TextEditingController futureDateController = TextEditingController();
+  late final DateTime futureTime;
+
 
   @override
   void initState() {
@@ -65,13 +70,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
-
+print(futureTime);
     Map<String, dynamic> addDetails = {
 
       'medicineName': newValueController.text,
       'type': typeController.text,
       'duration': durationController.text,
       'frequency': frequencyController.text,
+      'validtill':futureTime,
       'timestamp': FieldValue.serverTimestamp(),
     };
 
@@ -104,6 +110,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -277,18 +284,26 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               'Duration',
                               style: siz20Black(),
                             ),
+                            SizedBox(width: 10,),
+
+
                             CustomDropdown(
                               items: [
-                                '3 Days',
-                                '7 Days',
-                                '15 Days',
-                                '1 Month',
-                                '2 Month'
+                                '3',
+                                 '7',
+                                '10',
+                                '15',
+                                '20',
+                                '25',
+                                '30',
+                                '40',
+                                '60',
                               ],
-                              initialValue: '3 Days',
-                              onChanged: (String? newValue) {
+                              initialValue: '3',
+                              onChanged: (value) {
                                 setState(() {
-                                  durationController.text=newValue!;
+                                  durationController.text=value;
+                                  calculateDate();
                                 });
                               },
                             ),
@@ -345,6 +360,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         print(frequencyController.text);
                         print(durationController.text);
                         print('pressed');
+                        print(futureDateController.text);
+                        print(futureTime);
                       },
                       child: Text(
                         "Add Reminders",
@@ -357,6 +374,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
         ],
       ),
     );
+  }
+  void calculateDate(){
+    DateTime currentDate = DateTime.now();
+   int durationInDays = int.parse(durationController.text);
+    DateTime futureDate = currentDate.add(Duration(days: durationInDays));
+    futureTime=futureDate;
+
   }
 }
 
