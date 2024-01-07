@@ -19,14 +19,16 @@ class TabBarScreen extends StatefulWidget {
 }
 
 class _TabBarScreenState extends State<TabBarScreen> {
-  String  uniqueDocIdNumber = widget.uniqueDocID;
+ // String get uniqueDocIdNumber => widget.uniqueDocID;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool currentState = true ;
-  String uniqueIdNumber  = uniqueDocIdNumber[uniqueDocIdNumber.length];
+
+  String id = '';
 
   @override
   void initState() {
     super.initState();
+    id = widget.uniqueDocID.toString();
   }
 
   @override
@@ -72,7 +74,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
               ),
             ],
             title: Text(
-              '$uniqueDocIdNumber -> Health Record',
+              '${id[id.length - 1]} -> Health Record',
               style: TextStyle(
                 fontSize: 22,
                 color: Color.fromRGBO(124, 67, 166, 1.0),
@@ -103,7 +105,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           ),
           body: TabBarView(
             children: [
-              HealthRecordDetailScreen( diagnosisNumber: uniqueDocIdNumber,),
+              HealthRecordDetailScreen( diagnosisNumber: widget.uniqueDocID,),
               EHRScreen(diagnosisNumberfromPrev: "1"),
               PDFViewerScreen(),
             ],

@@ -17,7 +17,6 @@ class HealthRecordScreen extends StatefulWidget {
 
 class _HealthRecordScreenState extends State<HealthRecordScreen> {
   late User currentUser;
-   late String docID;
   bool isAddingRecord = false;
   List<HealthRecord> records = [];
 
@@ -52,11 +51,11 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
 
     List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      docID = doc.id.toString();
-      String docIDNum = doc.id.toString();
+      String docID = doc.id.toString();
 
       return HealthRecord(
-        diagnosisNumber: docIDNum[docIDNum.length - 1],
+        docID: docID,
+        diagnosisNumber: docID[docID.length - 1],
         doctorName: data['doctorName'].toString(),
         hospitalName: data['hospitalName'].toString(),
         date: data['date'].toString(),
@@ -127,7 +126,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                 getTransformMatrix: getTransformMatrix,
                 itemCount: records.length,
                 itemBuilder: (context, index) {
-                  return HealthRecordCard(record: records[index], uniqueDocID: docID,);
+                  return HealthRecordCard(record: records[index]);
                 },
               ),
       ),
@@ -144,6 +143,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
 }
 
 class HealthRecord {
+  final String docID;
   final String diagnosisNumber;
   final String doctorName;
   final String hospitalName;
@@ -151,6 +151,7 @@ class HealthRecord {
   final String timeline;
 
   HealthRecord({
+    required this.docID,
     required this.diagnosisNumber,
     required this.doctorName,
     required this.hospitalName,
@@ -161,9 +162,8 @@ class HealthRecord {
 
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
-  final String uniqueDocID;
 
-  HealthRecordCard({required this.record, required this.uniqueDocID});
+  HealthRecordCard({required this.record});
 
   @override
   Widget build(BuildContext context) {
@@ -174,8 +174,7 @@ class HealthRecordCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-
-            builder: (context) => TabBarScreen(uniqueDocID: uniqueDocID),
+            builder: (context) => TabBarScreen(uniqueDocID: record.docID),
           ),
         );
       },
