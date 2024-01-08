@@ -30,7 +30,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     }
   }
 
-  Future<List<String>> getMedicineNames() async {
+  Future<List<Map<String, dynamic>>> getData() async {
     try {
       String userID = currentUser.uid;
 
@@ -41,22 +41,35 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           .where("validtill", isGreaterThanOrEqualTo: Timestamp.now())
           .get();
 
-      List<String> medicineNames = [];
+      List<Map<String, dynamic>> records = [];
 
       result.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-        String medicineName = data['medicineName'];
-        medicineNames.add(medicineName);
+        // Handling null values with default values
+        String medicineName = data['medicineName'] ?? 'Unknown Medicine';
+        String type = data['type'] ?? 'Unknown Type';
+        String duration = data['duration'] ?? 'Unknown Duration';
+        Timestamp startedDate= data['timestamp']??'Unknow Time';
+        DateTime dateTime = startedDate.toDate().toLocal();
+        String formattedDateTime = DateFormat.yMMMMd().add_jm().format(dateTime);
+
+        records.add({
+          'documentID': document.id,
+          'medicineName': medicineName,
+          'type': type,
+          'duration': duration,
+          'time':formattedDateTime,
+
+        });
       });
 
-      return medicineNames;
+      return records;
     } catch (error) {
-      print("Error fetching medicine names: $error");
+      print("Error fetching records: $error");
       return [];
     }
   }
-
 
   List<String> _generateLast7Days() {
     List<String> last7Days = [];
@@ -112,7 +125,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                     height: 10,
                   ),
                   Text(
-                    'Reminder',
+                    'Reminders',
                     style: size30Black(),
                   ),
                   SizedBox(height: 10),
@@ -126,7 +139,14 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               .map(
                                 (date) => GestureDetector(
                                   onTap: () {
+                                    final Timestamp firebaseTimestamp =
+                                        Timestamp.fromMillisecondsSinceEpoch(
+                                            1641555245000);
+                                    DateTime dateTime = firebaseTimestamp.toDate().toLocal(); // Convert to local time
+                                    String formattedDateTime = DateFormat.yMMMMd().add_jm().format(dateTime);
+                                    print(formattedDateTime);
 
+                                    print(firebaseTimestamp);
                                     print('Clicked on date');
                                   },
                                   child: Container(
@@ -200,45 +220,57 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
               flex: 60,
               child: Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
-                height: 500,
-                child: FutureBuilder<List<String>>(
-                  future: getMedicineNames(),
+                decoration: BoxDecoration(
+                    //    color: Colors.deepOrange,
+                    ),
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: getData(),
                   builder: (context, snapshot) {
-
-                      List<String> medicineNames = snapshot.data ?? [];
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else {
+                      List<Map<String, dynamic>> records = snapshot.data ?? [];
                       return ListView.separated(
-                        itemCount: medicineNames.length,
+                        itemCount: records.length,
                         itemBuilder: (context, index) {
-                          String medicineName = medicineNames[index];
+                          Map<String, dynamic> record = records[index];
+                          String medicineName = record['medicineName'];
+                          String type = record['type'];
+                          String duration = record['duration'];
+                          String stDate = record['time'];
 
                           return Container(
-                            height: 70,
-                            width: double.infinity,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.transparent,
-                              border: Border.all(color: Colors.black, width: 2),
+                              color: Colors.deepOrange,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Center(
-                              child: Text(
-                                'Medicine Name: $medicineName',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            child: ListTile(
+                              title: Text(
+                                medicineName,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(type),
+                              trailing: Column(
+                                children: [
+                                  Text('$duration days'),
+                                  Text('Stard Date : $stDate'),
+                                ],
                               ),
                             ),
                           );
                         },
                         separatorBuilder: (context, index) {
-
-                          return Divider(height: 10);
+                          return Divider(height: 20);
                         },
                       );
                     }
-
+                  },
                 ),
               ),
             ),
-
-
           ],
         ),
       ),
