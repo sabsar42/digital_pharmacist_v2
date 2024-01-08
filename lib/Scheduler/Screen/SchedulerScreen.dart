@@ -52,11 +52,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
         String duration = data['duration'] ?? 'Unknown Duration';
         Timestamp startedDate= data['timestamp']??'Unknown Time';
         Timestamp validtillFB = data['validtill']?? 'Unknown Time';
+        List<String> medicineTimes = List<String>.from(data['listoftimes'] ?? []);
         DateTime dateTime = startedDate.toDate().toLocal();
         DateTime validtillTime = validtillFB.toDate().toLocal();
         Duration difference =validtillTime.difference(DateTime.now());
         int indays = difference.inDays;
         String formattedDateTime = indays.toString();
+        print('$medicineName: $medicineTimes');
 
         records.add({
           'documentID': document.id,
@@ -64,6 +66,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'type': type,
           'duration': duration,
           'time':formattedDateTime,
+          'listoftimes': medicineTimes,
 
         });
       });
@@ -220,13 +223,66 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                 ]),
               ),
             ),
+            // Expanded(
+            //   flex: 60,
+            //   child: Container(
+            //     margin: EdgeInsets.only(left: 10, right: 10),
+            //     decoration: BoxDecoration(
+            //         //    color: Colors.deepOrange,
+            //         ),
+            //     child: FutureBuilder<List<Map<String, dynamic>>>(
+            //       future: getData(),
+            //       builder: (context, snapshot) {
+            //         if (snapshot.connectionState == ConnectionState.waiting) {
+            //           return Center(child: CircularProgressIndicator());
+            //         } else if (snapshot.hasError) {
+            //           return Center(child: Text("Error: ${snapshot.error}"));
+            //         } else {
+            //           List<Map<String, dynamic>> records = snapshot.data ?? [];
+            //           return ListView.separated(
+            //             itemCount: records.length,
+            //             itemBuilder: (context, index) {
+            //               Map<String, dynamic> record = records[index];
+            //               String medicineName = record['medicineName'];
+            //               String type = record['type'];
+            //               String duration = record['duration'];
+            //               String stDate = record['time'];
+            //
+            //               return Container(
+            //                 decoration: BoxDecoration(
+            //                   color: Colors.deepOrange,
+            //                   borderRadius: BorderRadius.circular(20),
+            //                 ),
+            //                 child: ListTile(
+            //                   title: Text(
+            //                     medicineName,
+            //                     style: TextStyle(
+            //                         fontSize: 18, fontWeight: FontWeight.bold),
+            //                   ),
+            //                   subtitle: Text(type),
+            //                   trailing: Column(
+            //                     children: [
+            //                       Text('Duration: $duration Days'),
+            //                       Text('Remaining : $stDate Days'),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               );
+            //             },
+            //             separatorBuilder: (context, index) {
+            //               return Divider(height: 20);
+            //             },
+            //           );
+            //         }
+            //       },
+            //     ),
+            //   ),
+            // ),
             Expanded(
               flex: 60,
               child: Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
-                decoration: BoxDecoration(
-                    //    color: Colors.deepOrange,
-                    ),
+                decoration: BoxDecoration(),
                 child: FutureBuilder<List<Map<String, dynamic>>>(
                   future: getData(),
                   builder: (context, snapshot) {
@@ -236,16 +292,21 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     } else {
                       List<Map<String, dynamic>> records = snapshot.data ?? [];
-                      return ListView.separated(
-                        itemCount: records.length,
-                        itemBuilder: (context, index) {
-                          Map<String, dynamic> record = records[index];
-                          String medicineName = record['medicineName'];
-                          String type = record['type'];
-                          String duration = record['duration'];
-                          String stDate = record['time'];
 
-                          return Container(
+                      // Create a map to group ListTile widgets by listoftimes
+                      Map<String, List<Widget>> groupedWidgets = {};
+
+                      records.forEach((record) {
+                        String medicineName = record['medicineName'];
+                        String type = record['type'];
+                        String duration = record['duration'];
+                        String stDate = record['time'];
+                        List<String> times =
+                        List<String>.from(record['listoftimes'] ?? []);
+
+                        // Create a ListTile for each repetition
+                        for (String time in times) {
+                          Widget medicineWidget = Container(
                             decoration: BoxDecoration(
                               color: Colors.deepOrange,
                               borderRadius: BorderRadius.circular(20),
@@ -254,27 +315,69 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               title: Text(
                                 medicineName,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               subtitle: Text(type),
                               trailing: Column(
                                 children: [
                                   Text('Duration: $duration Days'),
-                                  Text('Remaining : $stDate Days'),
+                                  Text('Remaining: $stDate Days'),
                                 ],
                               ),
                             ),
                           );
-                        },
-                        separatorBuilder: (context, index) {
-                          return Divider(height: 20);
-                        },
+
+                          Widget timeWidget = Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ListTile(
+                              title: Text('Time: $time'),
+                            ),
+                          );
+
+                          // Group widgets based on time
+                          if (!groupedWidgets.containsKey(time)) {
+                            groupedWidgets[time] = [];
+                          }
+
+                          groupedWidgets[time]!.add(medicineWidget);
+                          groupedWidgets[time]!.add(timeWidget);
+                        }
+                      });
+
+                      // Sort the map entries based on the listoftimes
+                      List<MapEntry<String, List<Widget>>> sortedEntries =
+                      groupedWidgets.entries.toList()
+                        ..sort((a, b) {
+                          // Implement your sorting logic here
+                          return a.key.compareTo(b.key);
+                        });
+
+                      // Extract sorted widgets for display
+                      List<Widget> sortedWidgets = [];
+                      for (var entry in sortedEntries) {
+                        sortedWidgets.addAll(entry.value);
+                      }
+
+                      return ListView(
+                        children: sortedWidgets,
                       );
                     }
                   },
                 ),
               ),
             ),
+
+
+
+
+
+
+
           ],
         ),
       ),
