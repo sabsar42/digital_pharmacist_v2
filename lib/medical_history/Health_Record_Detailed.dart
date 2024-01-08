@@ -41,7 +41,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     String userID = currentUser.uid;
     String uniqueDiagnosisNumber = widget.diagnosisNumber;
 
-    String uniqueID = '$userID+$uniqueDiagnosisNumber';
+   // String uniqueID = '$userID+$uniqueDiagnosisNumber';
+    String uniqueID = widget.diagnosisNumber;;
 
     try {
       DocumentSnapshot documentSnapshot = await _firestore
@@ -52,8 +53,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           .get();
 
       if (documentSnapshot.exists) {
-        Map<String, dynamic> data =
-        documentSnapshot.data() as Map<String, dynamic>;
+        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
         setState(() {
           _diagnosisController.text = data['diagnosis'] ?? '';
           _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
@@ -65,31 +65,47 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     }
   }
 
+
+
   Future<void> addHealthRecordDetails() async {
     String userID = currentUser.uid;
-    String uniqueDiagnosisNumber = widget.diagnosisNumber;
 
-    String uniqueID = '$userID+$uniqueDiagnosisNumber';
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords')
+        .get();
+    int uniqueDiagnosisNumber = querySnapshot.size;
 
-    Map<String, dynamic> addDetails = {
+    //String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
+    String uniqueID =  widget.diagnosisNumber;
+
+
+    CollectionReference<Map<String, dynamic>> healthRecordsCollection =
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords');
+
+    Map<String, dynamic> newRecord = {
+      'diagnosis': uniqueID,
+      'doctorName': _buildDoctorInfo('doctorName', 'ospitalName'),
+      'hospitalName': 'New Hospital',
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
       'prescribedDrugs': _prescriptionController.text,
       'timestamp': FieldValue.serverTimestamp(),
+
     };
 
-    await _firestore
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords')
-        .doc(uniqueID)
-        .set(addDetails);
-  }
+    await healthRecordsCollection.doc(uniqueID).set(newRecord);
 
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -124,7 +140,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 16.0),
-                //  _buildDivider(),
+                  //  _buildDivider(),
                   Text(
                     "Summary of the whole History",
                     style: TextStyle(
@@ -135,7 +151,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                   ),
                   SizedBox(height: 8.0),
                   TextFormField(
-                      maxLines: null,
+                    maxLines: null,
                     controller: _summaryController,
                     style: TextStyle(
                       fontSize: 18,
@@ -143,7 +159,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 16.0),
-              //    _buildDivider(),
+                  //    _buildDivider(),
                   Text(
                     "Prescribed Medicine",
                     style: TextStyle(
@@ -162,7 +178,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                 // _buildDivider(),
+                  // _buildDivider(),
                   ElevatedButton(
                     onPressed: () {
                       addHealthRecordDetails();
@@ -199,8 +215,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage:
-                  AssetImage('assets/images/doctor.png'),
+                  backgroundImage: AssetImage('assets/images/doctor.png'),
                   radius: 30,
                 ),
                 SizedBox(width: 16.0),

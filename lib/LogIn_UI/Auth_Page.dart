@@ -1,11 +1,11 @@
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
-import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:digi_pharma_app_test/OnBoard/OnBoard.dart';
+import 'package:digi_pharma_app_test/OnBoard/first_Onboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digi_pharma_app_test/ForgotPassword/ForgotPassword.dart';
-import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:digi_pharma_app_test/Registration/signUpScreen.dart';
 
 import 'LoginPage.dart';

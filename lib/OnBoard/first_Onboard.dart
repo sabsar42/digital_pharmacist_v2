@@ -8,24 +8,21 @@ class OnBoard extends StatelessWidget {
   List<PageViewModel>getPages(){
     return [
       PageViewModel(
-       // image: Image.network('https://cdn-icons-png.flaticon.com/512/7310/7310705.png'),
-        image:Image.asset('assets/images/onboard_1.png'),
+
+        image:Image.asset('assets/images/doctor.png'),
         title: "Get medical Consultation",
         body: "Commmunicate with the finest doctors in your area",
           decoration: PageDecoration(
-
           )
 
       ),
       PageViewModel(
-        // image: Image.network('https://cdn-icons-png.flaticon.com/512/1546/1546140.png'),
         image:Image.asset('assets/images/onboard_3.png'),
         title: "Medication Reminders",
         body: "Stay on top of your health effortlessly with our Medication Reminders",
 
       ),
       PageViewModel(
-       // image: Image.network('https://cdn-icons-png.flaticon.com/512/4003/4003759.png'),
         image:Image.asset('assets/images/onboard_2.png'),
         title: "Keep EHR files",
         body: "Store all of your EHR files in one place",

@@ -9,21 +9,21 @@ import 'TabBar_View.dart';
 import 'TranformableListView_Packagea_Method.dart';
 
 class HealthRecordScreen extends StatefulWidget {
-
   HealthRecordScreen({Key? key});
+
   @override
   State<HealthRecordScreen> createState() => _HealthRecordScreenState();
 }
 
 class _HealthRecordScreenState extends State<HealthRecordScreen> {
-  var cardCounter = 1;
-  List<HealthRecord> records = [];
-
   late User currentUser;
+  bool isAddingRecord = false;
+  List<HealthRecord> records = [];
 
   @override
   void initState() {
     super.initState();
+    fetchHealthRecords();
     getCurrentUser();
   }
 
@@ -33,99 +33,141 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
       setState(() {
         currentUser = user;
       });
-      fetchHealthRecords();
     }
+    fetchHealthRecords();
   }
 
   Future<void> fetchHealthRecords() async {
     String userID = currentUser.uid;
 
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords')
-        .limit(cardCounter)
-        .get();
+    CollectionReference<Map<String, dynamic>> healthRecordsCollection =
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await healthRecordsCollection.get();
+
+    List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      String docID = doc.id.toString();
+
+      return HealthRecord(
+        docID: docID,
+        diagnosisNumber: docID[docID.length - 1],
+        doctorName: data['doctorName'].toString(),
+        hospitalName: data['hospitalName'].toString(),
+        date: data['date'].toString(),
+        timeline: data['timeline'].toString(),
+      );
+    }).toList();
 
     setState(() {
-      records = querySnapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-        return HealthRecord(
-          diagnosisNumber: data['diagnosis'] ?? '',
-          doctorName: data['doctorName'] ?? '',
-          hospitalName: data['hospitalName'] ?? '',
-          date: data['date'] ?? '',
-          timeline: data['timeline'] ?? '',
-        );
-      }).toList();
+      records = fetchedRecords;
     });
   }
 
   Future<void> addHealthRecord() async {
+    setState(() {
+      isAddingRecord = true;
+    });
+
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance.collection('users').doc(userID).collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await healthRecordsCollection.get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await healthRecordsCollection.get();
 
-    // Calculate the new diagnosis number based on the length of the nested collection
-    String newDiagnosisNumber = (querySnapshot.docs.length + 1).toString();
+    int uniqueDiagnosisNumber = querySnapshot.size;
+
+    String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
 
     Map<String, dynamic> newRecord = {
-      'diagnosis': newDiagnosisNumber,
+      'diagnosis': uniqueDiagnosisNumber,
       'doctorName': 'New Doctor',
       'hospitalName': 'New Hospital',
       'date': 'New Date',
       'timeline': 'New Timeline',
     };
 
-    // Add the new record to the nested collection
-    await healthRecordsCollection.add(newRecord);
-
-    // Fetch updated data
-    fetchHealthRecords();
+    await healthRecordsCollection.doc(uniqueID).set(newRecord);
+    setState(() {
+      isAddingRecord = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.edit_note_outlined,
+              size: 35,
+              color: Color.fromRGBO(6, 36, 59, 1.0),
+            ),
+          ),
+        ],
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios,
+              color: Color.fromRGBO(6, 36, 59, 1.0),)),
         elevation: 10,
+        centerTitle: true,
         backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
         title: Text(
-          '\nHealth Records',
+          'HEALTH RECORDS',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             color: Colors.deepPurple,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),
       body: CommonBackground(
-        child: TransformableListView.builder(
-          getTransformMatrix: getTransformMatrix,
-          itemCount: records.length,
-          itemBuilder: (context, index) {
-            return HealthRecordCard(record: records[index]);
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await fetchHealthRecords();
           },
+          child: isAddingRecord
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : TransformableListView.builder(
+                  getTransformMatrix: getTransformMatrix,
+                  itemCount: records.length,
+                  itemBuilder: (context, index) {
+                    return HealthRecordCard(record: records[index]);
+                  },
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         splashColor: Colors.purple,
         backgroundColor: Colors.white70,
-        onPressed: () {
-          addHealthRecord(); // Call the addHealthRecord function
+        onPressed: () async {
+          await addHealthRecord();
+          await fetchHealthRecords();
+          setState(() {});
         },
       ),
     );
   }
 }
 
-
 class HealthRecord {
+  final String docID;
   final String diagnosisNumber;
   final String doctorName;
   final String hospitalName;
@@ -133,6 +175,7 @@ class HealthRecord {
   final String timeline;
 
   HealthRecord({
+    required this.docID,
     required this.diagnosisNumber,
     required this.doctorName,
     required this.hospitalName,
@@ -141,45 +184,38 @@ class HealthRecord {
   });
 }
 
-class HealthRecordCard extends StatefulWidget {
+class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
-  final String num;
 
-  HealthRecordCard({required this.record}) : num = record.diagnosisNumber;
-
-  @override
-  State<HealthRecordCard> createState() => _HealthRecordCardState();
-}
-
-class _HealthRecordCardState extends State<HealthRecordCard> {
-  final customColor = Color.fromRGBO(8, 52, 109, 1.0);
+  HealthRecordCard({required this.record});
 
   @override
   Widget build(BuildContext context) {
+    final customColor = Color.fromRGBO(8, 52, 109, 1.0);
+
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-               // HealthRecordDetailScreen(diagnosisNumber: widget.record.diagnosisNumber),
-                TabBarScreen(diagnosisNumberfromPrev: widget.num),
+            builder: (context) => TabBarScreen(uniqueDocID: record.docID),
           ),
         );
       },
       child: Card(
+        shadowColor: Color.fromRGBO(199, 126, 252, 1.0),
         margin: EdgeInsets.all(10.0),
         color: customColor,
         elevation: 30,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(19.0), // Rounded corners
+          borderRadius: BorderRadius.circular(19.0),
         ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
               image: AssetImage(
-                "assets/images/card_background.png", // Replace with the URL of your image
+                "assets/images/card_background.png",
               ),
               fit: BoxFit.cover,
             ),
@@ -197,7 +233,7 @@ class _HealthRecordCardState extends State<HealthRecordCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Diagnosis Number: ${widget.record.diagnosisNumber}',
+                            'Diagnosis Number: ${record.diagnosisNumber}',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -205,7 +241,7 @@ class _HealthRecordCardState extends State<HealthRecordCard> {
                             ),
                           ),
                           Text(
-                            'Date: ${widget.record.date}',
+                            'Date: ${record.date}',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -226,7 +262,7 @@ class _HealthRecordCardState extends State<HealthRecordCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.record.doctorName,
+                              record.doctorName,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -234,7 +270,7 @@ class _HealthRecordCardState extends State<HealthRecordCard> {
                               ),
                             ),
                             Text(
-                              widget.record.hospitalName,
+                              record.hospitalName,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -247,7 +283,7 @@ class _HealthRecordCardState extends State<HealthRecordCard> {
                     Padding(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Text(
-                        'Timeline: ${widget.record.timeline}',
+                        'Timeline: ${record.timeline}',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,

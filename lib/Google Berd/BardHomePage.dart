@@ -1,15 +1,12 @@
-
 import 'package:digi_pharma_app_test/Upload%20to%20Scanner/UploadScreenPreview.dart';
-import 'package:digi_pharma_app_test/dasboard/dasboard.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
-
 import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
 import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import 'BardAiController.dart';
 
 class BardHomePage extends StatefulWidget {
@@ -25,7 +22,6 @@ class _BardHomePageState extends State<BardHomePage> {
   Widget build(BuildContext context) {
     BardAIController controller = Get.put(BardAIController());
     TextEditingController textField = TextEditingController();
-
 
     return Scaffold(
       backgroundColor: Color(0xfff2f1f9),
