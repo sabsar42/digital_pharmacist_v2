@@ -50,9 +50,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
         String medicineName = data['medicineName'] ?? 'Unknown Medicine';
         String type = data['type'] ?? 'Unknown Type';
         String duration = data['duration'] ?? 'Unknown Duration';
-        Timestamp startedDate= data['timestamp']??'Unknow Time';
+        Timestamp startedDate= data['timestamp']??'Unknown Time';
+        Timestamp validtillFB = data['validtill']?? 'Unknown Time';
         DateTime dateTime = startedDate.toDate().toLocal();
-        String formattedDateTime = DateFormat.yMMMMd().add_jm().format(dateTime);
+        DateTime validtillTime = validtillFB.toDate().toLocal();
+        Duration difference =validtillTime.difference(DateTime.now());
+        int indays = difference.inDays;
+        String formattedDateTime = indays.toString();
 
         records.add({
           'documentID': document.id,
@@ -255,8 +259,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               subtitle: Text(type),
                               trailing: Column(
                                 children: [
-                                  Text('$duration days'),
-                                  Text('Stard Date : $stDate'),
+                                  Text('Duration: $duration Days'),
+                                  Text('Remaining : $stDate Days'),
                                 ],
                               ),
                             ),
