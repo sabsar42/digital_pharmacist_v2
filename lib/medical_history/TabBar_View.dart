@@ -19,7 +19,7 @@ class TabBarScreen extends StatefulWidget {
 }
 
 class _TabBarScreenState extends State<TabBarScreen> {
- // String get uniqueDocIdNumber => widget.uniqueDocID;
+  // String get uniqueDocIdNumber => widget.uniqueDocID;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   bool currentState = true ;
 
