@@ -235,7 +235,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                     } else {
                       List<Map<String, dynamic>> records = snapshot.data ?? [];
 
-                      // Create a map to group ListTile widgets by listoftimes
                       Map<int, List<Widget>> groupedWidgets = {};
 
                       records.forEach((record) {
@@ -246,7 +245,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         List<int> times =
                         List<int>.from(record['listoftimes'] ?? []);
 
-                        // Create a ListTile for each repetition
+
                         for (int time in times) {
                           Widget medicineWidget = Container(
                             decoration: BoxDecoration(
@@ -281,7 +280,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                             ),
                           );
 
-                          // Group widgets based on time
+
                           if (!groupedWidgets.containsKey(time)) {
                             groupedWidgets[time] = [];
                           }
@@ -291,7 +290,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         }
                       });
 
-                      // Extract sorted widgets for display
+
                       List<Widget> sortedWidgets = [];
                       List<int> sortedKeys = groupedWidgets.keys.toList()
                         ..sort();
