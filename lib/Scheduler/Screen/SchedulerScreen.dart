@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SchedulerScreen extends StatefulWidget {
-  const SchedulerScreen({super.key});
+  const SchedulerScreen({Key? key});
 
   @override
   State<SchedulerScreen> createState() => _SchedulerScreenState();
@@ -50,12 +50,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
         String medicineName = data['medicineName'] ?? 'Unknown Medicine';
         String type = data['type'] ?? 'Unknown Type';
         String duration = data['duration'] ?? 'Unknown Duration';
-        Timestamp startedDate= data['timestamp']??'Unknown Time';
-        Timestamp validtillFB = data['validtill']?? 'Unknown Time';
-        List<String> medicineTimes = List<String>.from(data['listoftimes'] ?? []);
+        Timestamp startedDate = data['timestamp'] ?? 'Unknown Time';
+        Timestamp validtillFB = data['validtill'] ?? 'Unknown Time';
+        List<int> medicineTimes =
+        List<int>.from(data['listoftimes'] ?? []);
         DateTime dateTime = startedDate.toDate().toLocal();
         DateTime validtillTime = validtillFB.toDate().toLocal();
-        Duration difference =validtillTime.difference(DateTime.now());
+        Duration difference = validtillTime.difference(DateTime.now());
         int indays = difference.inDays;
         String formattedDateTime = indays.toString();
         print('$medicineName: $medicineTimes');
@@ -65,9 +66,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'medicineName': medicineName,
           'type': type,
           'duration': duration,
-          'time':formattedDateTime,
+          'time': formattedDateTime,
           'listoftimes': medicineTimes,
-
         });
       });
 
@@ -108,14 +108,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     List<String> upComingDays = _upComingDays();
 
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 200,
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   flexibleSpace: SchedulerAppBar(),
-      // ),
       body: Container(
-        //  margin: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -141,80 +134,85 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                     child: Row(
                       children: [
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: last7Days
                               .map(
                                 (date) => GestureDetector(
-                                  onTap: () {
-                                    final Timestamp firebaseTimestamp =
-                                        Timestamp.fromMillisecondsSinceEpoch(
-                                            1641555245000);
-                                    DateTime dateTime = firebaseTimestamp.toDate().toLocal(); // Convert to local time
-                                    String formattedDateTime = DateFormat.yMMMMd().add_jm().format(dateTime);
-                                    print(formattedDateTime);
+                              onTap: () {
+                                final Timestamp firebaseTimestamp =
+                                Timestamp.fromMillisecondsSinceEpoch(
+                                    1641555245000);
+                                DateTime dateTime = firebaseTimestamp
+                                    .toDate()
+                                    .toLocal(); // Convert to local time
+                                String formattedDateTime =
+                                DateFormat.yMMMMd()
+                                    .add_jm()
+                                    .format(dateTime);
+                                print(formattedDateTime);
 
-                                    print(firebaseTimestamp);
-                                    print('Clicked on date');
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: date.contains(
-                                                DateFormat('dd MMM')
-                                                    .format(DateTime.now()))
-                                            ? Colors.blue
-                                            : Colors.transparent,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      date,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: date.contains(
-                                                DateFormat('dd MMM')
-                                                    .format(DateTime.now()))
-                                            ? Colors.blue
-                                            : null,
-                                      ),
-                                    ),
+                                print(firebaseTimestamp);
+                                print('Clicked on date');
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: date.contains(
+                                        DateFormat('dd MMM')
+                                            .format(DateTime.now()))
+                                        ? Colors.blue
+                                        : Colors.transparent,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  date,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: date.contains(
+                                        DateFormat('dd MMM')
+                                            .format(DateTime.now()))
+                                        ? Colors.blue
+                                        : null,
                                   ),
                                 ),
-                              )
+                              ),
+                            ),
+                          )
                               .toList(),
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: upComingDays
                               .map(
                                 (date) => Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: date.contains(DateFormat('dd MMM')
-                                              .format(DateTime.now()))
-                                          ? Colors.blue
-                                          : Colors.transparent,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    date,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: date.contains(DateFormat('dd MMM')
-                                              .format(DateTime.now()))
-                                          ? Colors.blue
-                                          : null,
-                                    ),
-                                  ),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: date.contains(
+                                      DateFormat('dd MMM')
+                                          .format(DateTime.now()))
+                                      ? Colors.blue
+                                      : Colors.transparent,
                                 ),
-                              )
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                date,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: date.contains(
+                                      DateFormat('dd MMM')
+                                          .format(DateTime.now()))
+                                      ? Colors.blue
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          )
                               .toList(),
                         ),
                       ],
@@ -223,66 +221,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                 ]),
               ),
             ),
-            // Expanded(
-            //   flex: 60,
-            //   child: Container(
-            //     margin: EdgeInsets.only(left: 10, right: 10),
-            //     decoration: BoxDecoration(
-            //         //    color: Colors.deepOrange,
-            //         ),
-            //     child: FutureBuilder<List<Map<String, dynamic>>>(
-            //       future: getData(),
-            //       builder: (context, snapshot) {
-            //         if (snapshot.connectionState == ConnectionState.waiting) {
-            //           return Center(child: CircularProgressIndicator());
-            //         } else if (snapshot.hasError) {
-            //           return Center(child: Text("Error: ${snapshot.error}"));
-            //         } else {
-            //           List<Map<String, dynamic>> records = snapshot.data ?? [];
-            //           return ListView.separated(
-            //             itemCount: records.length,
-            //             itemBuilder: (context, index) {
-            //               Map<String, dynamic> record = records[index];
-            //               String medicineName = record['medicineName'];
-            //               String type = record['type'];
-            //               String duration = record['duration'];
-            //               String stDate = record['time'];
-            //
-            //               return Container(
-            //                 decoration: BoxDecoration(
-            //                   color: Colors.deepOrange,
-            //                   borderRadius: BorderRadius.circular(20),
-            //                 ),
-            //                 child: ListTile(
-            //                   title: Text(
-            //                     medicineName,
-            //                     style: TextStyle(
-            //                         fontSize: 18, fontWeight: FontWeight.bold),
-            //                   ),
-            //                   subtitle: Text(type),
-            //                   trailing: Column(
-            //                     children: [
-            //                       Text('Duration: $duration Days'),
-            //                       Text('Remaining : $stDate Days'),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               );
-            //             },
-            //             separatorBuilder: (context, index) {
-            //               return Divider(height: 20);
-            //             },
-            //           );
-            //         }
-            //       },
-            //     ),
-            //   ),
-            // ),
             Expanded(
               flex: 60,
               child: Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
-                decoration: BoxDecoration(),
                 child: FutureBuilder<List<Map<String, dynamic>>>(
                   future: getData(),
                   builder: (context, snapshot) {
@@ -294,18 +236,18 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                       List<Map<String, dynamic>> records = snapshot.data ?? [];
 
                       // Create a map to group ListTile widgets by listoftimes
-                      Map<String, List<Widget>> groupedWidgets = {};
+                      Map<int, List<Widget>> groupedWidgets = {};
 
                       records.forEach((record) {
                         String medicineName = record['medicineName'];
                         String type = record['type'];
                         String duration = record['duration'];
                         String stDate = record['time'];
-                        List<String> times =
-                        List<String>.from(record['listoftimes'] ?? []);
+                        List<int> times =
+                        List<int>.from(record['listoftimes'] ?? []);
 
                         // Create a ListTile for each repetition
-                        for (String time in times) {
+                        for (int time in times) {
                           Widget medicineWidget = Container(
                             decoration: BoxDecoration(
                               color: Colors.deepOrange,
@@ -349,18 +291,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         }
                       });
 
-                      // Sort the map entries based on the listoftimes
-                      List<MapEntry<String, List<Widget>>> sortedEntries =
-                      groupedWidgets.entries.toList()
-                        ..sort((a, b) {
-                          // Implement your sorting logic here
-                          return a.key.compareTo(b.key);
-                        });
-
                       // Extract sorted widgets for display
                       List<Widget> sortedWidgets = [];
-                      for (var entry in sortedEntries) {
-                        sortedWidgets.addAll(entry.value);
+                      List<int> sortedKeys = groupedWidgets.keys.toList()
+                        ..sort();
+
+                      for (var key in sortedKeys) {
+                        sortedWidgets.addAll(groupedWidgets[key]!);
                       }
 
                       return ListView(
@@ -371,13 +308,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                 ),
               ),
             ),
-
-
-
-
-
-
-
           ],
         ),
       ),
