@@ -1,5 +1,5 @@
-import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/Scheduler/widget/schedulerProfile.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -138,19 +138,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               .map(
                                 (date) => GestureDetector(
                               onTap: () {
-                                final Timestamp firebaseTimestamp =
-                                Timestamp.fromMillisecondsSinceEpoch(
-                                    1641555245000);
-                                DateTime dateTime = firebaseTimestamp
-                                    .toDate()
-                                    .toLocal(); // Convert to local time
-                                String formattedDateTime =
-                                DateFormat.yMMMMd()
-                                    .add_jm()
-                                    .format(dateTime);
-                                print(formattedDateTime);
 
-                                print(firebaseTimestamp);
                                 print('Clicked on date');
                               },
                               child: Container(
@@ -245,7 +233,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         List<int> times =
                         List<int>.from(record['listoftimes'] ?? []);
 
-
                         for (int time in times) {
                           Widget medicineWidget = Container(
                             decoration: BoxDecoration(
@@ -272,7 +259,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
                           Widget timeWidget = Container(
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Colors.deepOrange,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: ListTile(
@@ -281,15 +268,30 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                           );
 
 
+                          Widget combinedRow = Container(
+                            margin: EdgeInsets.all(5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 70,
+                                  child: medicineWidget,
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  flex: 30,
+                                  child: timeWidget,
+                                ),
+                              ],
+                            ),
+                          );
+
                           if (!groupedWidgets.containsKey(time)) {
                             groupedWidgets[time] = [];
                           }
 
-                          groupedWidgets[time]!.add(medicineWidget);
-                          groupedWidgets[time]!.add(timeWidget);
+                          groupedWidgets[time]!.add(combinedRow);
                         }
                       });
-
 
                       List<Widget> sortedWidgets = [];
                       List<int> sortedKeys = groupedWidgets.keys.toList()
