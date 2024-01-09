@@ -148,7 +148,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                     color: date.contains(
                                         DateFormat('dd MMM')
                                             .format(DateTime.now()))
-                                        ? Colors.blue
+                                        ? Colors.deepOrange
                                         : Colors.transparent,
                                   ),
                                   borderRadius: BorderRadius.circular(8),

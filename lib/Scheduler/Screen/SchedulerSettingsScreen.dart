@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SchedulerSettingsScreen extends StatefulWidget {
-  const SchedulerSettingsScreen({super.key});
+  const SchedulerSettingsScreen({Key? key}) : super(key: key);
 
   @override
   State<SchedulerSettingsScreen> createState() =>
@@ -15,25 +15,25 @@ class SchedulerSettingsScreen extends StatefulWidget {
 }
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
-
-
   late User currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-
   final TextEditingController newValueController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
-  final TextEditingController durationController =TextEditingController();
+  final TextEditingController durationController = TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController futureDateController = TextEditingController();
-  late final DateTime futureTime;
+  late DateTime futureTime = DateTime.now(); // Initialize futureTime with the current time
 
+  late List<TextEditingController> timeControllers;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
     loadHealthRecordDetails();
+    int timesPerDay = calculateTimesPerDay();
+    timeControllers = List.generate(timesPerDay, (index) => TextEditingController());
   }
 
   Future<void> getCurrentUser() async {
@@ -59,9 +59,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
       if (snapshot.docs.isNotEmpty) {
         var latestRecord = snapshot.docs.first.data();
-        setState(() {
-
-        });
+        setState(() {});
       }
     } catch (e) {
       print("Error loading health record details: $e");
@@ -70,35 +68,39 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
-print(futureTime);
-    Map<String, dynamic> addDetails = {
+    print(futureTime);
+    List<int> pillSchedule = [];
+    for (int i = 0; i < timeControllers.length; i++) {
 
+      int timeValue = int.parse(timeControllers[i].text);
+
+
+      pillSchedule.add(timeValue);
+    }
+
+
+    Map<String, dynamic> addDetails = {
       'medicineName': newValueController.text,
       'type': typeController.text,
       'duration': durationController.text,
       'frequency': frequencyController.text,
-      'validtill':futureTime,
+      'validtill': futureTime,
       'timestamp': FieldValue.serverTimestamp(),
+      'listoftimes':pillSchedule,
+
     };
 
-    // Use add to let Firestore generate a unique document ID
+
     await _firestore
         .collection('users')
         .doc(userID)
         .collection('remindersSet')
         .add(addDetails);
   }
+
   String dropdownvalue = 'Item 1';
 
-
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-    'Item 6'
-  ];
+  var items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'];
 
   var colors = [
     Color(0x5903593f),
@@ -110,12 +112,14 @@ print(futureTime);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => SchedulerScreen()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SchedulerScreen()));
           },
           child: Icon(
             Icons.arrow_back,
@@ -135,7 +139,7 @@ print(futureTime);
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Set Remidners',
+                  'Set Reminders',
                   style: siz31Black(),
                 ),
                 const SizedBox(
@@ -175,7 +179,7 @@ print(futureTime);
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        newValueController.text=newValue!;
+                        newValueController.text = newValue!;
                         dropdownvalue = newValue!;
                       });
                     },
@@ -198,7 +202,6 @@ print(futureTime);
                           margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
                           height: 72,
                           width: 82,
-
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: colors[index],
@@ -245,7 +248,9 @@ print(futureTime);
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xff08346D)),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showTimeDialog();
+                          },
                           child: Icon(Icons.add))
                     ],
                   ),
@@ -253,9 +258,7 @@ print(futureTime);
                 Card(
                   margin: EdgeInsets.fromLTRB(5, 15, 5, 5),
                   elevation: 10,
-                  // height: 200,
-                  // width: double.infinity,
-                  // color: Colors.black,
+
                   child: Container(
                     margin: EdgeInsets.all(20),
                     height: 180,
@@ -270,10 +273,9 @@ print(futureTime);
                               style: siz20Black(),
                             ),
                             CustomDropdown(
-                              items: ['Today', 'Yesterdat'],
+                              items: ['Today', 'Yesterday'],
                               initialValue: 'Today',
-                              onChanged: (String newValue) {
-                              },
+                              onChanged: (String newValue) {},
                             ),
                             Icon(Icons.add),
                           ],
@@ -284,13 +286,13 @@ print(futureTime);
                               'Duration',
                               style: siz20Black(),
                             ),
-                            SizedBox(width: 10,),
-
-
+                            SizedBox(
+                              width: 10,
+                            ),
                             CustomDropdown(
                               items: [
                                 '3',
-                                 '7',
+                                '7',
                                 '10',
                                 '15',
                                 '20',
@@ -302,7 +304,7 @@ print(futureTime);
                               initialValue: '3',
                               onChanged: (value) {
                                 setState(() {
-                                  durationController.text=value;
+                                  durationController.text = value;
                                   calculateDate();
                                 });
                               },
@@ -323,9 +325,15 @@ print(futureTime);
                               ],
                               initialValue: 'Everyday',
                               onChanged: (String? newValue) {
-                              setState(() {
-                                frequencyController.text=newValue!;
-                              });
+                                setState(() {
+                                  frequencyController.text = newValue!;
+                                  int timesPerDay = calculateTimesPerDay();
+                                  timeControllers =
+                                      List.generate(timesPerDay,
+                                              (index) => TextEditingController());
+                                  _showTimeDialog();
+
+                                });
                               },
                             ),
                             Icon(Icons.add),
@@ -362,6 +370,9 @@ print(futureTime);
                         print('pressed');
                         print(futureDateController.text);
                         print(futureTime);
+                        for (int i = 0; i < timeControllers.length; i++) {
+                          print("Time ${i + 1}: ${timeControllers[i].text}");
+                        }
                       },
                       child: Text(
                         "Add Reminders",
@@ -375,12 +386,80 @@ print(futureTime);
       ),
     );
   }
-  void calculateDate(){
-    DateTime currentDate = DateTime.now();
-   int durationInDays = int.parse(durationController.text);
-    DateTime futureDate = currentDate.add(Duration(days: durationInDays));
-    futureTime=futureDate;
 
+  void calculateDate() {
+    DateTime currentDate = DateTime.now();
+    int durationInDays = int.parse(durationController.text);
+    DateTime futureDate = currentDate.add(Duration(days: durationInDays));
+    futureTime = futureDate;
+  }
+
+  Future<void> _showTimeDialog() async {
+    int timesPerDay = calculateTimesPerDay();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select Time'),
+          content: Column(
+            children: List.generate(timesPerDay, (index) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: timeControllers[index],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Time ${index + 1}',
+                        hintText: 'Enter time in 12-hour format',
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: 'AM',
+                      items: ['AM', 'PM'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {},
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'AM/PM',
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  int calculateTimesPerDay() {
+    switch (frequencyController.text) {
+      case 'Everyday':
+        return 1;
+      case 'Twice a Day':
+        return 2;
+      case 'Thrice a Day':
+        return 3;
+      default:
+        return 1;
+    }
   }
 }
-
