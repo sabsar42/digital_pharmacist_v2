@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
   final String diagnosisNumber;
@@ -20,6 +21,10 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   final TextEditingController _summaryController = TextEditingController();
   final TextEditingController _prescriptionController = TextEditingController();
 
+
+  DateTime _dateTime = DateTime.now();
+  late String dateByUser = DateFormat('dd-MM-yyyy').format(_dateTime);
+  late String timeByUser = DateFormat('HH-mm').format(_dateTime) ;
   @override
   void initState() {
     super.initState();
@@ -39,8 +44,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   Future<void> loadHealthRecordData() async {
     String userID = currentUser.uid;
-    String uniqueDiagnosisNumber = widget.diagnosisNumber;
-
     String uniqueID = widget.diagnosisNumber;
 
     try {
@@ -52,11 +55,14 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           .get();
 
       if (documentSnapshot.exists) {
-        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
         setState(() {
           _diagnosisController.text = data['diagnosis'] ?? '';
           _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
           _prescriptionController.text = data['prescribedDrugs'] ?? '';
+          dateByUser = data['date'] ?? '';
+          timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
         });
       }
     } catch (error) {
@@ -69,22 +75,67 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     String uniqueID = widget.diagnosisNumber;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
     Map<String, dynamic> newRecord = {
       'diagnosis': uniqueID,
-      'doctorName': 'Shakib Absar', // Replace with the actual doctor name
-      'hospitalName': 'Shakib Khan Hospital', // Replace with the actual hospital name
+      'doctorName': 'Shakib Absar',
+      'hospitalName': 'Shakib Khan Hospital',
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
       'prescribedDrugs': _prescriptionController.text,
+      'date': dateByUser,
+      'time': timeByUser,
       'timestamp': FieldValue.serverTimestamp(),
     };
 
     await healthRecordsCollection.doc(uniqueID).set(newRecord);
+  }
+
+  void _showDatePicker() async {
+    DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2025),
+    );
+
+    if (date != null) {
+      setState(() {
+        _dateTime = DateTime(
+          date.year,
+          date.month,
+          date.day,
+          _dateTime.hour,
+          _dateTime.minute,
+        );
+        dateByUser =  DateFormat('dd-MM-yyyy').format(_dateTime);
+      });
+    }
+  }
+
+  void _showTimePicker() async {
+    TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (time != null) {
+      setState(() {
+
+        _dateTime = DateTime(
+          _dateTime.year,
+          _dateTime.month,
+          _dateTime.day,
+          time.hour,
+          time.minute,
+        );
+        timeByUser =  DateFormat('HH:mm').format(_dateTime);
+      });
+    }
   }
 
   @override
@@ -102,9 +153,81 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDoctorInfo('Shakib Absar', 'Khan'),
-                  _buildDivider(),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 10.0),
+                  Container(
+                    child: Column(
+                      children: [
+                        Card(
+                          color: Colors.teal.shade200,
+                          child: ListTile(
+                            title: RichText(
+                              text: TextSpan(
+                                text: 'DATE :  ',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:  dateByUser ,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors
+                                          .purple, // Set your desired color here
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.calendar_month,
+                                color: Colors
+                                    .purple, // Set your desired color here
+                              ),
+                              onPressed: _showDatePicker,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          color: Colors.lightGreen.shade400,
+                          child: ListTile(
+                            title: RichText(
+                              text: TextSpan(
+                                text: 'TIME :  ',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: timeByUser,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors
+                                          .purple, // Set your desired color here
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.access_time,
+                                color: Colors
+                                    .purple, // Set your desired color here
+                              ),
+                              onPressed: _showTimePicker,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Text(
                     "Diagnosis",
                     style: TextStyle(
@@ -169,65 +292,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(
-      color: Colors.black,
-      thickness: 1.0,
-    );
-  }
-
-  Widget _buildDoctorInfo(String doctorName, String hospitalName) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12.0),
-      child: Container(
-        color: Color.fromRGBO(241, 229, 246, 1.0),
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/doctor.png'),
-                  radius: 30,
-                ),
-                SizedBox(width: 16.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Shakib Hospital',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Shakib Hospital',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Hospital: $hospitalName',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
             ),
           ],

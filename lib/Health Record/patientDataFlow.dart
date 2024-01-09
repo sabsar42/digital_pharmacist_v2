@@ -6,14 +6,13 @@ class patientDataFlow {
   String? futureAppointmentDate;
   List<String>? additionalNotes;
 
-
   patientDataFlow(
       {this.doctorInformation,
-        this.diagnosis,
-        this.medicalSummary,
-        this.prescribedMedicine,
-        this.futureAppointmentDate,
-        this.additionalNotes});
+      this.diagnosis,
+      this.medicalSummary,
+      this.prescribedMedicine,
+      this.futureAppointmentDate,
+      this.additionalNotes});
 
   patientDataFlow.fromJson(Map<String, dynamic> json) {
     doctorInformation = json['doctorInformation'] != null
@@ -104,10 +103,10 @@ class MedicalSummary {
 
   MedicalSummary(
       {this.height,
-        this.weight,
-        this.bloodPressure,
-        this.pulse,
-        this.temperature});
+      this.weight,
+      this.bloodPressure,
+      this.pulse,
+      this.temperature});
 
   MedicalSummary.fromJson(Map<String, dynamic> json) {
     height = json['height'];

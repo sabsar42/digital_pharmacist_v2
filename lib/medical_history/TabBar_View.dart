@@ -1,4 +1,4 @@
-import 'package:digi_pharma_app_test/medical_history/EHR_First_Screen.dart';
+
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
 import 'package:digi_pharma_app_test/medical_history/PDF_Screen.dart';
 import 'package:flutter/gestures.dart';
@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 import 'BookMark_List_Screen.dart';
+import 'EHR_First_Screen.dart';
+
 
 
 class TabBarScreen extends StatefulWidget {

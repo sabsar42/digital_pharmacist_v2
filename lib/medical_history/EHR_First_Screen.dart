@@ -81,7 +81,7 @@ class EHRScreen extends StatelessWidget {
         child: Stack(
           children: [
             const Positioned(
-                 top: 9.0,
+                top: 9.0,
                 right: 5.0,
                 child: Row(
                   children: [

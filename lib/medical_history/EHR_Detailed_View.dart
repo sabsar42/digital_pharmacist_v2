@@ -26,12 +26,12 @@ class EHRArticleDetailScreen extends StatelessWidget {
           },
         ),
         title: Text('EHR Detail',
-        style: TextStyle(
-          color: Color.fromRGBO(124, 67, 166, 1.0),
-        )
+            style: TextStyle(
+              color: Color.fromRGBO(124, 67, 166, 1.0),
+            )
         ),
         backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-         ),
+      ),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: <Widget>[
