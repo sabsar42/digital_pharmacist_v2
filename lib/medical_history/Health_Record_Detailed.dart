@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../Scheduler/widget/settingsDropdown.dart';
+
 class HealthRecordDetailScreen extends StatefulWidget {
   final String diagnosisNumber;
 
@@ -20,11 +22,13 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   final TextEditingController _diagnosisController = TextEditingController();
   final TextEditingController _summaryController = TextEditingController();
   final TextEditingController _prescriptionController = TextEditingController();
-
+  final TextEditingController _diagnosisTypeController =
+      TextEditingController();
 
   DateTime _dateTime = DateTime.now();
-  late String dateByUser ='';
-  late String timeByUser='';
+  late String dateByUser = '';
+  late String timeByUser = '';
+
   @override
   void initState() {
     super.initState();
@@ -61,6 +65,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           _diagnosisController.text = data['diagnosis'] ?? '';
           _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
           _prescriptionController.text = data['prescribedDrugs'] ?? '';
+          _diagnosisTypeController.text = data['diagnosisType'] ?? '';
           dateByUser = data['date'] ?? '';
           timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
         });
@@ -81,12 +86,13 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             .collection('healthRecords');
 
     Map<String, dynamic> newRecord = {
-      'diagnosis': uniqueID,
+      'diagnosisNumber': uniqueID,
       'doctorName': 'Shakib Absar',
       'hospitalName': 'Shakib Khan Hospital',
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
       'prescribedDrugs': _prescriptionController.text,
+      'diagnosisType': _diagnosisTypeController.text,
       'date': dateByUser,
       'time': timeByUser,
       'timestamp': FieldValue.serverTimestamp(),
@@ -112,7 +118,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           _dateTime.hour,
           _dateTime.minute,
         );
-        dateByUser =  DateFormat('dd-MM-yyyy').format(_dateTime);
+        dateByUser = DateFormat('dd-MM-yyyy').format(_dateTime);
       });
     }
   }
@@ -125,7 +131,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
     if (time != null) {
       setState(() {
-
         _dateTime = DateTime(
           _dateTime.year,
           _dateTime.month,
@@ -133,7 +138,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           time.hour,
           time.minute,
         );
-        timeByUser =  DateFormat('HH:mm').format(_dateTime);
+        timeByUser = DateFormat('HH:mm').format(_dateTime);
       });
     }
   }
@@ -154,80 +159,55 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10.0),
-                  Container(
-                    child: Column(
-                      children: [
-                        Card(
-                          color: Colors.teal.shade200,
-                          child: ListTile(
-                            title: RichText(
-                              text: TextSpan(
-                                text: 'DATE :  ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text:  dateByUser ,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors
-                                          .purple, // Set your desired color here
-                                    ),
+                  DateTimebyUser,
+                  Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        height: 70, // Adjust the height as needed
+
+                        child: Card(
+                          color: Colors.brown.shade200,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Diagnosis Type : ',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ],
-                              ),
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.calendar_month,
-                                color: Colors
-                                    .purple, // Set your desired color here
-                              ),
-                              onPressed: _showDatePicker,
+                                ),
+                                SizedBox(width: 60),
+                                Expanded(
+                                  child: CustomDropdown(
+                                    items: [
+                                      'Operation',
+                                      'Check-Up',
+                                      'Fever',
+                                      'Lab Test'
+                                    ],
+                                    initialValue: _diagnosisTypeController.text ,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        _diagnosisTypeController.text = newValue!;
+
+                                      });
+                                    },
+
+
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        Card(
-                          color: Colors.lightGreen.shade400,
-                          child: ListTile(
-                            title: RichText(
-                              text: TextSpan(
-                                text: 'TIME :  ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: timeByUser,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors
-                                          .purple, // Set your desired color here
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.access_time,
-                                color: Colors
-                                    .purple, // Set your desired color here
-                              ),
-                              onPressed: _showTimePicker,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      )),
                   Text(
                     "Diagnosis",
                     style: TextStyle(
@@ -297,6 +277,107 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Container get DateTimebyUser {
+    return Container(
+      child: Column(
+        children: [
+          Card(
+            color: Colors.teal.shade200,
+            child: ListTile(
+              title: RichText(
+                text: TextSpan(
+                  text: 'DATE :  ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: dateByUser,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.purple, // Set your desired color here
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.calendar_month,
+                  color: Colors.purple, // Set your desired color here
+                ),
+                onPressed: _showDatePicker,
+              ),
+            ),
+          ),
+          Card(
+            color: Colors.teal.shade200,
+            child: ListTile(
+              title: RichText(
+                text: TextSpan(
+                  text: 'TIME :  ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: timeByUser,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.purple, // Set your desired color here
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.access_time,
+                  color: Colors.purple, // Set your desired color here
+                ),
+                onPressed: _showTimePicker,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+  }
+
+}
+
+class CustomDropdown extends StatelessWidget {
+  final List<String> items;
+  final String? initialValue;
+  final Function(String?) onChanged;
+
+  CustomDropdown({
+    required this.items,
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      items: items.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      value: items.contains(initialValue) ? initialValue : null,
+      onChanged: onChanged,
     );
   }
 }
