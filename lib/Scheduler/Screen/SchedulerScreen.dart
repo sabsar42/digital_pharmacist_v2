@@ -46,7 +46,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       result.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-        // Handling null values with default values
+
         String medicineName = data['medicineName'] ?? 'Unknown Medicine';
         String type = data['type'] ?? 'Unknown Type';
         String duration = data['duration'] ?? 'Unknown Duration';
@@ -103,7 +103,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
   String formatTime(int time) {
     int formattedTime = time % 12;
     if (formattedTime == 0) {
-      formattedTime = 12; // Set 12 PM for times like 12, 24, etc.
+      formattedTime = 12;
     }
     String period = time >= 12 ? 'PM' : 'AM';
     return '$formattedTime $period';
