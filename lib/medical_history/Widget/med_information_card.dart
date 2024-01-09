@@ -15,7 +15,7 @@ class MedInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.pink.shade50,
+      color: Colors.deepPurple.shade50,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
