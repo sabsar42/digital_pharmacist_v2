@@ -401,54 +401,82 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Select Time'),
-          content: Column(
-            children: List.generate(timesPerDay, (index) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: timeControllers[index],
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Time ${index + 1}',
-                        hintText: 'Enter time in 12-hour format',
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: 'AM',
-                      items: ['AM', 'PM'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
+          backgroundColor: Colors.yellow,
 
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        if (value == 'PM') {
-                          timeControllers[index].text = (int.parse(timeControllers[index].text) + 12).toString();
-                        }
+          title: Text('Select Pill Schedule'),
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
 
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'AM/PM',
+                  children: List.generate(timesPerDay, (index) {
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: timeControllers[index],
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'Time ${index + 1}',
+                                fillColor: colors[index],
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: DropdownButtonFormField<String>(
+                              value: 'AM',
+                              items: ['AM', 'PM'].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? value) {
+                                if (value == 'PM') {
+                                  timeControllers[index].text = (int.parse(timeControllers[index].text) + 12).toString();
+                                }
+
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'AM/PM',
+                              ),
+                            ),
+                          ),
+                        ],
+
                       ),
-                    ),
-                  ),
-                ],
-              );
-            }),
+                    );
+                  }),
+                ),
+                Text('NB: After Selecting AM/PM time will automatic generated in 24hr time format!!'),
+              ],
+            ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: Text('Cancel')),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
             ),
           ],
         );
