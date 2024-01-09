@@ -423,10 +423,16 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       items: ['AM', 'PM'].map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
+
                           child: Text(value),
                         );
                       }).toList(),
-                      onChanged: (String? value) {},
+                      onChanged: (String? value) {
+                        if (value == 'PM') {
+                          timeControllers[index].text = (int.parse(timeControllers[index].text) + 12).toString();
+                        }
+
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'AM/PM',
