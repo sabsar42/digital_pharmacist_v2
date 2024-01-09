@@ -21,6 +21,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
   bool isAddingRecord = false;
   List<HealthRecord> records = [];
 
+
   @override
   void initState() {
     super.initState();
@@ -88,7 +89,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
         await healthRecordsCollection.get();
 
     int firstuniqueDiagnosisNumber = querySnapshot.size;
-    int uniqueDiagnosisNumber =firstuniqueDiagnosisNumber+1;
+    int uniqueDiagnosisNumber = firstuniqueDiagnosisNumber + 1;
 
     String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
 
@@ -163,8 +164,14 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
         splashColor: Colors.purple,
         backgroundColor: Colors.white70,
         onPressed: () async {
+          String uniqueDocID = (records.length+1).toString();
           await addHealthRecord();
           await fetchHealthRecords();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      TabBarScreen(uniqueDocID: uniqueDocID.toString())));
           setState(() {});
         },
       ),
@@ -193,4 +200,3 @@ class HealthRecord {
     required this.time,
   });
 }
-
