@@ -25,7 +25,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   final TextEditingController _diagnosisController = TextEditingController();
   final TextEditingController _summaryController = TextEditingController();
-  final TextEditingController prescribedMedicineController = TextEditingController();
+  final TextEditingController prescribedMedicineController =
+      TextEditingController();
   final TextEditingController _doctorNameController = TextEditingController();
   final TextEditingController _specializationController =
       TextEditingController();
@@ -54,6 +55,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     }
   }
 
+  List<dynamic> prescribedMedicines = [];
+
   Future<void> loadHealthRecordData() async {
     String userID = currentUser.uid;
     String uniqueID = widget.diagnosisNumber;
@@ -69,16 +72,24 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
+
         setState(() {
           _diagnosisController.text = data['diagnosis'] ?? '';
           _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
-          prescribedMedicineController.text = data['prescribedDrugs'] ?? '';
           _diagnosisTypeController.text = data['diagnosisType'] ?? '';
           _doctorNameController.text = data['doctorName'] ?? '';
           _specializationController.text = data['doctor_specialization'] ?? '';
           _hospitalNameController.text = data['hospitalName'] ?? '';
           dateByUser = data['date'] ?? '';
           timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
+
+          prescribedMedicines = data['prescribedDrugs'];
+          if (prescribedMedicines != null) {
+            prescribedMedicineController.text = prescribedMedicines.join(', ');
+           // prescribedMedicineController.text = prescribedMedicines.join('\n') ;
+          } else {
+            prescribedMedicineController.text = '';
+          }
         });
       }
     } catch (error) {
@@ -96,6 +107,11 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             .doc(userID)
             .collection('healthRecords');
 
+    List<String> prescribedMedicines = prescribedMedicineController.text
+        .split(',')
+        .where((medicine) => medicine.isNotEmpty)
+        .toList();
+
     Map<String, dynamic> newRecord = {
       'diagnosisNumber': uniqueID,
       'doctorName': _doctorNameController.text,
@@ -103,7 +119,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       'hospitalName': _hospitalNameController.text,
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
-      'prescribedDrugs': prescribedMedicineController.text,
+      'prescribedDrugs': prescribedMedicines,
       'diagnosisType': _diagnosisTypeController.text,
       'date': dateByUser,
       'time': timeByUser,
@@ -169,21 +185,66 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               diagnosisTypeDropDown(),
               SizedBox(height: 1.0),
               DoctorHospitalInformation(
-                  doctorNameController: _doctorNameController,
-                  specializationController: _specializationController,
-                  hospitalNameController: _hospitalNameController),
+                doctorNameController: _doctorNameController,
+                specializationController: _specializationController,
+                hospitalNameController: _hospitalNameController,
+              ),
               MedInfoCard(
                 diagnosisController: _diagnosisController,
                 title: 'DIAGNOSIS',
-              ), MedInfoCard(
+              ),
+              MedInfoCard(
                 diagnosisController: prescribedMedicineController,
                 title: 'Medicines',
-              ), MedInfoCard(
+              ),
+              MedInfoCard(
                 diagnosisController: _summaryController,
                 title: 'Summary of Diagnosis',
               ),
               SizedBox(height: 16.0),
-
+              if (prescribedMedicines.isNotEmpty)
+                Card(
+                  color: Colors.teal.shade50,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "| Prescribed Medicines",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        ListView.builder(
+                          itemExtent: 37.0,
+                          shrinkWrap: true,
+                          itemCount: prescribedMedicines.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                radius: 12,
+                                child: Text('${index + 1}'),
+                              ),
+                              title: Text(
+                                prescribedMedicines[index],
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -318,5 +379,3 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     );
   }
 }
-
-
