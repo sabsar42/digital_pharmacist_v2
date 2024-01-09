@@ -23,8 +23,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
 
   DateTime _dateTime = DateTime.now();
-  late String dateByUser = DateFormat('dd-MM-yyyy').format(_dateTime);
-  late String timeByUser = DateFormat('HH-mm').format(_dateTime) ;
+  late String dateByUser ='';
+  late String timeByUser='';
   @override
   void initState() {
     super.initState();
