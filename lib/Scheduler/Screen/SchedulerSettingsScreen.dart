@@ -23,7 +23,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController futureDateController = TextEditingController();
-  late DateTime futureTime = DateTime.now(); // Initialize futureTime with the current time
+  late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
 
