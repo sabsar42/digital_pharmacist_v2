@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
+import 'package:digi_pharma_app_test/medical_history/screens/health_record_card_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +42,13 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await healthRecordsCollection.get();
+        await healthRecordsCollection.get();
 
     List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -56,10 +57,12 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
       return HealthRecord(
         docID: docID,
         diagnosisNumber: docID[docID.length - 1],
+        diagnosisType: data['diagnosisType'].toString(),
         doctorName: data['doctorName'].toString(),
+        specialization: data['doctor_specialization'].toString(),
         hospitalName: data['hospitalName'].toString(),
         date: data['date'].toString(),
-        timeline: data['timeline'].toString(),
+        time: data['time'].toString(),
       );
     }).toList();
 
@@ -76,15 +79,16 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     String userID = currentUser.uid;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('healthRecords');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await healthRecordsCollection.get();
+        await healthRecordsCollection.get();
 
-    int uniqueDiagnosisNumber = querySnapshot.size;
+    int firstuniqueDiagnosisNumber = querySnapshot.size;
+    int uniqueDiagnosisNumber =firstuniqueDiagnosisNumber+1;
 
     String uniqueID = '$userID+${uniqueDiagnosisNumber.toString()}';
 
@@ -120,8 +124,10 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios,
-              color: Color.fromRGBO(6, 36, 59, 1.0),)),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color.fromRGBO(6, 36, 59, 1.0),
+            )),
         elevation: 10,
         centerTitle: true,
         backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
@@ -141,15 +147,15 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
           },
           child: isAddingRecord
               ? Center(
-            child: CircularProgressIndicator(),
-          )
+                  child: CircularProgressIndicator(),
+                )
               : TransformableListView.builder(
-            getTransformMatrix: getTransformMatrix,
-            itemCount: records.length,
-            itemBuilder: (context, index) {
-              return HealthRecordCard(record: records[index]);
-            },
-          ),
+                  getTransformMatrix: getTransformMatrix,
+                  itemCount: records.length,
+                  itemBuilder: (context, index) {
+                    return HealthRecordCard(record: records[index]);
+                  },
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -169,143 +175,22 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
 class HealthRecord {
   final String docID;
   final String diagnosisNumber;
+  final String diagnosisType;
   final String doctorName;
+  final String specialization;
   final String hospitalName;
   final String date;
-  final String timeline;
+  final String time;
 
   HealthRecord({
     required this.docID,
     required this.diagnosisNumber,
+    required this.diagnosisType,
     required this.doctorName,
+    required this.specialization,
     required this.hospitalName,
     required this.date,
-    required this.timeline,
+    required this.time,
   });
 }
 
-class HealthRecordCard extends StatelessWidget {
-  final HealthRecord record;
-
-  HealthRecordCard({required this.record});
-
-  @override
-  Widget build(BuildContext context) {
-    final customColor = Color.fromRGBO(8, 52, 109, 1.0);
-
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TabBarScreen(uniqueDocID: record.docID),
-          ),
-        );
-      },
-      child: Card(
-        shadowColor: Color.fromRGBO(199, 126, 252, 1.0),
-        margin: EdgeInsets.all(10.0),
-        color: customColor,
-        elevation: 30,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(19.0),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            image: DecorationImage(
-              image: AssetImage(
-                "assets/images/card_background.png",
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(35.0),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Diagnosis Number: ${record.diagnosisNumber}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Date: ${record.date}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage:
-                          AssetImage('assets/images/doctor.png'),
-                          radius: 30,
-                        ),
-                        SizedBox(width: 16.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              record.doctorName,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              record.hospitalName,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        'Timeline: ${record.timeline}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 0.0,
-                      right: 8.0,
-                      child: Icon(
-                        Icons.link,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
