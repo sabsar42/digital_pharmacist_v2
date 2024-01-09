@@ -100,6 +100,15 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
     return upComingDays;
   }
 
+  String formatTime(int time) {
+    int formattedTime = time % 12;
+    if (formattedTime == 0) {
+      formattedTime = 12; // Set 12 PM for times like 12, 24, etc.
+    }
+    String period = time >= 12 ? 'PM' : 'AM';
+    return '$formattedTime $period';
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> last7Days = _generateLast7Days();
@@ -138,7 +147,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               .map(
                                 (date) => GestureDetector(
                               onTap: () {
-
                                 print('Clicked on date');
                               },
                               child: Container(
@@ -232,6 +240,14 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String stDate = record['time'];
                         List<int> times =
                         List<int>.from(record['listoftimes'] ?? []);
+                        List<String> amPm = [];
+                        for (int i = 0; i < times.length; i++) {
+                          if (times[i] > 12) {
+                            amPm.add('${times[i] - 12}PM');
+                          } else {
+                            amPm.add('${times[i]}AM');
+                          }
+                        }
 
                         for (int time in times) {
                           Widget medicineWidget = Container(
@@ -263,10 +279,9 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: ListTile(
-                              title: Text('Time: $time'),
+                              title: Text('${formatTime(time)}'),
                             ),
                           );
-
 
                           Widget combinedRow = Container(
                             margin: EdgeInsets.all(5),

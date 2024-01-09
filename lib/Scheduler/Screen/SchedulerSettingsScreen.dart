@@ -164,11 +164,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   height: 44,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: Colors.amberAccent,
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(color: Color(0xff040359), width: 2)),
                   child: DropdownButton(
                     value: dropdownvalue,
+                    dropdownColor: Colors.yellow,
+                    borderRadius: BorderRadius.circular(30),
                     elevation: 0,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     items: items.map((String items) {
@@ -210,51 +212,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         );
                       }),
                 ),
-                Text(
-                  'Time & Schedule',
-                  style: size25Black(),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        height: 30,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.green,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        height: 30,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.yellow,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        height: 30,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.deepOrangeAccent,
-                        ),
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff08346D)),
-                          onPressed: () {
-                            _showTimeDialog();
-                          },
-                          child: Icon(Icons.add))
-                    ],
-                  ),
-                ),
+
                 Card(
                   margin: EdgeInsets.fromLTRB(5, 15, 5, 5),
                   elevation: 10,
@@ -352,6 +310,51 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                   ),
                 ),
+                // Text(
+                //   'Time & Schedule',
+                //   style: size25Black(),
+                // ),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         margin: EdgeInsets.all(10),
+                //         height: 30,
+                //         width: 100,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(15),
+                //           color: Colors.green,
+                //         ),
+                //       ),
+                //       Container(
+                //         margin: EdgeInsets.all(10),
+                //         height: 30,
+                //         width: 100,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(15),
+                //           color: Colors.yellow,
+                //         ),
+                //       ),
+                //       Container(
+                //         margin: EdgeInsets.all(10),
+                //         height: 30,
+                //         width: 100,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(15),
+                //           color: Colors.deepOrangeAccent,
+                //         ),
+                //       ),
+                //       ElevatedButton(
+                //           style: ElevatedButton.styleFrom(
+                //               backgroundColor: Color(0xff08346D)),
+                //           onPressed: () {
+                //             _showTimeDialog();
+                //           },
+                //           child: Icon(Icons.add))
+                //     ],
+                //   ),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
