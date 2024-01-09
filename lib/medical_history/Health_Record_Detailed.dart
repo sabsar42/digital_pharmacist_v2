@@ -3,7 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../Health Record/patientDataFlow.dart';
 import '../Scheduler/widget/settingsDropdown.dart';
+import 'Widget/doctor_information.dart';
+import 'Widget/med_information_card.dart';
+import 'Widget/my_custom_dropdown.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
   final String diagnosisNumber;
@@ -21,7 +25,11 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   final TextEditingController _diagnosisController = TextEditingController();
   final TextEditingController _summaryController = TextEditingController();
-  final TextEditingController _prescriptionController = TextEditingController();
+  final TextEditingController prescribedMedicineController = TextEditingController();
+  final TextEditingController _doctorNameController = TextEditingController();
+  final TextEditingController _specializationController =
+      TextEditingController();
+  final TextEditingController _hospitalNameController = TextEditingController();
   final TextEditingController _diagnosisTypeController =
       TextEditingController();
 
@@ -64,8 +72,11 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         setState(() {
           _diagnosisController.text = data['diagnosis'] ?? '';
           _summaryController.text = data['summaryOfMedicalRecord'] ?? '';
-          _prescriptionController.text = data['prescribedDrugs'] ?? '';
+          prescribedMedicineController.text = data['prescribedDrugs'] ?? '';
           _diagnosisTypeController.text = data['diagnosisType'] ?? '';
+          _doctorNameController.text = data['doctorName'] ?? '';
+          _specializationController.text = data['doctor_specialization'] ?? '';
+          _hospitalNameController.text = data['hospitalName'] ?? '';
           dateByUser = data['date'] ?? '';
           timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
         });
@@ -87,11 +98,12 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
     Map<String, dynamic> newRecord = {
       'diagnosisNumber': uniqueID,
-      'doctorName': 'Shakib Absar',
-      'hospitalName': 'Shakib Khan Hospital',
+      'doctorName': _doctorNameController.text,
+      'doctor_specialization': _specializationController.text,
+      'hospitalName': _hospitalNameController.text,
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
-      'prescribedDrugs': _prescriptionController.text,
+      'prescribedDrugs': prescribedMedicineController.text,
       'diagnosisType': _diagnosisTypeController.text,
       'date': dateByUser,
       'time': timeByUser,
@@ -147,134 +159,87 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 700,
-              color: Color.fromRGBO(255, 255, 255, 1.0),
-              margin: EdgeInsets.all(1.0),
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  DateTimebyUser,
-                  Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        height: 70, // Adjust the height as needed
-
-                        child: Card(
-                          color: Colors.brown.shade200,
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Diagnosis Type : ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(width: 60),
-                                Expanded(
-                                  child: CustomDropdown(
-                                    items: [
-                                      'Operation',
-                                      'Check-Up',
-                                      'Fever',
-                                      'Lab Test'
-                                    ],
-                                    initialValue: _diagnosisTypeController.text ,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        _diagnosisTypeController.text = newValue!;
-
-                                      });
-                                    },
-
-
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )),
-                  Text(
-                    "Diagnosis",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    maxLines: null,
-                    controller: _diagnosisController,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    "Summary of the whole History",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    maxLines: null,
-                    controller: _summaryController,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    "Prescribed Medicine",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    maxLines: null,
-                    controller: _prescriptionController,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      addHealthRecordDetails();
-                    },
-                    child: Text("SAVE"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                    ),
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10.0),
+              DateTimebyUser,
+              diagnosisTypeDropDown(),
+              SizedBox(height: 1.0),
+              DoctorHospitalInformation(
+                  doctorNameController: _doctorNameController,
+                  specializationController: _specializationController,
+                  hospitalNameController: _hospitalNameController),
+              MedInfoCard(
+                diagnosisController: _diagnosisController,
+                title: 'DIAGNOSIS',
+              ), MedInfoCard(
+                diagnosisController: prescribedMedicineController,
+                title: 'Medicines',
+              ), MedInfoCard(
+                diagnosisController: _summaryController,
+                title: 'Summary of Diagnosis',
               ),
+              SizedBox(height: 16.0),
+
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  addHealthRecordDetails();
+                },
+                child: Text("SAVE"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding diagnosisTypeDropDown() {
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: Container(
+        height: 70, // Adjust the height as needed
+
+        child: Card(
+          color: Colors.brown.shade200,
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Diagnosis Type : ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 60),
+                Expanded(
+                  child: MyCustomDropdown(
+                    items: ['Operation', 'Check-Up', 'Fever', 'Lab Test'],
+                    initialValue: _diagnosisTypeController.text,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _diagnosisTypeController.text = newValue!;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -285,7 +250,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       child: Column(
         children: [
           Card(
-            color: Colors.teal.shade200,
+            color: Colors.green.shade100,
             child: ListTile(
               title: RichText(
                 text: TextSpan(
@@ -317,7 +282,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             ),
           ),
           Card(
-            color: Colors.teal.shade200,
+            color: Colors.green.shade100,
             child: ListTile(
               title: RichText(
                 text: TextSpan(
@@ -351,33 +316,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         ],
       ),
     );
-
-  }
-
-}
-
-class CustomDropdown extends StatelessWidget {
-  final List<String> items;
-  final String? initialValue;
-  final Function(String?) onChanged;
-
-  CustomDropdown({
-    required this.items,
-    required this.initialValue,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      items: items.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      value: items.contains(initialValue) ? initialValue : null,
-      onChanged: onChanged,
-    );
   }
 }
+
+
