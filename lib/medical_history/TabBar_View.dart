@@ -1,11 +1,12 @@
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Screen.dart';
 import 'package:digi_pharma_app_test/medical_history/PDF_Screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'BookMark_List_Screen.dart';
-import 'EHR_First_Screen.dart';
+import 'EHR Record/screens/EHR_First_Screen.dart';
+
 
 class TabBarScreen extends StatefulWidget {
   final String uniqueDocID;

@@ -9,7 +9,7 @@ import '../Google Berd/BardHomePage.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
 import '../User_Profile/UserProfile.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
-import '../medical_history/Health_Record_Screen.dart';
+import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import '../style.dart';
 import 'dashboard_appbar.dart';

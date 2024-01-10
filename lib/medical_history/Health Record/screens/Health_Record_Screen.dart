@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
-import 'package:digi_pharma_app_test/medical_history/screens/health_record_card_view.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/health_record_card_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
-import 'TabBar_View.dart';
-import 'TranformableListView_Packagea_Method.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
+import '../../TabBar_View.dart';
+import '../widget/TranformableListView_Packagea_Method.dart';
 
 class HealthRecordScreen extends StatefulWidget {
   HealthRecordScreen({Key? key});

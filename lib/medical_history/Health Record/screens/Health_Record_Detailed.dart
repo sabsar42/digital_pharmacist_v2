@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../Health Record/patientDataFlow.dart';
-import '../Scheduler/widget/settingsDropdown.dart';
-import 'Widget/doctor_information.dart';
-import 'Widget/med_information_card.dart';
-import 'Widget/my_custom_dropdown.dart';
+import '../../../Health Record/patientDataFlow.dart';
+import '../../../Scheduler/widget/settingsDropdown.dart';
+import '../Widget/doctor_information.dart';
+import '../Widget/med_information_card.dart';
+import '../Widget/my_custom_dropdown.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
   final String diagnosisNumber;

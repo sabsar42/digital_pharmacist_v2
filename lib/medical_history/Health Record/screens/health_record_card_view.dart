@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Health_Record_Screen.dart';
-import '../TabBar_View.dart';
+import 'Health_Record_Screen.dart';
+import '../../TabBar_View.dart';
 
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
