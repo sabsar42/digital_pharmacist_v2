@@ -64,10 +64,12 @@ dependencies:
   firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
   cloud_firestore: ^4.13.6
+  firebase_storage: ^11.6.0
   table_calendar: ^3.0.9
   flutter_calendar_carousel: ^2.4.2
   date_format: ^2.0.0
-  firebase_storage: ^11.6.0
+  file_picker: ^6.1.1
+
 
 
 

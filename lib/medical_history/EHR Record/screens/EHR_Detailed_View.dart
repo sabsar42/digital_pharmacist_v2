@@ -1,110 +1,115 @@
+import 'dart:io';
+
+import 'package:date_format/date_format.dart';
+import 'package:digi_pharma_app_test/medical_history/EHR%20Record/widget/image_upload.dart';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../widget/PopBup_Menu_Three_Button_Functions_Screen.dart';
+import 'EHR_Detailed_View.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'EHR_First_Screen.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:popover/popover.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
+import 'package:flutter/material.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
-class EHRArticleDetailScreen extends StatelessWidget {
+class EHRArticleDetailScreen extends StatefulWidget {
   final String folderName;
 
   EHRArticleDetailScreen({required this.folderName});
 
   @override
-  Widget build(BuildContext context) {
-    // Dummy data for the report analysis, numbers, and diagnosis values
-    final String reportAnalysis = 'This is a sample report analysis.';
-    final int patientAge = 35;
-    final double cholesterolLevel = 170.5;
-    final String diagnosis = 'Hypertension';
+  State<EHRArticleDetailScreen> createState() => _EHRArticleDetailScreenState();
+}
 
+class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
+  late User currentUser;
+  String? userID;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+        userID = currentUser.uid;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Color.fromRGBO(124, 67, 166, 1.0),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+        appBar: ehrAppbar(context),
+        body: Center(
+          child: Column(
+            children: [
+              Icon(
+                Icons.folder,
+                size: 80.0,
+                color: Color.fromRGBO(37, 83, 147, 0.7215686274509804),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                widget.folderName,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          title: Text('EHR Detail',
-              style: TextStyle(
-                color: Color.fromRGBO(124, 67, 166, 1.0),
-              )),
-          backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-        ),
-        body: ListView(
-          padding: EdgeInsets.all(16.0),
-          children: <Widget>[
-            Center(
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.folder,
-                    size: 80.0,
-                    color: Color.fromRGBO(37, 83, 147, 0.7215686274509804),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    folderName,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Report Analysis:',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              reportAnalysis,
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Patient Information:',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Age: $patientAge years',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            Text(
-              'Cholesterol Level: $cholesterolLevel mg/dL',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            Text(
-              'Diagnosis: $diagnosis',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-          ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ImageUpload(
+                          userID: userID,
+                          folderName: widget.folderName,
+                        )));
+          },
           backgroundColor: Colors.purple.shade300,
           child: Container(
-
             width: 100,
             child: Icon(Icons.upload_outlined, size: 30, color: Colors.white),
           ),
-        )
+        ));
+  }
+
+  AppBar ehrAppbar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Color.fromRGBO(124, 67, 166, 1.0),
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      title: Text('EHR Detail',
+          style: TextStyle(
+            color: Color.fromRGBO(124, 67, 166, 1.0),
+          )),
+      backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
     );
   }
 }

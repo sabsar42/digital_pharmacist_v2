@@ -1,4 +1,6 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../widget/PopBup_Menu_Three_Button_Functions_Screen.dart';
 import 'EHR_Detailed_View.dart';
 
@@ -15,10 +17,21 @@ import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Hea
 import 'package:flutter/material.dart';
 
 
-class EHRScreen extends StatelessWidget {
+class EHRScreen extends StatefulWidget {
   final String diagnosisNumberfromPrev;
 
   EHRScreen({required this.diagnosisNumberfromPrev});
+
+  @override
+  State<EHRScreen> createState() => _EHRScreenState();
+}
+
+class _EHRScreenState extends State<EHRScreen> {
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
