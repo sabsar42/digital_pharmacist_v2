@@ -191,22 +191,30 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                   SizedBox(
                     width: 8,
                   ),
-                  CircleAvatar(
-                    backgroundColor: isCompleted ? Colors.green : Colors.grey,
-                    radius: 18,
-                    child: IconButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
+                  Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.yellowAccent,
+                          width: 2,
+                        )),
+                    child: CircleAvatar(
+                      backgroundColor: isCompleted ? Colors.green : Colors.grey,
+                      radius: 18,
+                      child: IconButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple,
+                        ),
+                        icon: Icon(
+                          Icons.done_outline_rounded,
+                          color: isCompleted ? Colors.white : Colors.black45,
+                          size: 22,
+                        ),
+                        onPressed: () {
+                          isCompleted = !isCompleted;
+                          setState(() {});
+                        },
                       ),
-                      icon: Icon(
-                        Icons.done_outline_rounded,
-                        color: isCompleted ? Colors.white : Colors.black45,
-                        size: 22,
-                      ),
-                      onPressed: () {
-                        isCompleted = !isCompleted;
-                        setState(() {});
-                      },
                     ),
                   ),
                   SizedBox(
@@ -352,7 +360,11 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       child: Column(
         children: [
           Card(
-            color: Colors.green.shade100,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.teal.shade500, width: 1),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Colors.white70,
             child: ListTile(
               title: RichText(
                 text: TextSpan(
@@ -384,7 +396,11 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             ),
           ),
           Card(
-            color: Colors.green.shade100,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.teal.shade500, width: 1),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Colors.white70,
             child: ListTile(
               title: RichText(
                 text: TextSpan(
