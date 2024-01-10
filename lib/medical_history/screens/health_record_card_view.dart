@@ -132,11 +132,12 @@ class HealthRecordCard extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor:
                         record.isCompleted ? Colors.green : Colors.grey,
-                    radius: 16
-                    ,
+                    radius: 16,
                     child: Icon(
-                      Icons.done,
-                      color: record.isCompleted ? Colors.white : Colors.black45,
+                      Icons.done_outline_rounded,
+                      color: record.isCompleted
+                          ? Colors.white
+                          : Colors.black45,
                       size: 20,
                     ),
                   ),

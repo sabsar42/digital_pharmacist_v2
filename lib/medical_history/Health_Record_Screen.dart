@@ -63,7 +63,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
         specialization: data['doctor_specialization'].toString(),
         hospitalName: data['hospitalName'].toString(),
         date: data['date'].toString(),
-        isCompleted: data['isCompleted'],
+        isCompleted: data['isCompleted'] ?? false,
         time: data['time'].toString(),
       );
     }).toList();
