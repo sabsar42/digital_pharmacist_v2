@@ -57,24 +57,43 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: ehrAppbar(context),
-        body: Center(
-          child: Column(
-            children: [
-              Icon(
-                Icons.folder,
-                size: 80.0,
-                color: Color.fromRGBO(37, 83, 147, 0.7215686274509804),
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                widget.folderName,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(userID)
+              .collection("ehr_folders")
+              .doc(widget.folderName)
+              .collection('${widget.folderName}_images')
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(
+                child: Text('No EHR File Uploaded'),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String url = snapshot.data!.docs[index]['downloadURL'];
+                  return Image.network(
+                    url,
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  );
+                },
+              );
+            }
+          },
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

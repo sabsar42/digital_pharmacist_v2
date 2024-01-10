@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widget/PopBup_Menu_Three_Button_Functions_Screen.dart';
@@ -16,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
 
-
 class EHRScreen extends StatefulWidget {
   final String diagnosisNumberfromPrev;
 
@@ -27,38 +25,46 @@ class EHRScreen extends StatefulWidget {
 }
 
 class _EHRScreenState extends State<EHRScreen> {
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GridView.count(
-          crossAxisCount: 2, // Number of columns in the grid
-          children: <Widget>[
-            _buildEHRFolder(context, "Blood"),
-            _buildEHRFolder(context, "X-ray"),
-            _buildEHRFolder(context, "Medication"),
-            _buildEHRFolder(context, "Diagnostic Report"),
-            _buildEHRFolder(context, "Urine Report"),
-            _buildEHRFolder(context, "Diabetics Report"),
-            _buildEHRFolder(context, "SonoGram Report"),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-
-          },
-          backgroundColor: Colors.purple.shade300,
-          child: Container(
-            width: 100,
-            child: Icon(Icons.upload_outlined, size: 30, color: Colors.white),
-          ),
-        )
-
+      body: GridView.count(
+        crossAxisCount: 2, // Number of columns in the grid
+        children: <Widget>[
+          _buildEHRFolder(context, "Blood"),
+          _buildEHRFolder(context, "X-ray"),
+          _buildEHRFolder(context, "Medication"),
+          _buildEHRFolder(context, "Diagnostic Report"),
+          _buildEHRFolder(context, "Urine Report"),
+          _buildEHRFolder(context, "Diabetics Report"),
+          _buildEHRFolder(context, "SonoGram Report"),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Store EHR'),
+                  content: Text('Upload Individual EHR Files'),
+                  actions: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple.shade300,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Dismisss'))
+                  ],
+                );
+              });
+        },
+        backgroundColor: Colors.purple.shade300,
+        child: Container(
+            height: 100, width: 100, child: Icon(Icons.lightbulb_outline)),
+      ),
     );
   }
 
