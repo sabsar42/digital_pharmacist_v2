@@ -182,15 +182,15 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Row(
                 children: [
-                  SizedBox(width: 8,),
-
+                  SizedBox(
+                    width: 8,
+                  ),
                   CircleAvatar(
                     backgroundColor: isCompleted ? Colors.green : Colors.grey,
                     radius: 18,
@@ -199,7 +199,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                         backgroundColor: Colors.purple,
                       ),
                       icon: Icon(
-                        Icons.done,
+                        Icons.done_outline_rounded,
                         color: isCompleted ? Colors.white : Colors.black45,
                         size: 22,
                       ),
@@ -210,7 +210,14 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: 250,
+                    width: 10,
+                  ),
+                  Container(
+                    width: 70,
+                    child: isCompleted ? Text('Completed') : Text('Ongoing'),
+                  ),
+                  SizedBox(
+                    width: 185,
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -289,7 +296,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                   ),
                 ),
               SizedBox(height: 20),
-
             ],
           ),
         ),
