@@ -63,6 +63,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
         specialization: data['doctor_specialization'].toString(),
         hospitalName: data['hospitalName'].toString(),
         date: data['date'].toString(),
+        isCompleted: data['isCompleted'],
         time: data['time'].toString(),
       );
     }).toList();
@@ -187,6 +188,7 @@ class HealthRecord {
   final String specialization;
   final String hospitalName;
   final String date;
+  final bool isCompleted;
   final String time;
 
   HealthRecord({
@@ -197,6 +199,7 @@ class HealthRecord {
     required this.specialization,
     required this.hospitalName,
     required this.date,
+    required this.isCompleted,
     required this.time,
   });
 }

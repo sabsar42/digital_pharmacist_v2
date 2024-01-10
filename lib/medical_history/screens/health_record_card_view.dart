@@ -129,10 +129,16 @@ class HealthRecordCard extends StatelessWidget {
                 SizedBox(height: 12),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.link,
-                    color: Colors.white,
-                    size: 24,
+                  child: CircleAvatar(
+                    backgroundColor:
+                        record.isCompleted ? Colors.green : Colors.grey,
+                    radius: 16
+                    ,
+                    child: Icon(
+                      Icons.done,
+                      color: record.isCompleted ? Colors.white : Colors.black45,
+                      size: 20,
+                    ),
                   ),
                 ),
               ],

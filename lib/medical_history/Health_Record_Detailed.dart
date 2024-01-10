@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/medical_history/Health_Record_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,10 +34,13 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   final TextEditingController _hospitalNameController = TextEditingController();
   final TextEditingController _diagnosisTypeController =
       TextEditingController();
+  final TextEditingController _completedController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
   late String dateByUser = '';
   late String timeByUser = '';
+
+  bool isCompleted = false;
 
   @override
   void initState() {
@@ -80,13 +84,14 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           _doctorNameController.text = data['doctorName'] ?? '';
           _specializationController.text = data['doctor_specialization'] ?? '';
           _hospitalNameController.text = data['hospitalName'] ?? '';
+          isCompleted = data['isCompleted'] ?? false;
           dateByUser = data['date'] ?? '';
           timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
 
           prescribedMedicines = data['prescribedDrugs'];
           if (prescribedMedicines != null) {
             prescribedMedicineController.text = prescribedMedicines.join(', ');
-           // prescribedMedicineController.text = prescribedMedicines.join('\n') ;
+            // prescribedMedicineController.text = prescribedMedicines.join('\n') ;
           } else {
             prescribedMedicineController.text = '';
           }
@@ -121,6 +126,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       'summaryOfMedicalRecord': _summaryController.text,
       'prescribedDrugs': prescribedMedicines,
       'diagnosisType': _diagnosisTypeController.text,
+      'isCompleted': isCompleted,
       'date': dateByUser,
       'time': timeByUser,
       'timestamp': FieldValue.serverTimestamp(),
@@ -180,6 +186,43 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+              Row(
+                children: [
+                  SizedBox(width: 8,),
+
+                  CircleAvatar(
+                    backgroundColor: isCompleted ? Colors.green : Colors.grey,
+                    radius: 18,
+                    child: IconButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                      ),
+                      icon: Icon(
+                        Icons.done,
+                        color: isCompleted ? Colors.white : Colors.black45,
+                        size: 22,
+                      ),
+                      onPressed: () {
+                        isCompleted = !isCompleted;
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 250,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      addHealthRecordDetails();
+                    },
+                    child: Text("+ SAVE"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple.shade700,
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: 10.0),
               DateTimebyUser,
               diagnosisTypeDropDown(),
@@ -246,15 +289,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                   ),
                 ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  addHealthRecordDetails();
-                },
-                child: Text("SAVE"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                ),
-              ),
+
             ],
           ),
         ),

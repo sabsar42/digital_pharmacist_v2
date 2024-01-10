@@ -1,4 +1,5 @@
 import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'package:digi_pharma_app_test/medical_history/Health_Record_Screen.dart';
 import 'package:digi_pharma_app_test/medical_history/PDF_Screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,8 @@ class _TabBarScreenState extends State<TabBarScreen> {
                 color: Color.fromRGBO(124, 67, 166, 1.0),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context)=>HealthRecordScreen()));
               },
             ),
             actions: <Widget>[
