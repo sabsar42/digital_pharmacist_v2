@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widget/PopBup_Menu_Three_Button_Functions_Screen.dart';
+import '../widget/ehr_card_view.dart';
 import 'EHR_Detailed_View.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -88,12 +89,9 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, int index) {
                   String url = snapshot.data!.docs[index]['downloadURL'];
-                  return Image.network(
-                    url,
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  );
+                  String description = 'description';
+
+                  return EhrCardView(url: url, description: description);
                 },
               );
             }
@@ -137,3 +135,4 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
     );
   }
 }
+
