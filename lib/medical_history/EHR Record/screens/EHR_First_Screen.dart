@@ -16,9 +16,9 @@ import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Hea
 import 'package:flutter/material.dart';
 
 class EHRScreen extends StatefulWidget {
-  final String diagnosisNumberfromPrev;
+  final String uniqueDiagnosisNumber;
 
-  EHRScreen({required this.diagnosisNumberfromPrev});
+  EHRScreen({required this.uniqueDiagnosisNumber});
 
   @override
   State<EHRScreen> createState() => _EHRScreenState();
@@ -80,7 +80,7 @@ class _EHRScreenState extends State<EHRScreen> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  EHRArticleDetailScreen(folderName: folderName),
+                  EHRArticleDetailScreen(folderName: folderName, uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,),
             ),
           );
         },

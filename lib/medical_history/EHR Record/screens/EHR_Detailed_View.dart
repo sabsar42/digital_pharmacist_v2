@@ -26,8 +26,10 @@ import 'package:flutter/material.dart';
 
 class EHRArticleDetailScreen extends StatefulWidget {
   final String folderName;
+  final String uniqueDiagnosisNumber;
 
-  EHRArticleDetailScreen({required this.folderName});
+  EHRArticleDetailScreen(
+      {required this.folderName, required this.uniqueDiagnosisNumber});
 
   @override
   State<EHRArticleDetailScreen> createState() => _EHRArticleDetailScreenState();
@@ -61,6 +63,8 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
           stream: FirebaseFirestore.instance
               .collection('users')
               .doc(userID)
+              .collection("healthRecords")
+              .doc(widget.uniqueDiagnosisNumber)
               .collection("ehr_folders")
               .doc(widget.folderName)
               .collection('${widget.folderName}_images')
@@ -103,6 +107,7 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
                     builder: (context) => ImageUpload(
                           userID: userID,
                           folderName: widget.folderName,
+                          uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
                         )));
           },
           backgroundColor: Colors.purple.shade300,

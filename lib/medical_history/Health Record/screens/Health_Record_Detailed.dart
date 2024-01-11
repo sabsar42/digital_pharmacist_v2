@@ -11,9 +11,9 @@ import '../Widget/med_information_card.dart';
 import '../Widget/my_custom_dropdown.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
-  final String diagnosisNumber;
+  final String uniqueDiagnosisNumber;
 
-  HealthRecordDetailScreen({Key? key, required this.diagnosisNumber});
+  HealthRecordDetailScreen({Key? key, required this.uniqueDiagnosisNumber});
 
   @override
   State<HealthRecordDetailScreen> createState() =>
@@ -63,7 +63,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   Future<void> loadHealthRecordData() async {
     String userID = currentUser.uid;
-    String uniqueID = widget.diagnosisNumber;
+    String uniqueID = widget.uniqueDiagnosisNumber;
 
     try {
       DocumentSnapshot documentSnapshot = await _firestore
@@ -104,7 +104,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   Future<void> addHealthRecordDetails() async {
     String userID = currentUser.uid;
-    String uniqueID = widget.diagnosisNumber;
+    String uniqueID = widget.uniqueDiagnosisNumber;
 
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
         FirebaseFirestore.instance

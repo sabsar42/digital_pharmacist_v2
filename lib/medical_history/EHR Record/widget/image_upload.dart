@@ -12,7 +12,8 @@ class ImageUpload extends StatefulWidget {
   String? userID;
   String? folderName;
 
-  ImageUpload({Key? key, required this.userID, required this.folderName})
+  final String uniqueDiagnosisNumber;
+  ImageUpload({Key? key, required this.userID, required this.folderName, required this.uniqueDiagnosisNumber})
       : super(key: key);
 
   @override
@@ -60,6 +61,8 @@ class _ImageUploadState extends State<ImageUpload> {
       await firebaseFirestore
           .collection("users")
           .doc(widget.userID)
+          .collection("healthRecords")
+          .doc(widget.uniqueDiagnosisNumber)
           .collection("ehr_folders")
           .doc(widget.folderName)
           .collection('${widget.folderName}_images')

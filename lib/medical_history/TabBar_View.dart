@@ -7,7 +7,6 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'BookMark_List_Screen.dart';
 import 'EHR Record/screens/EHR_First_Screen.dart';
 
-
 class TabBarScreen extends StatefulWidget {
   final String uniqueDocID;
 
@@ -48,8 +47,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
                 color: Color.fromRGBO(124, 67, 166, 1.0),
               ),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context)=>HealthRecordScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HealthRecordScreen()));
               },
             ),
             actions: <Widget>[
@@ -111,9 +112,9 @@ class _TabBarScreenState extends State<TabBarScreen> {
           body: TabBarView(
             children: [
               HealthRecordDetailScreen(
-                diagnosisNumber: widget.uniqueDocID,
+                uniqueDiagnosisNumber: widget.uniqueDocID,
               ),
-              EHRScreen(diagnosisNumberfromPrev: "1"),
+              EHRScreen(uniqueDiagnosisNumber: widget.uniqueDocID),
               PDFViewerScreen(),
             ],
           ),
