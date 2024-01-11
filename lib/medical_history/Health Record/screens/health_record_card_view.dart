@@ -5,7 +5,7 @@ import '../../TabBar_View.dart';
 
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
-
+  // final String uniqueDocID;
   HealthRecordCard({required this.record});
 
   @override

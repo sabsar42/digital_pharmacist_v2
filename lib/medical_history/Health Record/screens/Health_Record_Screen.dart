@@ -21,7 +21,6 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
   bool isAddingRecord = false;
   List<HealthRecord> records = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -165,14 +164,15 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
         splashColor: Colors.purple,
         backgroundColor: Colors.white70,
         onPressed: () async {
-          String uniqueDocID = (records.length+1).toString();
+          //  String uniqueDocID = (records.length+1).toString();
           await addHealthRecord();
           await fetchHealthRecords();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      TabBarScreen(uniqueDocID: uniqueDocID.toString())));
+          /// !!!!! NEED to be fixed, created an Dupilcate DocID in firebase, EasyFix tho !!!!!
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) =>
+          //             TabBarScreen(uniqueDocID: uniqueDocID.toString())));
           setState(() {});
         },
       ),
