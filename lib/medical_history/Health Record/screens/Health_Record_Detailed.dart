@@ -112,10 +112,27 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             .doc(userID)
             .collection('healthRecords');
 
+
+    /// for ADDING DRUGS_COLLECTIONS
+ CollectionReference<Map<String, dynamic>> drugsCollection =
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('drugsCollection');
+
     List<String> prescribedMedicines = prescribedMedicineController.text
         .split(',')
         .where((medicine) => medicine.isNotEmpty)
         .toList();
+
+    /// DRUGS_COLLECTION
+    Map<String,dynamic> drugRecord = {
+      'prescribedDrugs': prescribedMedicines,
+    };
+    await drugsCollection.doc(uniqueID).set(drugRecord);
+    /// DRUGS
+
+
 
     Map<String, dynamic> newRecord = {
       'diagnosisNumber': uniqueID,
