@@ -137,6 +137,7 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(),
                         ),
                         child: Column(
