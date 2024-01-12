@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:date_format/date_format.dart';
-import 'package:digi_pharma_app_test/medical_history/EHR%20Record/widget/image_upload.dart';
+import 'package:digi_pharma_app_test/medical_history/EHR%20Record/widget/ehr_image_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

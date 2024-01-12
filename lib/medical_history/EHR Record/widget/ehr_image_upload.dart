@@ -189,7 +189,7 @@ class _ImageUploadState extends State<ImageUpload> {
                               horizontal: 120.0,
                               vertical: 20.0), // Button padding
                         ),
-                        child: Text('Upload Image'),
+                        child: Text('Upload EHR'),
                       ),
                     ],
                   ),

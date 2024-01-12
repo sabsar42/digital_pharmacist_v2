@@ -40,6 +40,11 @@ class EhrCardView extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.teal.shade50,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
