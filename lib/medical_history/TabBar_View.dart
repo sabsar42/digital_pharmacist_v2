@@ -1,6 +1,7 @@
 import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
 import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Screen.dart';
-import 'package:digi_pharma_app_test/medical_history/PDF_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/PDF%20Prescription/screens/pdf_viewer_screen.dart';
+import 'package:digi_pharma_app_test/medical_history/PDF%20Prescription/screens/first_pdf_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -115,7 +116,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
                 uniqueDiagnosisNumber: widget.uniqueDocID,
               ),
               EHRScreen(uniqueDiagnosisNumber: widget.uniqueDocID),
-              PDFViewerScreen(),
+              FirstPdfScreen(
+                uniqueDiagnosisNumber: widget.uniqueDocID,
+              ),
+              // PDFViewerScreen(),
             ],
           ),
         ),
