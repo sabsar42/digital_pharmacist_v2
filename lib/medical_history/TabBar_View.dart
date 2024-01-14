@@ -1,16 +1,15 @@
-import 'package:digi_pharma_app_test/medical_history/EHR_First_Screen.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
-import 'package:digi_pharma_app_test/medical_history/PDF_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/PDF%20Prescription/screens/pdf_viewer_screen.dart';
+import 'package:digi_pharma_app_test/medical_history/PDF%20Prescription/screens/first_pdf_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:turn_page_transition/turn_page_transition.dart';
 import 'BookMark_List_Screen.dart';
-
+import 'EHR Record/screens/EHR_First_Screen.dart';
 
 class TabBarScreen extends StatefulWidget {
   final String uniqueDocID;
-
 
   TabBarScreen({required this.uniqueDocID});
 
@@ -21,7 +20,7 @@ class TabBarScreen extends StatefulWidget {
 class _TabBarScreenState extends State<TabBarScreen> {
   // String get uniqueDocIdNumber => widget.uniqueDocID;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-  bool currentState = true ;
+  bool currentState = true;
 
   String id = '';
 
@@ -49,65 +48,78 @@ class _TabBarScreenState extends State<TabBarScreen> {
                 color: Color.fromRGBO(124, 67, 166, 1.0),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HealthRecordScreen()));
               },
             ),
             actions: <Widget>[
               IconButton(
-                icon:  Icon(
-                  Icons.bookmark_outline_rounded,
+                icon: Icon(
+                  Icons.bookmark_add_rounded,
                   color: Color.fromRGBO(111, 78, 140, 1.0),
                   semanticLabel: 'Bookmark',
-                  size: 20,
+                  size: 25,
                 ),
-                onPressed: ()  {
-                  Navigator.of(context).push(
-                    TurnPageRoute(
-                      overleafColor: Color.fromRGBO(236, 220, 248, 1.0),
-                      animationTransitionPoint: 0.4,
-                      transitionDuration: const Duration(milliseconds: 300),
-                      reverseTransitionDuration: const Duration(milliseconds: 300),
-                      builder: (context) => BookMarkScreen(),
-                    ),
-                  );
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookMarkScreen()));
                 },
               ),
             ],
             title: Text(
-              '${id[id.length-1]} : Health Record',
+              '${id[id.length - 1]} : Health Record',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 18,
                 color: Color.fromRGBO(124, 67, 166, 1.0),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
               ),
             ),
             centerTitle: true,
             bottom: TabBar(
-              indicatorWeight: 3.0, // Thickness of the tab indicator
+              indicatorWeight: 2.0,
+              // Thickness of the tab indicator
 
               indicatorColor: Color.fromRGBO(124, 67, 166, 1.0),
               labelColor: Color.fromRGBO(124, 67, 166, 1.0),
               tabs: [
                 Tab(
-                    icon: Icon(Icons.medical_information_rounded,
-                        color: Color.fromRGBO(124, 67, 166, 1.0)),
+                    icon: Icon(
+                      Icons.medical_information_rounded,
+                      color: Color.fromRGBO(124, 67, 166, 1.0),
+                      size: 18,
+                    ),
                     text: "Detail Info"),
                 Tab(
-                    icon: Icon(Icons.create_new_folder_outlined,
-                        color: Color.fromRGBO(124, 67, 166, 1.0)),
+                    icon: Icon(
+                      Icons.create_new_folder_outlined,
+                      color: Color.fromRGBO(124, 67, 166, 1.0),
+                      size: 18,
+                    ),
                     text: "EHR Folder"),
                 Tab(
-                    icon: Icon(Icons.picture_as_pdf_sharp,
-                        color: Color.fromRGBO(124, 67, 166, 1.0)),
+                    icon: Icon(
+                      Icons.picture_as_pdf_sharp,
+                      color: Color.fromRGBO(124, 67, 166, 1.0),
+                      size: 18,
+                    ),
                     text: "PDF Prescription")
               ],
             ),
           ),
           body: TabBarView(
             children: [
-              HealthRecordDetailScreen( diagnosisNumber: widget.uniqueDocID,),
-              EHRScreen(diagnosisNumberfromPrev: "1"),
-              PDFViewerScreen(),
+              HealthRecordDetailScreen(
+                uniqueDiagnosisNumber: widget.uniqueDocID,
+              ),
+              EHRScreen(uniqueDiagnosisNumber: widget.uniqueDocID),
+              FirstPdfScreen(
+                uniqueDiagnosisNumber: widget.uniqueDocID,
+              ),
+              // PDFViewerScreen(),
             ],
           ),
         ),

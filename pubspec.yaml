@@ -44,7 +44,6 @@ dependencies:
   popover: ^0.2.8+2
   curved_navigation_bar: ^1.0.3
   carousel_slider: ^4.2.1
-  turn_page_transition: ^0.3.0
   shared_preferences: ^2.2.2
   http: ^1.1.0
   camera: ^0.10.5+5
@@ -65,9 +64,15 @@ dependencies:
   firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
   cloud_firestore: ^4.13.6
+  firebase_storage: ^11.6.0
   table_calendar: ^3.0.9
   flutter_calendar_carousel: ^2.4.2
   date_format: ^2.0.0
+  file_picker: ^6.1.1
+  esys_flutter_share_plus: ^2.2.0
+
+
+
 
 
 dev_dependencies:
@@ -80,6 +85,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  dependency_validator: ^3.2.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -88,6 +94,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/images/pdf_logo.png
     - assets/images/logo-one.jpeg
     - assets/pdf/sample.pdf
     - assets/images/dashboard_1.png

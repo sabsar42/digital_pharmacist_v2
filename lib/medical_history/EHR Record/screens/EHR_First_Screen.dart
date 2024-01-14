@@ -1,52 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../widget/PopBup_Menu_Three_Button_Functions_Screen.dart';
 import 'EHR_Detailed_View.dart';
-import 'Health_Record_Screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'EHR_First_Screen.dart';
-import 'Health_Record_Screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
-import 'package:digi_pharma_app_test/medical_history/Health_Record_Detailed.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Detailed.dart';
 import 'package:flutter/material.dart';
-import 'PopBup_Menu_Three_Button_Functions_Screen.dart';
 
+class EHRScreen extends StatefulWidget {
+  final String uniqueDiagnosisNumber;
 
-class EHRScreen extends StatelessWidget {
-  final String diagnosisNumberfromPrev;
+  EHRScreen({required this.uniqueDiagnosisNumber});
 
-  EHRScreen({required this.diagnosisNumberfromPrev});
+  @override
+  State<EHRScreen> createState() => _EHRScreenState();
+}
 
+class _EHRScreenState extends State<EHRScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 45,
-      //   elevation: 20.0,
-      //   backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
-      //   title: Text(
-      //     'EHR Health Record',
-      //     style: TextStyle(
-      //       fontSize: 22,
-      //       color: Colors.deepPurple,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      //   bottom: PreferredSize(
-      //     preferredSize: Size.fromHeight(38.0), // Adjust the height as needed
-      //     child: BuildThreeButton(),
-      //   ),
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(15),
-      //       bottomRight: Radius.circular(15),
-      //     ),
-      //   ),
-      // ),
-
-
       body: GridView.count(
         crossAxisCount: 2, // Number of columns in the grid
         children: <Widget>[
@@ -58,6 +39,31 @@ class EHRScreen extends StatelessWidget {
           _buildEHRFolder(context, "Diabetics Report"),
           _buildEHRFolder(context, "SonoGram Report"),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Store EHR'),
+                  content: Text('Upload Individual EHR Files'),
+                  actions: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple.shade300,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Dismisss'))
+                  ],
+                );
+              });
+        },
+        backgroundColor: Colors.purple.shade300,
+        child: Container(
+            height: 100, width: 100, child: Icon(Icons.lightbulb_outline)),
       ),
     );
   }
@@ -74,21 +80,20 @@ class EHRScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  EHRArticleDetailScreen(folderName: folderName),
+                  EHRArticleDetailScreen(folderName: folderName, uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,),
             ),
           );
         },
         child: Stack(
           children: [
             const Positioned(
-                 top: 9.0,
+                top: 9.0,
                 right: 5.0,
                 child: Row(
                   children: [
                     PopUpMenuThreeButton(), // Create an instance and include it
                   ],
-                )
-            ),
+                )),
             Positioned(
               left: 1.0,
               right: 1.0,
