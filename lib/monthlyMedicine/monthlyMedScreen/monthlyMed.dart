@@ -11,6 +11,42 @@ class monthlyMed extends StatefulWidget {
 }
 
 class _monthlyMedState extends State<monthlyMed> {
+  TextEditingController dateController = TextEditingController();
+  TextEditingController prevDateController = TextEditingController();
+
+  List<String> monthList =['January','February','March','April','May','June','July','August','September','October','November','December'];
+  List<int> lastDates = [
+    31,
+    28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ];
+  void updateDate(int selectedIndex) {
+    print(selectedIndex);
+    if(selectedIndex==0){
+      int lastDate = lastDates[selectedIndex];
+      DateTime selectedDate = DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
+      dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+      print(dateController.text);
+    }
+  else{  int lastDate = lastDates[selectedIndex];
+    int prevMonthLastDate = lastDates[selectedIndex-1];
+    DateTime selectedDate = DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
+    DateTime prevMonthDate = DateTime(DateTime.now().year, selectedIndex, prevMonthLastDate);
+    dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+    prevDateController.text = prevMonthDate.toLocal().toString().split(' ')[0];
+    print(dateController.text);
+    print(prevDateController.text);
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +66,22 @@ class _monthlyMedState extends State<monthlyMed> {
       ),
       body: Container(
         child: ListView.builder(
-            itemCount: 10,
+            itemCount: monthList.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => monthlyMedDetails()));
-                },
+
+                  updateDate(index);
+                  if(index==0){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>MonthlyMedDetails(index: index,time1: dateController,time2: prevDateController,)));
+                  }
+
+                else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MonthlyMedDetails(index: index,time1: dateController,time2: prevDateController,)));
+                  }},
                 child: Container(
                   margin: EdgeInsets.all(10),
                   height: 176,
@@ -54,14 +97,14 @@ class _monthlyMedState extends State<monthlyMed> {
                           child: Container(
                               margin: EdgeInsets.only(left: 10, top: 10),
                               child: Text(
-                                "2023",
+                                "2024",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ))),
                       Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "2 April - 2 May",
+                            "${monthList[index]}",
                             style: siz30White(),
                           )),
                       Align(
