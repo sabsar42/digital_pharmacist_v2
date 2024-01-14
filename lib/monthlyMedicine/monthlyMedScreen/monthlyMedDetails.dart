@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -111,6 +110,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -150,8 +150,29 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
               itemCount: data.length,
               itemBuilder: (context, index) {
 
-                return ListTile(
-                  title: Text(data[index]['medicineName']),
+                return Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.black,width: 2),
+                  ),
+                  child:Row(
+                    children:[
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 80,
+                        width: 80,
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.lightBlue,
+                          border: Border.all(color: Colors.red,width: 2),
+                        ),
+                      ),
+                      SizedBox(width:20),
+                      Text(data[index]['medicineName'],style: size25Black()),
+                    ]
+                  ),
                 );
               },
             );

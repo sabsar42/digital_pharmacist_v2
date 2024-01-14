@@ -115,7 +115,7 @@ class _monthlyMedState extends State<monthlyMed> {
                               "Total Medicine : 10 ",
                               style: size20White(),
                             ),
-                          )),
+                          ),),
                     ],
                   ),
                 ),
