@@ -71,7 +71,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     print(futureTime);
     List<int> pillSchedule = [];
     for (int i = 0; i < timeControllers.length; i++) {
-
       int timeValue = int.parse(timeControllers[i].text);
 
 
@@ -86,7 +85,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       'frequency': frequencyController.text,
       'validtill': futureTime,
       'timestamp': FieldValue.serverTimestamp(),
-      'listoftimes':pillSchedule,
+      'listoftimes': pillSchedule,
 
     };
 
