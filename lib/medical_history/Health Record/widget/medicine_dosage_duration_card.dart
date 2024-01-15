@@ -116,69 +116,74 @@ class _MedicineRowState extends State<MedicineRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.deepPurple.shade50,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                '| MEDICINE ',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                    fontSize: 25),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                setState(() {
-                  medicinesInfo.add(MedicineInfo());
-                });
-              },
-            ),
-            for (int i = 0; i < medicinesInfo.length; i++)
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: medicinesInfo[i].nameController,
-                      decoration: InputDecoration(labelText: 'Medicine Name'),
-                      onChanged: (_) => onMedicineInputChange(i),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: medicinesInfo[i].frequencyController,
-                      decoration: InputDecoration(labelText: 'Frequency'),
-                      onChanged: (_) => onMedicineInputChange(i),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.datetime,
-                      controller: medicinesInfo[i].durationController,
-                      decoration: InputDecoration(labelText: 'Duration'),
-                      onChanged: (_) => onMedicineInputChange(i),
-                    ),
-                  ),
+    return medicineFrequencyDurationCard();
+  }
 
-                ],
-              ),
-          ],
-        ),
+  Card medicineFrequencyDurationCard() {
+    return Card(
+      elevation: 4,
+    color: Colors.yellow.shade50,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              '| MEDICINE ',
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  fontSize: 25),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                medicinesInfo.add(MedicineInfo());
+              });
+            },
+          ),
+          for (int i = 0; i < medicinesInfo.length; i++)
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: medicinesInfo[i].nameController,
+                    decoration: InputDecoration(labelText: 'Medicine Name'),
+                    onChanged: (_) => onMedicineInputChange(i),
+                  ),
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: medicinesInfo[i].frequencyController,
+                    decoration: InputDecoration(labelText: 'Frequency'),
+                    onChanged: (_) => onMedicineInputChange(i),
+                  ),
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.datetime,
+                    controller: medicinesInfo[i].durationController,
+                    decoration: InputDecoration(labelText: 'Duration'),
+                    onChanged: (_) => onMedicineInputChange(i),
+                  ),
+                ),
+
+              ],
+            ),
+        ],
       ),
-    );
+    ),
+  );
   }
 }
 

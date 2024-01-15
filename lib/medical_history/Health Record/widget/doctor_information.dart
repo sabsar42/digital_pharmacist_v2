@@ -18,6 +18,7 @@ class DoctorHospitalInformation extends StatelessWidget {
     return Container(
       height: 260,
       child: Card(
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
               12.0), // Adjust the border radius to round the corners
