@@ -1,0 +1,151 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
+
+import '../Gemini Digi-BOT/widgets/chat_input_box.dart';
+import '../Gemini Digi-BOT/widgets/item_image_view.dart';
+
+class TextRecogSectionTextStreamInput extends StatefulWidget {
+  final String? initialText;
+
+  const TextRecogSectionTextStreamInput({Key? key, required this.initialText}) : super(key: key);
+
+  @override
+  State<TextRecogSectionTextStreamInput> createState() => _SectionTextInputStreamState();
+}
+
+class _SectionTextInputStreamState extends State<TextRecogSectionTextStreamInput> {
+  final ImagePicker picker = ImagePicker();
+  final controller = TextEditingController();
+  final gemini = Gemini.instance;
+  String? searchedText, _finishReason;
+  List<Uint8List>? images;
+
+  String? get finishReason => _finishReason;
+
+  set finishReason(String? set) {
+    if (set != _finishReason) {
+      setState(() => _finishReason = set);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialText != null) {
+      promptGemini(widget.initialText!);
+    }
+  }
+
+  void promptGemini(String text) {
+    searchedText = text;
+    controller.clear();
+    gemini.streamGenerateContent(searchedText!, images: images).listen((value) {
+      setState(() {
+        images = null;
+      });
+
+      if (value.finishReason != 'STOP') {
+        finishReason = 'Finish reason is `RECITATION`';
+      }
+    }).onError((e) {
+      log('streamGenerateContent error', error: e);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (searchedText != null)
+          MaterialButton(
+            color: Colors.blue.shade700,
+            onPressed: () {
+              setState(() {
+                searchedText = null;
+                finishReason = null;
+              });
+            },
+            child: Text('search: $searchedText'),
+          ),
+        Expanded(
+          child: GeminiResponseTypeView(
+            builder: (context, child, response, loading) {
+              if (loading) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 90),
+                  child: SizedBox(
+                    width: 80.0,
+                    height: 80.0,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        'assets/images/digi-pharma-prussian.svg',
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              if (response != null) {
+                return Markdown(
+                  data: response,
+                  selectable: true,
+                );
+              } else {
+                return const Center(child: Text('Search something!'));
+              }
+            },
+          ),
+        ),
+
+        if (finishReason != null) Text(finishReason!),
+
+        if (images != null)
+          Container(
+            height: 120,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            alignment: Alignment.centerLeft,
+            child: Card(
+              child: ListView.builder(
+                itemBuilder: (context, index) => ItemImageView(
+                  bytes: images!.elementAt(index),
+                ),
+                itemCount: images!.length,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
+          ),
+
+        ChatInputBox(
+          controller: controller,
+          onClickCamera: () {
+            picker.pickMultiImage().then((value) async {
+              final imagesBytes = <Uint8List>[];
+              for (final file in value) {
+                imagesBytes.add(await file.readAsBytes());
+              }
+
+              if (imagesBytes.isNotEmpty) {
+                setState(() {
+                  images = imagesBytes;
+                });
+              }
+            });
+          },
+          onSend: () {
+            if (controller.text.isNotEmpty) {
+              promptGemini(controller.text);
+            }
+          },
+        )
+      ],
+    );
+  }
+}

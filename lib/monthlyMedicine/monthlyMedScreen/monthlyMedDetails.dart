@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../style.dart';
@@ -115,28 +116,43 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.black87,
-            size: 35,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0),
+
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/images/dashboard_card.png",  // Replace with the URL of your image
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: AppBar(
+            toolbarHeight: 100,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.purple.shade50,
+                size: 25,
+              ),
+            ),
+            title: Container(
+              margin: EdgeInsets.only(top: 30),
+              child: Text(
+                "${monthList[widget.index]} - 2024",
+                style: siz22White(),
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
         ),
-        title: Container(
-          margin: EdgeInsets.only(top: 30),
-          child: Text(
-            "${monthList[widget.index]} 2024",
-            style: size25Black(),
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: getData(),
@@ -152,59 +168,61 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
           } else {
 
             List<Map<String, dynamic>> data = snapshot.data ?? [];
-            return Column(
-              children: [
-                SizedBox(height: 20,),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
+            return CommonBackground(
+              child: Column(
+                children: [
+                  SizedBox(height: 20,),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
 
-                      return Container(
+                        return Container(
 
-                        margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black,width: 2),
-                          color: Color(0x76258c25),
-                        ),
-                        child:Row(
-                          children:[
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              height: 80,
-                              width: 80,
+                          margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          height: 110,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.grey,width: 1),
+                            color: Color(0x76258c25),
+                          ),
+                          child:Row(
+                            children:[
+                              Container(
+                                margin: EdgeInsets.all(10),
+                                height: 100,
+                                width: 80,
 
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                  color: Color(0x76ffffff),
-                               // border: Border.all(color: Colors.red.shade100,width: 2),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    medImages[index],
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                    color: Color(0x76ffffff),
+                                 // border: Border.all(color: Colors.red.shade100,width: 2),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      medImages[index],
 
-                                  ),
-                                )
+                                    ),
+                                  )
+                                ),
                               ),
-                            ),
-                            SizedBox(width:20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data[index]['medicineName'],style: size25Black()),
+                              SizedBox(width:20),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data[index]['medicineName'],style: size25Black()),
 
-                                Text('Starting Date: ${DateFormat('yyyy-MM-dd').format(data[index]['timestamp'].toDate())}'),
-                                Text('Ending Date: ${DateFormat('yyyy-MM-dd').format(data[index]['validtill'].toDate())}'),
-                              ],
-                            ),
-                          ]
-                        ),
-                      );
-                    },
+                                  Text('Starting Date: ${DateFormat('yyyy-MM-dd').format(data[index]['timestamp'].toDate())}'),
+                                  Text('Ending Date: ${DateFormat('yyyy-MM-dd').format(data[index]['validtill'].toDate())}'),
+                                ],
+                              ),
+                            ]
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }
         },
