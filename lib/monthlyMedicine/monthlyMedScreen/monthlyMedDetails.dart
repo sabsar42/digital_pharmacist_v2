@@ -18,6 +18,12 @@ class MonthlyMedDetails extends StatefulWidget {
 class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   late User currentUser;
   List<String> monthList =['January','February','March','April','May','June','July','August','September','October','November','December'];
+  List<String> medImages =[ 'assets/images/dashboard_1.png', 'assets/images/dashboard_2.png', 'assets/images/dashboard_3.png', 'assets/images/dashboard_4.png',
+    'assets/images/dashboard_1.png', 'assets/images/dashboard_2.png', 'assets/images/dashboard_3.png', 'assets/images/dashboard_4.png',
+    'assets/images/dashboard_1.png', 'assets/images/dashboard_2.png', 'assets/images/dashboard_3.png', 'assets/images/dashboard_4.png',
+    'assets/images/dashboard_1.png', 'assets/images/dashboard_2.png', 'assets/images/dashboard_3.png', 'assets/images/dashboard_4.png',
+
+  ];
 
   @override
   void initState() {
@@ -146,35 +152,59 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
           } else {
 
             List<Map<String, dynamic>> data = snapshot.data ?? [];
-            return ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) {
+            return Column(
+              children: [
+                SizedBox(height: 20,),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
 
-                return Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.grey,width: 2),
-                  ),
-                  child:Row(
-                    children:[
-                      Container(
-                        margin: EdgeInsets.all(10),
+                      return Container(
+
+                        margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                         height: 80,
-                        width: 80,
-
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Colors.lightBlue,
-                          border: Border.all(color: Colors.red.shade100,width: 2),
+                          border: Border.all(color: Colors.black,width: 2),
+                          color: Color(0x76258c25),
                         ),
-                      ),
-                      SizedBox(width:20),
-                      Text(data[index]['medicineName'],style: size25Black()),
-                    ]
+                        child:Row(
+                          children:[
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              height: 80,
+                              width: 80,
+
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                  color: Color(0x76ffffff),
+                               // border: Border.all(color: Colors.red.shade100,width: 2),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    medImages[index],
+
+                                  ),
+                                )
+                              ),
+                            ),
+                            SizedBox(width:20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(data[index]['medicineName'],style: size25Black()),
+
+                                Text('Starting Date: ${DateFormat('yyyy-MM-dd').format(data[index]['timestamp'].toDate())}'),
+                                Text('Ending Date: ${DateFormat('yyyy-MM-dd').format(data[index]['validtill'].toDate())}'),
+                              ],
+                            ),
+                          ]
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             );
           }
         },
