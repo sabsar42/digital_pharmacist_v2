@@ -43,7 +43,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   DateTime _dateTime = DateTime.now();
   late String dateByUser = '';
   late String timeByUser = '';
-
   bool isCompleted = false;
 
   @override
@@ -51,6 +50,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     super.initState();
     getCurrentUser();
     loadHealthRecordData();
+    loadMedicineDetails();
   }
 
   Future<void> getCurrentUser() async {
@@ -91,14 +91,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           isCompleted = data['isCompleted'] ?? false;
           dateByUser = data['date'] ?? '';
           timeByUser = data['time'] ?? DateFormat('HH-mm').format(_dateTime);
-
-          prescribedMedicines = data['prescribedDrugs'];
-          if (prescribedMedicines != null) {
-            prescribedMedicineController.text = prescribedMedicines.join(', ');
-            // prescribedMedicineController.text = prescribedMedicines.join('\n') ;
-          } else {
-            prescribedMedicineController.text = '';
-          }
         });
       }
     } catch (error) {
@@ -106,35 +98,56 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     }
   }
 
+  Future<void> loadMedicineDetails() async {
+    String userID = currentUser.uid;
+    String uniqueID = widget.uniqueDiagnosisNumber;
+    try {
+      //
+      // /// for ADDING  DRUGS_COLLECTIONS WITH DUPLICATES
+      // CollectionReference<Map<String, dynamic>> drugsCollection =
+      // FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userID)
+      //     .collection('drugsCollection');
+
+
+
+        QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords')
+            .doc(uniqueID)
+            .collection('medicine_dosage_duration')
+            .get();
+        setState(() {
+        for (var doc in querySnapshot.docs) {
+          Map<String, dynamic> data = doc.data();
+          String medName;
+          medName = data['medicine_name'] ?? '';
+          prescribedMedicines.add(medName.toString());
+
+          // ///DRUGS - WITH DUPLICATES
+          // drugsCollection.add({
+          //   'medicine_name': medName.toString(),
+          //   'timestamp': FieldValue.serverTimestamp(),
+          // });
+          //
+
+        }
+      });
+    } catch (error) {
+      print("Error loading Medicine Details: $error");
+    }
+  }
+
   Future<void> addHealthRecordDetails() async {
     String userID = currentUser.uid;
     String uniqueID = widget.uniqueDiagnosisNumber;
-
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
         FirebaseFirestore.instance
             .collection('users')
             .doc(userID)
             .collection('healthRecords');
-
-    /// for ADDING DRUGS_COLLECTIONS
-    CollectionReference<Map<String, dynamic>> drugsCollection =
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(userID)
-            .collection('drugsCollection');
-
-    List<String> prescribedMedicines = prescribedMedicineController.text
-        .split(',')
-        .where((medicine) => medicine.isNotEmpty)
-        .toList();
-
-    /// DRUGS_COLLECTION
-    Map<String, dynamic> drugRecord = {
-      'prescribedDrugs': prescribedMedicines,
-    };
-    await drugsCollection.doc(uniqueID).set(drugRecord);
-
-    /// DRUGS
 
     Map<String, dynamic> newRecord = {
       'diagnosisNumber': uniqueID,
@@ -143,7 +156,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       'hospitalName': _hospitalNameController.text,
       'diagnosis': _diagnosisController.text,
       'summaryOfMedicalRecord': _summaryController.text,
-      'prescribedDrugs': prescribedMedicines,
       'diagnosisType': _diagnosisTypeController.text,
       'isCompleted': isCompleted,
       'date': dateByUser,
@@ -275,10 +287,10 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               ),
 
               ///BACK HERE IF YOU MESS UPPP
-              MedInfoCard(
-                diagnosisController: prescribedMedicineController ,
-                title: '| Medicines',
-              ),
+              // MedInfoCard(
+              //   diagnosisController: prescribedMedicineController ,
+              //   title: '| Medicines',
+              // ),
               /// BACK TILL HERE
               ///
               MedInfoCard(
