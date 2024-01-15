@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:camera/camera.dart';
@@ -6,15 +5,11 @@ import '../medical_history/Api_Health_Record_Screen.dart';
 
 import 'dart:io';
 
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:digi_pharma_app_test/Camera Scanner/result_screen.dart';
-
-
-
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -23,7 +18,8 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
+class _CameraScreenState extends State<CameraScreen>
+    with WidgetsBindingObserver {
   bool _isPermissionGranted = false;
 
   late final Future<void> _future;
@@ -35,7 +31,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
     _future = _requestCameraPermission();
   }
 
@@ -75,7 +70,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     _initCameraController(snapshot.data!);
-
                     return Center(child: CameraPreview(_cameraController!));
                   } else {
                     return const LinearProgressIndicator();
@@ -84,11 +78,20 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
               ),
             Scaffold(
               appBar: AppBar(
-                title: const Text('Scan Prescription'),
+                toolbarHeight: 50,
+                backgroundColor: Colors.purple.shade50,
+                centerTitle: true,
+                title: const Text(
+                  'Scan Prescription',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w100,
+                  ),
+                ),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                  ),
                   onPressed: () {
-
                     Navigator.pop(context);
                   },
                 ),
@@ -96,30 +99,50 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
               backgroundColor: _isPermissionGranted ? Colors.transparent : null,
               body: _isPermissionGranted
                   ? Column(
-                children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: _scanImage,
-                        child: const Text('Scan text'),
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 30.0),
+                          child: Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _scanImage();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple.shade700,
+
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // Rounded corners
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 100.0,
+                                    vertical: 16.0), // Button padding
+                              ),
+                              child: Text(
+                                'UPLOAD',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w200
+                                    // Text color
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                        child: const Text(
+                          'Camera permission denied',
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-                  : Center(
-                child: Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: const Text(
-                    'Camera permission denied',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
             ),
           ],
         );
@@ -149,7 +172,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       return;
     }
 
-    // Select the first rear camera.
+
     CameraDescription? camera;
     for (var i = 0; i < cameras.length; i++) {
       final CameraDescription current = cameras[i];
@@ -172,7 +195,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     );
 
     await _cameraController!.initialize();
-    await _cameraController!.setFlashMode(FlashMode.off);
+    await _cameraController!.setFlashMode(FlashMode.auto);
 
     if (!mounted) {
       return;
@@ -190,7 +213,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
       final file = File(pictureFile.path);
 
-      final inputImage = InputImage.fromFile(file);   // The Input Image Is HERE !!!!!
+      final inputImage = InputImage.fromFile(file); /// The Input Image Is HERE !!!!!
       final recognizedText = await textRecognizer.processImage(inputImage);
 
       await navigator.push(

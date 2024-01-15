@@ -1,42 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
+import '../Gemini Digi-BOT/sections/stream.dart';
 import '../Google Berd/BardAiController.dart';
 import '../Google Berd/BardHomePage.dart';
 import 'ResultBardHomePage.dart';
+import 'gemini_text_to_medRecord.dart';
 import 'result_in_pdf_page.dart';
 
 class ResultScreen extends StatelessWidget {
   final String text;
 
-
-  const ResultScreen({super.key, required this.text});
+  const ResultScreen({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BardAIController controller = Get.put(BardAIController());
-    TextEditingController textField = TextEditingController();
+    final BardAIController controller = Get.put(BardAIController());
+    final TextEditingController textField = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Result'),
+        title: Text('Recognized Text'),
+        centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(30.0),
-        child: Text(text),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:  EdgeInsets.all(20.0),
+          child: Container(
+            height:  MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Wrap(
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ResultBardHomePage(txt: text)),
-            );
-          },
-          child: Icon(
-            Icons.navigate_next_outlined,
-            color: Colors.green,
-          )),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TextRecogSectionTextStreamInput(initialText: text,)
+            ),
+          );
+        },
+        child: Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.indigo,
+      ),
     );
   }
 }
