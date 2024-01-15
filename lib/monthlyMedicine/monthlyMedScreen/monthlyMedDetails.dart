@@ -166,7 +166,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                         height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black,width: 2),
+                         // border: Border.all(color: Colors.black,width: 2),
                           color: Color(0x76258c25),
                         ),
                         child:Row(
