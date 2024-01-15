@@ -52,6 +52,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
 
     List<HealthRecord> fetchedRecords = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
       String docID = doc.id.toString();
 
       return HealthRecord(
