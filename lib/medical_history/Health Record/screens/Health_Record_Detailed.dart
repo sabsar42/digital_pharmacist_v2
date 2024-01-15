@@ -300,6 +300,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               SizedBox(height: 16.0),
               if (prescribedMedicines.isNotEmpty)
                 Card(
+                  elevation: 3,
                   color: Colors.teal.shade50,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -323,6 +324,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                           itemCount: prescribedMedicines.length,
                           itemBuilder: (context, index) {
                             return ListTile(
+
                               leading: CircleAvatar(
                                 radius: 12,
                                 child: Text('${index + 1}'),
@@ -356,8 +358,9 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         height: 70, // Adjust the height as needed
 
         child: Card(
+
           color: Colors.brown.shade200,
-          elevation: 1,
+          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6),
           ),
@@ -398,6 +401,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       child: Column(
         children: [
           Card(
+            elevation: 2,
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.teal.shade500, width: 1),
               borderRadius: BorderRadius.circular(8.0),
