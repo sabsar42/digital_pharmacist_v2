@@ -44,7 +44,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
             backgroundColor: Color.fromRGBO(252, 247, 255, 1.0),
             leading: IconButton(
               icon: Icon(
-                Icons.arrow_back,
+                Icons.arrow_back_ios,
                 color: Color.fromRGBO(124, 67, 166, 1.0),
               ),
               onPressed: () {

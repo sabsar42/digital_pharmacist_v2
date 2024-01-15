@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor:  Colors.deepPurple,
         primarySwatch: Colors.deepPurple,
-       // colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(3, 74, 166, 1.0)),
+       colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(3, 74, 166, 1.0)),
         useMaterial3: true,
       ),
       home: OnBoard(),
