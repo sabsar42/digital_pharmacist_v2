@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -29,19 +28,19 @@ class _SectionChatState extends State<SectionChat> {
         Expanded(
             child: chats.isNotEmpty
                 ? Align(
-              alignment: Alignment.bottomCenter,
-              child: SingleChildScrollView(
-                reverse: true,
-                child: ListView.builder(
-                  itemBuilder: chatItem,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: chats.length,
-                  reverse: false,
-                ),
-              ),
-            )
-                : const Center(child: Text('Search something!'))),
+                    alignment: Alignment.bottomCenter,
+                    child: SingleChildScrollView(
+                      reverse: true,
+                      child: ListView.builder(
+                        itemBuilder: chatItem,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: chats.length,
+                        reverse: false,
+                      ),
+                    ),
+                  )
+                : const Center(child: Text('ASK something!'))),
         if (loading) const CircularProgressIndicator(),
         ChatInputBox(
           controller: controller,
@@ -71,7 +70,7 @@ class _SectionChatState extends State<SectionChat> {
     return Card(
       elevation: 0,
       color:
-      content.role == 'model' ? Colors.blue.shade800 : Colors.transparent,
+          content.role == 'model' ? Colors.blue.shade800 : Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -82,7 +81,7 @@ class _SectionChatState extends State<SectionChat> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 data:
-                content.parts?.lastOrNull?.text ?? 'cannot generate data!'),
+                    content.parts?.lastOrNull?.text ?? 'cannot generate data!'),
           ],
         ),
       ),
