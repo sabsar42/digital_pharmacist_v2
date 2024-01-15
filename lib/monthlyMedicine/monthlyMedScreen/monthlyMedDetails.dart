@@ -154,7 +154,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                   margin: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.black,width: 2),
+                    border: Border.all(color: Colors.grey,width: 2),
                   ),
                   child:Row(
                     children:[
@@ -166,7 +166,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.lightBlue,
-                          border: Border.all(color: Colors.red,width: 2),
+                          border: Border.all(color: Colors.red.shade100,width: 2),
                         ),
                       ),
                       SizedBox(width:20),

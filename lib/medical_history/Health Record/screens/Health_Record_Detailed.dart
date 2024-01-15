@@ -216,17 +216,19 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          onRefresh: () async {
-
-            await loadHealthRecordData();
-          },
-          child: isAddingDetailedRecord
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Padding(
+      body: RefreshIndicator(
+        color: Colors.purple,
+        onRefresh: () async {
+          await loadHealthRecordData();
+        },
+        child: isAddingDetailedRecord
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple,
+                ),
+              )
+            : SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +270,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                     ],
                   ),
                 ),
-        ),
+              ),
       ),
     );
   }
