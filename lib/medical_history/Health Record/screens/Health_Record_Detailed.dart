@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/medical_history/Health%20Record/screens/Health_Record_Screen.dart';
+import 'package:digi_pharma_app_test/medical_history/Health%20Record/widget/medicine_dosage_duration_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +35,10 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   final TextEditingController _hospitalNameController = TextEditingController();
   final TextEditingController _diagnosisTypeController =
       TextEditingController();
-  final TextEditingController _completedController = TextEditingController();
+
+  // final TextEditingController _medNameController = TextEditingController();
+  // final TextEditingController _frequencyController = TextEditingController();
+  // final TextEditingController _durationController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
   late String dateByUser = '';
@@ -112,9 +116,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             .doc(userID)
             .collection('healthRecords');
 
-
     /// for ADDING DRUGS_COLLECTIONS
- CollectionReference<Map<String, dynamic>> drugsCollection =
+    CollectionReference<Map<String, dynamic>> drugsCollection =
         FirebaseFirestore.instance
             .collection('users')
             .doc(userID)
@@ -126,13 +129,12 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         .toList();
 
     /// DRUGS_COLLECTION
-    Map<String,dynamic> drugRecord = {
+    Map<String, dynamic> drugRecord = {
       'prescribedDrugs': prescribedMedicines,
     };
     await drugsCollection.doc(uniqueID).set(drugRecord);
+
     /// DRUGS
-
-
 
     Map<String, dynamic> newRecord = {
       'diagnosisNumber': uniqueID,
@@ -268,10 +270,17 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                 diagnosisController: _diagnosisController,
                 title: 'DIAGNOSIS',
               ),
-              MedInfoCard(
-                diagnosisController: prescribedMedicineController,
-                title: 'Medicines',
+              MedicineRow(
+                uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
               ),
+
+              ///BACK HERE IF YOU MESS UPPP
+              MedInfoCard(
+                diagnosisController: prescribedMedicineController ,
+                title: '| Medicines',
+              ),
+              /// BACK TILL HERE
+              ///
               MedInfoCard(
                 diagnosisController: _summaryController,
                 title: 'Summary of Diagnosis',
