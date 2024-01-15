@@ -116,7 +116,6 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -154,7 +153,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
             List<Map<String, dynamic>> data = snapshot.data ?? [];
             return Column(
               children: [
-                SizedBox(height: 20,),
+                SizedBox(height: 30,),
                 Expanded(
                   child: ListView.builder(
                     itemCount: data.length,
