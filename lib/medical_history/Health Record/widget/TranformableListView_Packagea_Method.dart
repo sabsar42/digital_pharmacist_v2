@@ -11,6 +11,8 @@ Matrix4 getTransformMatrix(TransformableListItem item) {
   if (item.position != TransformableListItemPosition.middle) {
     final scale = endScaleBound + ((1- endScaleBound) * animationProgress);
 
+    /// CASCADE NOTATION
+    /// So that no need of Repeating the Object for every Operator
     paintTransform
       ..translate(item.size.width / 2)
       ..scale(scale)

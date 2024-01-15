@@ -23,6 +23,7 @@ class _MedicineRowState extends State<MedicineRow> {
   void initState() {
     super.initState();
     getCurrentUser();
+
   }
 
   Future<void> getCurrentUser() async {
@@ -36,6 +37,8 @@ class _MedicineRowState extends State<MedicineRow> {
   }
 
   Future<void> addMedicalDetails(int index) async {
+
+
     String userID = currentUser.uid;
     String uniqueID = widget.uniqueDiagnosisNumber;
 
@@ -73,6 +76,8 @@ class _MedicineRowState extends State<MedicineRow> {
     });
 
     await medicineDetailsCollection.doc(uniqueMedID).set(newRecord);
+
+
   }
 
   void onMedicineInputChange(int index) {
