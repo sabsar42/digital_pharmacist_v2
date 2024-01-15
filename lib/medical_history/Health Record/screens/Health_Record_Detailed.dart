@@ -10,6 +10,7 @@ import '../../../Scheduler/widget/settingsDropdown.dart';
 import '../Widget/doctor_information.dart';
 import '../Widget/med_information_card.dart';
 import '../Widget/my_custom_dropdown.dart';
+import '../widget/prescribed_medicine_card.dart';
 
 class HealthRecordDetailScreen extends StatefulWidget {
   final String uniqueDiagnosisNumber;
@@ -44,6 +45,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   late String dateByUser = '';
   late String timeByUser = '';
   bool isCompleted = false;
+  bool isAddingDetailedRecord = false;
 
   @override
   void initState() {
@@ -110,16 +112,14 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
       //     .doc(userID)
       //     .collection('drugsCollection');
 
-
-
-        QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
-            .collection('users')
-            .doc(userID)
-            .collection('healthRecords')
-            .doc(uniqueID)
-            .collection('medicine_dosage_duration')
-            .get();
-        setState(() {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('healthRecords')
+          .doc(uniqueID)
+          .collection('medicine_dosage_duration')
+          .get();
+      setState(() {
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data();
           String medName;
@@ -132,7 +132,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           //   'timestamp': FieldValue.serverTimestamp(),
           // });
           //
-
         }
       });
     } catch (error) {
@@ -141,6 +140,9 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   }
 
   Future<void> addHealthRecordDetails() async {
+    setState(() {
+      isAddingDetailedRecord = true;
+    });
     String userID = currentUser.uid;
     String uniqueID = widget.uniqueDiagnosisNumber;
     CollectionReference<Map<String, dynamic>> healthRecordsCollection =
@@ -164,6 +166,9 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
     };
 
     await healthRecordsCollection.doc(uniqueID).set(newRecord);
+    setState(() {
+      isAddingDetailedRecord = false;
+    });
   }
 
   void _showDatePicker() async {
@@ -212,142 +217,114 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.yellowAccent,
-                          width: 2,
-                        )),
-                    child: CircleAvatar(
-                      backgroundColor: isCompleted ? Colors.green : Colors.grey,
-                      radius: 18,
-                      child: IconButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                        ),
-                        icon: Icon(
-                          Icons.done_outline_rounded,
-                          color: isCompleted ? Colors.white : Colors.black45,
-                          size: 22,
-                        ),
-                        onPressed: () {
-                          isCompleted = !isCompleted;
-                          setState(() {});
-                        },
+        child: RefreshIndicator(
+          onRefresh: () async {
+
+            await loadHealthRecordData();
+          },
+          child: isAddingDetailedRecord
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CompletedanndSaveRow(),
+                      SizedBox(height: 10.0),
+                      DateTimebyUser,
+                      diagnosisTypeDropDown(),
+                      SizedBox(height: 1.0),
+                      DoctorHospitalInformation(
+                        doctorNameController: _doctorNameController,
+                        specializationController: _specializationController,
+                        hospitalNameController: _hospitalNameController,
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    width: 70,
-                    child: isCompleted ? Text('Completed') : Text('Ongoing'),
-                  ),
-                  SizedBox(
-                    width: 185,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      addHealthRecordDetails();
-                    },
-                    child: Text("+ SAVE"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple.shade700,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              DateTimebyUser,
-              diagnosisTypeDropDown(),
-              SizedBox(height: 1.0),
-              DoctorHospitalInformation(
-                doctorNameController: _doctorNameController,
-                specializationController: _specializationController,
-                hospitalNameController: _hospitalNameController,
-              ),
-              MedInfoCard(
-                diagnosisController: _diagnosisController,
-                title: 'DIAGNOSIS',
-              ),
-              MedicineRow(
-                uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
-              ),
+                      MedInfoCard(
+                        diagnosisController: _diagnosisController,
+                        title: 'DIAGNOSIS',
+                      ),
+                      MedicineRow(
+                        uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
+                      ),
 
-              ///BACK HERE IF YOU MESS UPPP
-              // MedInfoCard(
-              //   diagnosisController: prescribedMedicineController ,
-              //   title: '| Medicines',
-              // ),
-              /// BACK TILL HERE
-              ///
-              MedInfoCard(
-                diagnosisController: _summaryController,
-                title: 'Summary of Diagnosis',
-              ),
-              SizedBox(height: 16.0),
-              if (prescribedMedicines.isNotEmpty)
-                Card(
-                  elevation: 3,
-                  color: Colors.teal.shade50,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "| Prescribed Medicines",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                        ListView.builder(
-                          itemExtent: 37.0,
-                          shrinkWrap: true,
-                          itemCount: prescribedMedicines.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-
-                              leading: CircleAvatar(
-                                radius: 12,
-                                child: Text('${index + 1}'),
-                              ),
-                              title: Text(
-                                prescribedMedicines[index],
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                      ///BACK HERE IF YOU MESS UPPP
+                      // MedInfoCard(
+                      //   diagnosisController: prescribedMedicineController ,
+                      //   title: '| Medicines',
+                      // ),
+                      /// BACK TILL HERE
+                      ///
+                      MedInfoCard(
+                        diagnosisController: _summaryController,
+                        title: 'Summary of Diagnosis',
+                      ),
+                      SizedBox(height: 16.0),
+                      if (prescribedMedicines.isNotEmpty)
+                        PrescribedMedicineCard(
+                            prescribedMedicines: prescribedMedicines),
+                      SizedBox(height: 20),
+                    ],
                   ),
                 ),
-              SizedBox(height: 20),
-            ],
-          ),
         ),
       ),
+    );
+  }
+
+  Row CompletedanndSaveRow() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 8,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.yellowAccent,
+                width: 2,
+              )),
+          child: CircleAvatar(
+            backgroundColor: isCompleted ? Colors.green : Colors.grey,
+            radius: 18,
+            child: IconButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+              ),
+              icon: Icon(
+                Icons.done_outline_rounded,
+                color: isCompleted ? Colors.white : Colors.black45,
+                size: 22,
+              ),
+              onPressed: () {
+                isCompleted = !isCompleted;
+                setState(() {});
+              },
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Container(
+          width: 70,
+          child: isCompleted ? Text('Completed') : Text('Ongoing'),
+        ),
+        SizedBox(
+          width: 185,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            addHealthRecordDetails();
+          },
+          child: Text("+ SAVE"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.purple.shade700,
+          ),
+        ),
+      ],
     );
   }
 
@@ -358,7 +335,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         height: 70, // Adjust the height as needed
 
         child: Card(
-
           color: Colors.brown.shade200,
           elevation: 4,
           shape: RoundedRectangleBorder(
