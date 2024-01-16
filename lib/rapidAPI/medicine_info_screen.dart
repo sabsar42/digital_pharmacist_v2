@@ -59,6 +59,7 @@ class _MedicineInformationState extends State<MedicineInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('DragInfo'),
         centerTitle: true,
@@ -87,22 +88,98 @@ class _MedicineInformationState extends State<MedicineInformation> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: showMoreInfoList[index] ? Colors.white: Colors.black,
+                            border: showMoreInfoList[index]?Border.all(color: Colors.black,width: 3):null,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex:80,
+                                  flex:90,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: showMoreInfoList[index]
                                         ? [
-                                      Text('Medicine Name: ${medName[index]}',style: size20White(),),
-                                      Text('Generic Name: ${medicineInfo['generic_name']}'),
-                                      Text('Dosage Form: ${medicineInfo['dosage_form']}'),
-                                      Text('Product Type: ${medicineInfo['product_type']}'),
-                                      Text('Brand: ${medicineInfo['brand_name']}'),
+                                          RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Medicine Name: ',style: siz20System()),
+                                            TextSpan(
+                                                text: '${medName[index]}',
+                                                style: TextStyle(
+                                                  color: Colors.orange,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Generic Name: ',style: siz20System()),
+                                            TextSpan(
+                                                text: '${medicineInfo['generic_name']}',
+                                                style: TextStyle(
+                                                    color: Colors.orange,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Dosage Form: ',style: siz20System()),
+                                            TextSpan(
+                                                text: '${medicineInfo['dosage_form']}',
+                                                style: TextStyle(
+                                                    color: Colors.orange,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Product Type: ',style: siz20System()),
+                                            TextSpan(
+                                                text: '${medicineInfo['product_type']}',
+                                                style: TextStyle(
+                                                    color: Colors.orange,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Brand: ',style: siz20System()),
+                                            TextSpan(
+                                                text: '${medicineInfo['brand_name']}',
+                                                style: TextStyle(
+                                                    color: Colors.orange,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                   
                                     ]
                                         : [
