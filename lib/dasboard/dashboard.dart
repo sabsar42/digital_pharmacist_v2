@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/Upload%20to%20Scanner/UploadScreenPreview.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
+import 'package:digi_pharma_app_test/rapidAPI/medicine_info_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -107,6 +108,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                               );
                             }
+                            else if(index==3){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineInformation()));
+                            }
                             // Add more conditions for other grid items
                           },
                           child: Container(
@@ -165,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               'assets/images/alarm-clock.png',
                                               width: 40,
                                               height: 60,
-                                            )
+                                            ):index==3?Text('MedicalInfo')
                                           : Text(
                                               "Item $index",
                                               style: TextStyle(
