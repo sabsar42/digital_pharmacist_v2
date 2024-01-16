@@ -1,3 +1,4 @@
+import 'package:digi_pharma_app_test/style.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,8 @@ class _MedicineInformationState extends State<MedicineInformation> {
   List<String> medName = ['Motrin IV', 'Lisinopril', 'advil'];
 
   List<Map<String, dynamic>> medicineInfoList = [];
+  List<bool> showMoreInfoList = List.generate(3, (index) => false);
+
 
   @override
   void initState() {
@@ -52,41 +55,103 @@ class _MedicineInformationState extends State<MedicineInformation> {
     }
     setState(() {});
   }
-
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('DragInfo'),
+        centerTitle: true,
+        toolbarHeight: 80,
+
+      ),
       body: Container(
         child: Column(
           children: [
-            SizedBox(
-              height: 100,
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: medicineInfoList.length,
                 itemBuilder: (context, index) {
                   Map<String, dynamic> medicineInfo = medicineInfoList[index];
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      // border: Border.all(color: Colors.black,width: 2),
-                      color: Color(0x76258c25),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Medicine Name: ${medicineInfo['generic_name']}'),
-                          Text('Dosage Form: ${medicineInfo['dosage_form']}'),
-                          Text('Product Type: ${medicineInfo['product_type']}'),
-                          Text('Brand: ${medicineInfo['brand_name']}'),
-                        ],
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showMoreInfoList[index] = !showMoreInfoList[index];
+                          });
+                        },
+                        child: Container(
+                          width:double.infinity,
+                          margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: showMoreInfoList[index] ? Colors.white: Colors.black,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex:80,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: showMoreInfoList[index]
+                                        ? [
+                                      Text('Medicine Name: ${medName[index]}',style: size20White(),),
+                                      Text('Generic Name: ${medicineInfo['generic_name']}'),
+                                      Text('Dosage Form: ${medicineInfo['dosage_form']}'),
+                                      Text('Product Type: ${medicineInfo['product_type']}'),
+                                      Text('Brand: ${medicineInfo['brand_name']}'),
+                                  
+                                    ]
+                                        : [
+                                      //Text('Medicine Name: ${medName[index]}',style: size20White(),),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Medicine Name: ',style: size20White()),
+                                            TextSpan(
+                                                text: '${medName[index]}',
+                                                style: TextStyle(
+                                                  color: Colors.green,
+                                                  fontSize: 15,
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: const TextStyle(color: Colors.grey),
+                                          children: [
+                                            TextSpan(text: 'Generic Name: ',style: size20White()),
+                                            TextSpan(
+                                              text: '${medicineInfo['generic_name']}',
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 15,
+                                              )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                    flex:10,
+                                   child:showMoreInfoList[index]?Icon(Icons.remove):Text('+',style: siz30White(),) ,
+                                ),
+                                   // child:showMoreInfoList[index]? Icon(Icons.remove,color: Colors.white,size: 10,):Icon(Icons.add,color: Colors.black,),),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   );
                 },
               ),
@@ -96,4 +161,5 @@ class _MedicineInformationState extends State<MedicineInformation> {
       ),
     );
   }
+
 }
