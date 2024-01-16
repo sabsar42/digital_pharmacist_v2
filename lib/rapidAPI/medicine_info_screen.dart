@@ -69,17 +69,23 @@ class _MedicineInformationState extends State<MedicineInformation> {
                   Map<String, dynamic> medicineInfo = medicineInfoList[index];
                   return Container(
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    height: 80,
+                    height: 120,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       // border: Border.all(color: Colors.black,width: 2),
                       color: Color(0x76258c25),
                     ),
-                    child: Column(
-                      children: [
-                        Text('Medicine Name: ${medicineInfo['generic_name']}'),
-                        Text('Dosage Form: ${medicineInfo['dosage_form']}'),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Medicine Name: ${medicineInfo['generic_name']}'),
+                          Text('Dosage Form: ${medicineInfo['dosage_form']}'),
+                          Text('Product Type: ${medicineInfo['product_type']}'),
+                          Text('Brand: ${medicineInfo['brand_name']}'),
+                        ],
+                      ),
                     ),
                   );
                 },
