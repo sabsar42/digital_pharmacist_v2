@@ -1,12 +1,18 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../Gemini Digi-BOT/widgets/item_image_view.dart';
 import '../style.dart';
@@ -24,9 +30,12 @@ class TextRecogSectionTextStreamInput extends StatefulWidget {
 
 class _SectionTextInputStreamState
     extends State<TextRecogSectionTextStreamInput> {
+
+
   final gemini = Gemini.instance;
   String? searchedText, _finishReason;
   List<Uint8List>? images;
+  final screenshotController = ScreenshotController();
 
   String? get finishReason => _finishReason;
 
@@ -35,14 +44,30 @@ class _SectionTextInputStreamState
       setState(() => _finishReason = set);
     }
   }
-
   @override
   void initState() {
     super.initState();
     if (widget.initialText != null) {
       promptGemini(widget.initialText!);
     }
+    getCurrentUser();
   }
+
+  late User currentUser;
+
+
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+
+      });
+    }
+
+  }
+
+
 
   void promptGemini(String text) {
     searchedText = text;
@@ -57,6 +82,30 @@ class _SectionTextInputStreamState
     }).onError((e) {
       log('streamGenerateContent error', error: e);
     });
+  }
+
+  String? downloadUrl;
+
+  Future<void> _saveScreenshot() async {
+    String userID = currentUser.uid;
+    final File? _image = (await screenshotController.capture()) as File?;
+
+    final postID = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("${userID}/AI_Presciption_folder")
+        .child("post_${postID}.jpg");
+
+
+    try {
+      await ref.putFile(_image!);
+      downloadUrl = await ref.getDownloadURL();
+      print(downloadUrl);
+     /// showSnackBar('Image uploaded successfully!', Duration(seconds: 2));
+    } catch (e) {
+      print('Error uploading image: $e');
+     // showSnackBar('Error uploading image. Please try again.', Duration(seconds: 2));
+    }
   }
 
   @override
@@ -100,55 +149,62 @@ class _SectionTextInputStreamState
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GeminiResponseTypeView(
-              builder: (context, child, response, loading) {
-                if (loading) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: SizedBox(
-                      width: 80.0,
-                      height: 80.0,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: SvgPicture.asset(
-                          'assets/images/digi-pharma-prussian.svg',
+      body: Screenshot(
+        controller: screenshotController,
+        child: Column(
+          children: [
+            Expanded(
+              child: GeminiResponseTypeView(
+                builder: (context, child, response, loading) {
+                  if (loading) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: SizedBox(
+                        width: 80.0,
+                        height: 80.0,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: SvgPicture.asset(
+                            'assets/images/digi-pharma-prussian.svg',
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                if (response != null) {
-                  return Markdown(
-                    data: response,
-                    selectable: true,
-                  );
-                } else {
-                  return const Center(child: Text('Search something!'));
-                }
-              },
-            ),
-          ),
-          if (finishReason != null) Text(finishReason!),
-          if (images != null)
-            Container(
-              height: 120,
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              alignment: Alignment.centerLeft,
-              child: Card(
-                child: ListView.builder(
-                  itemBuilder: (context, index) => ItemImageView(
-                    bytes: images!.elementAt(index),
-                  ),
-                  itemCount: images!.length,
-                  scrollDirection: Axis.horizontal,
-                ),
+                  if (response != null) {
+                    return Markdown(
+                      data: response,
+                      selectable: true,
+                    );
+                  } else {
+                    return const Center(child: Text('Search something!'));
+                  }
+                },
               ),
             ),
-        ],
+            if (finishReason != null) Text(finishReason!),
+            if (images != null)
+              Container(
+                height: 120,
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                alignment: Alignment.centerLeft,
+                child: Card(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => ItemImageView(
+                      bytes: images!.elementAt(index),
+                    ),
+                    itemCount: images!.length,
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _saveScreenshot,
+        child: Icon(Icons.save),
       ),
     );
   }

@@ -3,9 +3,11 @@
         android:label="digi_pharma_app_test"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
         <activity
             android:requestLegacyExternalStorage="true"
             android:name=".MainActivity"
+            android:requestLegacyExternalStorage="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -30,5 +32,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
 </manifest>
