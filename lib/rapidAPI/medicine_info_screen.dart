@@ -11,10 +11,11 @@ class MedicineInformation extends StatefulWidget {
 }
 
 class _MedicineInformationState extends State<MedicineInformation> {
-  List<String> medName = ['Motrin IV', 'Lisinopril', 'advil'];
+  List<String> medName = ['Motrin IV', 'Lisinopril', 'advil','Levothyroxine sodium'];
 
   List<Map<String, dynamic>> medicineInfoList = [];
-  List<bool> showMoreInfoList = List.generate(3, (index) => false);
+
+  List<bool> showMoreInfoList = List.generate(1000, (index) => false);
 
 
   @override
