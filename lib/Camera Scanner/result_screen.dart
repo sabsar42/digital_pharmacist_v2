@@ -8,10 +8,25 @@ import 'ResultBardHomePage.dart';
 import 'gemini_text_to_medRecord.dart';
 import 'result_in_pdf_page.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   final String text;
 
   const ResultScreen({Key? key, required this.text}) : super(key: key);
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  late String recAndPromptText;
+
+  @override
+  void initState() {
+    super.initState();
+    String promptText =
+        "Add a Page Title name is : (AI Prescription) and Organize this in stream Text and Give: 1.Doctor Info, 2.Medicines in Table Format, 3.Diagnosis, 4.Summary of the Medicines";
+    recAndPromptText = promptText + widget.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +40,14 @@ class ResultScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0),
           child: Container(
-            height:  MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Wrap(
               children: [
                 Text(
-                  text,
+                  widget.text,
                   textAlign: TextAlign.justify,
                   style: TextStyle(fontSize: 18.0),
                 ),
@@ -46,8 +61,9 @@ class ResultScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TextRecogSectionTextStreamInput(initialText: text,)
-            ),
+                builder: (context) => TextRecogSectionTextStreamInput(
+                      initialText: recAndPromptText,
+                    )),
           );
         },
         child: Icon(

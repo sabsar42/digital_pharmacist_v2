@@ -21,7 +21,7 @@ class DoctorHospitalInformation extends StatelessWidget {
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
-              12.0), // Adjust the border radius to round the corners
+              12.0),
         ),
         color: Colors.orange.shade100,
         child: Column(

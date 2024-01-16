@@ -225,6 +225,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             ? Center(
                 child: CircularProgressIndicator(
                   color: Colors.purple,
+
+
                 ),
               )
             : SingleChildScrollView(
