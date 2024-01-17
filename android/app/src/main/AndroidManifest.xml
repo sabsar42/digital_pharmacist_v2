@@ -7,7 +7,6 @@
         <activity
             android:requestLegacyExternalStorage="true"
             android:name=".MainActivity"
-            android:requestLegacyExternalStorage="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
