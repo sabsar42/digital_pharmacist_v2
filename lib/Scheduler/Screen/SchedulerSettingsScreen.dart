@@ -4,7 +4,7 @@ import 'package:digi_pharma_app_test/Scheduler/widget/settingsDropdown.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late User currentUser;
+  late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController newValueController = TextEditingController();
@@ -26,12 +27,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
+  var items = ['select'];
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-    loadHealthRecordDetails();
+  fetchLatestHealthRecordId(currentUser.uid);
+   // loadHealthRecordDetails();
     int timesPerDay = calculateTimesPerDay();
     timeControllers = List.generate(timesPerDay, (index) => TextEditingController());
   }
@@ -44,8 +47,40 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
+  Future<String?> fetchLatestHealthRecordId(String userId) async {
+    print(userId);
+    print('entereddddddd');
+    try {
+      print('agaian');
+      CollectionReference healthRecordsCollection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('healthRecords');
+      print('isIt');
 
-  Future<void> loadHealthRecordDetails() async {
+      QuerySnapshot querySnapshot = await healthRecordsCollection.orderBy('timestamp', descending: true).limit(1).get();
+print(querySnapshot.docs.first.id);
+print('isIt');
+      if (querySnapshot.docs.isNotEmpty) {
+        latestHealthRecordId=querySnapshot.docs.first.id;
+
+        print('recordrecoredrecord');
+        print(latestHealthRecordId);
+        setState(() {
+          loadHealthRecordDetails(latestHealthRecordId);
+        });
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  Future<void> loadHealthRecordDetails(String latestHealthRecordId) async {
+
     String userID = currentUser.uid;
 
     try {
@@ -53,14 +88,24 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('users')
           .doc(userID)
           .collection('healthRecords')
-          .orderBy('timestamp', descending: true)
-          .limit(1)
-          .get();
+          .doc(latestHealthRecordId)
+          .collection('medicine_dosage_duration')
+      .get();
 
-      if (snapshot.docs.isNotEmpty) {
-        var latestRecord = snapshot.docs.first.data();
-        setState(() {});
+
+      for (QueryDocumentSnapshot document in snapshot.docs) {
+String medicineName = document['medicine_name'];
+//print(medicineName);
+      items.add(medicineName);
+      setState(() {
+
+      });
+
       }
+
+
+
+
     } catch (e) {
       print("Error loading health record details: $e");
     }
@@ -97,9 +142,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
         .add(addDetails);
   }
 
-  String dropdownvalue = 'Item 1';
+  String dropdownvalue = 'select';
 
-  var items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'];
+
 
   var colors = [
     Color(0x5903593f),
