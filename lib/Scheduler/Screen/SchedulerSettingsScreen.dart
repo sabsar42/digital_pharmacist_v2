@@ -186,16 +186,16 @@ String medicineName = document['medicine_name'];
                   'Set Reminders',
                   style: siz31Black(),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Center(
-                  child: Image.asset(
-                    'assets/images/dashboard_1.png',
-                    height: 202,
-                    width: 202,
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 40,
+                // ),
+                // Center(
+                //   child: Image.asset(
+                //     'assets/images/dashboard_1.png',
+                //     height: 202,
+                //     width: 202,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -232,7 +232,7 @@ String medicineName = document['medicine_name'];
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Text(
                   'Type',
@@ -256,22 +256,25 @@ String medicineName = document['medicine_name'];
                         );
                       }),
                 ),
+                SizedBox(height: 30,),
 
-                Card(
-                  margin: EdgeInsets.fromLTRB(5, 15, 5, 5),
-                  elevation: 10,
+                Container(
+                 // / margin: EdgeInsets.all(20),
+                  //height: 180,
+                  width: double.infinity,
 
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    height: 180,
-                    width: double.infinity,
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color:  Colors.yellow,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         Row(
                           children: [
                             Text(
-                              'Start',
+                              'Start    ',
                               style: siz20Black(),
                             ),
                             CustomDropdown(
@@ -279,13 +282,13 @@ String medicineName = document['medicine_name'];
                               initialValue: 'Today',
                               onChanged: (String newValue) {},
                             ),
-                            Icon(Icons.add),
+
                           ],
                         ),
                         Row(
                           children: [
                             Text(
-                              'Duration',
+                              'Duration    ',
                               style: siz20Black(),
                             ),
                             SizedBox(
@@ -316,7 +319,7 @@ String medicineName = document['medicine_name'];
                         Row(
                           children: [
                             Text(
-                              'Frequency',
+                              'Frequency     ',
                               style: siz20Black(),
                             ),
                             CustomDropdown(
@@ -338,13 +341,13 @@ String medicineName = document['medicine_name'];
                                 });
                               },
                             ),
-                            Icon(Icons.add),
+
                           ],
                         ),
                         Row(
                           children: [
                             Text(
-                              'Alarm',
+                              'Alarm     ',
                               style: siz20Black(),
                             ),
                             Icon(Icons.add),
@@ -400,31 +403,29 @@ String medicineName = document['medicine_name'];
                 //   ),
                 // ),
                 SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
                 Center(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff08346D),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          )),
-                      onPressed: () {
-                        addUserDetails();
-                        print(newValueController.text);
-                        print(frequencyController.text);
-                        print(durationController.text);
-                        print('pressed');
-                        print(futureDateController.text);
-                        print(futureTime);
-                        for (int i = 0; i < timeControllers.length; i++) {
-                          print("Time ${i + 1}: ${timeControllers[i].text}");
-                        }
-                      },
-                      child: Text(
-                        "Add Reminders",
-                        style: size20White(),
-                      )),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff08346D),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                        onPressed: () {
+                          addUserDetails();
+                          for (int i = 0; i < timeControllers.length; i++) {
+                            print("Time ${i + 1}: ${timeControllers[i].text}");
+                          }
+                        },
+                        child: Text(
+                          "Add Reminders",
+                          style: size20White(),
+                        )),
+                  ),
                 )
               ],
             ),
