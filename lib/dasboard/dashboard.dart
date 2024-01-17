@@ -107,9 +107,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   builder: (context) => SchedulerScreen(),
                                 ),
                               );
-                            }
-                            else if(index==3){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineInformation()));
+                            } else if (index == 3) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MedicineInformation()));
                             }
                             // Add more conditions for other grid items
                           },
@@ -134,6 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           width: 60,
                                           height: 60,
                                         ),
+                                        SizedBox(height: 12,),
                                         Text(
                                           'Health Records',
                                           style: TextStyle(
@@ -154,6 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               width: 60,
                                               height: 60,
                                             ),
+                                            SizedBox(height: 12,),
                                             Text(
                                               'Monthly Med',
                                               style: TextStyle(
@@ -165,18 +170,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ],
                                         )
                                       : index == 2
-                                          ? Image.asset(
-                                              'assets/images/alarm-clock.png',
-                                              width: 40,
-                                              height: 60,
-                                            ):index==3?Text('MedicalInfo')
-                                          : Text(
-                                              "Item $index",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                                          ? Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/alarm-clock.png',
+                                                  width: 60,
+                                                  height: 60,
+                                                ),
+                                                SizedBox(height: 12,),
+                                                Text(
+                                                  'Med Scheduler',
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          62, 34, 148, 1.0),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            )
+                                          : index == 3
+                                              ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/dashboard_1.png',
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                    SizedBox(height: 12,),
+                                                    Text(
+                                                      'Drugs Collection',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              62, 34, 148, 1.0),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                )
+                                              : Text('None'),
                             ),
                           ),
                         );
