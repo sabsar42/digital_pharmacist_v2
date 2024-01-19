@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../LogIn_UI/LoginPage.dart';
-import 'User_Account_screen/user_account_screen.dart';
+import '../../LogIn_UI/LoginPage.dart';
+import 'edit_user_account_screen.dart';
 
 class UserProfile extends StatefulWidget {
   @override

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 
-import '../User_Profile/UserProfile.dart';
+import '../User_Profile/User_Account_screen/UserProfile.dart';
 import 'drawer_dashboard.dart';
 
 class DashboardAppbar extends StatefulWidget {

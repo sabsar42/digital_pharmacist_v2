@@ -11,7 +11,7 @@ import '../Gemini Digi-BOT/sections/chat.dart';
 import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../Google Berd/BardHomePage.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
-import '../User_Profile/UserProfile.dart';
+import '../User_Profile/User_Account_screen/UserProfile.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';

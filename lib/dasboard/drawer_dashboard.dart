@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:digi_pharma_app_test/User_Profile/UserProfile.dart';
+import 'package:digi_pharma_app_test/User_Profile/User_Account_screen/UserProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,21 @@
+import 'dart:io';
+import 'package:animated_weight_picker/animated_weight_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../show_snackbar.dart';
+import '../controller/upload_profile_image_contoller.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
@@ -19,12 +33,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController bloodGroupController = TextEditingController();
 
+  ShowUserProfileImageController showUserProfileImageController =
+      Get.find<ShowUserProfileImageController>();
+
+  File? _image;
+  final imagePicker = ImagePicker();
   late User currentUser;
+
+  String? userID;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+
   }
 
   Future<void> getCurrentUser() async {
@@ -32,8 +54,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (user != null) {
       setState(() {
         currentUser = user;
+        userID = currentUser.uid;
       });
       loadUserData();
+      showUserProfileImageController.loadUserImageData();
     }
   }
 
@@ -41,7 +65,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     String userID = currentUser.uid;
     var userDoc =
         await FirebaseFirestore.instance.collection('users').doc(userID).get();
-
+    showUserProfileImageController.loadUserImageData();
     if (userDoc.exists) {
       Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
       setState(() {
@@ -60,6 +84,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("${userID}/user_profile_folder")
+        .child("${userID}_dp.jpg");
+
+    await ref.putFile(_image!);
+    String userProfileImageUrl = await ref.getDownloadURL();
+    print(userProfileImageUrl);
 
     var userDoc =
         await FirebaseFirestore.instance.collection('users').doc(userID).get();
@@ -75,17 +109,35 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         'gender': genderController.text,
         'blood_group': bloodGroupController.text,
         'password': passwordController.text,
+        'user_profile_picture': userProfileImageUrl,
       });
     } else {
       await FirebaseFirestore.instance.collection('users').doc(userID).set({
         'full_name': fullNameController.text,
         'age': ageController.text,
         'email': emailController.text,
-        'height': heightController.text,
+        'phone': phoneController.text,
+        'height': weightController.text,
+        'weight': heightController.text,
         'gender': genderController.text,
         'blood_group': bloodGroupController.text,
+        'password': passwordController.text,
       });
     }
+  }
+
+  Future imagePickerMethod(ImageSource source) async {
+    final pick = await imagePicker.pickImage(source: source);
+    setState(() {
+      if (pick != null) {
+        _image = File(pick.path);
+
+        showSnackBar(
+            'Image Uploaded Successfully', Duration(microseconds: 300), true);
+      } else {
+        showSnackBar('No Image Selected', Duration(microseconds: 300), false);
+      }
+    });
   }
 
   bool obscurePassword = true;
@@ -100,8 +152,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios,
-          color: Color.fromRGBO(13, 44, 82, 1.0),),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromRGBO(13, 44, 82, 1.0),
+          ),
         ),
         title: Text("EDIT PROFILE",
             style: Theme.of(context).textTheme.titleMedium),
@@ -118,11 +172,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     SizedBox(
                       width: 100,
                       height: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image(
-                          image: AssetImage("assets/images/patient.png"),
-                        ),
+                      child: InkWell(
+                        child: GetBuilder<ShowUserProfileImageController>(
+                            builder: (controller) {
+                          print('here ${controller.profileImageUrl}');
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: (controller.profileImageUrl == null
+                                ? Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    controller.profileImageUrl!,
+                                    fit: BoxFit.cover,
+                                  )),
+                          );
+                        }),
+                        onTap: () => imagePickerMethod(ImageSource.gallery),
                       ),
                     ),
                     Positioned(
