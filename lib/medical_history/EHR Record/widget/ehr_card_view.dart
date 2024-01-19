@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 
-class EhrCardView extends StatelessWidget {
+class EhrCardView extends StatefulWidget {
   const EhrCardView({
     Key? key,
     required this.url,
@@ -14,80 +17,106 @@ class EhrCardView extends StatelessWidget {
   final String url;
   final String description;
 
-  //
-  // Future<void> _shareImage() async {
-  //   final imageUrl = Uri.parse(url);
-  //   final response = await http.get(imageUrl);
-  //
-  //   print(url);
-  //   print(imageUrl);
-  //   if (response.statusCode == 200) {
-  //     await Share.file(
-  //       'EHR Image',
-  //       'ehr_image.jpg',
-  //       response.bodyBytes,
-  //       'image/jpg',
-  //     );
-  //   } else {
-  //     print('Failed to download image. Status code: ${response.statusCode}');
-  //   }
-  // }
+  @override
+  State<EhrCardView> createState() => _EhrCardViewState();
+}
+
+class _EhrCardViewState extends State<EhrCardView> {
+  @override
+  void initState() {
+    super.initState();
+    shareImage();
+  }
+
+  Future<void> showFullDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext contex) {
+          return AlertDialog(
+            content: Container(
+              height: 600,
+              width: 600,
+              child: Image.network(
+                widget.url,
+                fit: BoxFit.fill,
+              ),
+            ),
+          );
+        });
+  }
+
+  Future shareImage() async {
+    final uri = Uri.parse(widget.url);
+    final response = await http.get(uri);
+    if (response.statusCode == ConnectionState.waiting) {
+      print(response.statusCode);
+      Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      final imageBytes = response.bodyBytes;
+      final tempDirectory = await getApplicationDocumentsDirectory();
+      final path = '${tempDirectory.path}/_ehrImage.jpg';
+      File(path).writeAsBytes(imageBytes);
+      Share.shareFiles([path], text: 'Ehr_Image');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.teal.shade50,
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 8,
-                    child: Image.network(
-                      url,
-                      height: 250,
-                      width: 300,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        description,
-                        style: TextStyle(fontSize: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey.shade50,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: InkWell(
+                        child: Image.network(
+                          widget.url,
+                          height: 300,
+                          width: 400,
+                          fit: BoxFit.cover,
+                        ),
+                        onTap: () => showFullDialog(),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: IconButton(
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                          ),
                           icon: Icon(Icons.share),
                           onPressed: () {
-                            //  print(url);
-                            //  _shareImage();
-                          }),
+                            shareImage();
+                          },
+                          label: Text('Share'),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
