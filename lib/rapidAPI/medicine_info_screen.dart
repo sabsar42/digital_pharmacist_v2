@@ -77,6 +77,7 @@ class _MedicineInformationState extends State<MedicineInformation> {
   }
 
   List<bool> showMoreInfoList = List.generate(60, (index) => false);
+
   Future<void> fetchData() async {
     final String apiUrl =
         'https://drug-info-and-price-history.p.rapidapi.com/1/druginfo';
@@ -117,31 +118,7 @@ class _MedicineInformationState extends State<MedicineInformation> {
         centerTitle: true,
         toolbarHeight: 80,
       ),
-      body: FutureBuilder<void>(
-        future: fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text('Data is on its way! Thanks for your patience.'),
-                ],
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            return buildMedicineInfo();
-          }
-        },
-      ),
+      body: buildMedicineInfo(),
     );
   }
 

@@ -4,7 +4,7 @@ import 'package:digi_pharma_app_test/Scheduler/widget/settingsDropdown.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late User currentUser;
+  late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController newValueController = TextEditingController();
@@ -26,12 +27,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
+  var items = ['select'];
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-    loadHealthRecordDetails();
+  fetchLatestHealthRecordId(currentUser.uid);
+   // loadHealthRecordDetails();
     int timesPerDay = calculateTimesPerDay();
     timeControllers = List.generate(timesPerDay, (index) => TextEditingController());
   }
@@ -44,8 +47,40 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
+  Future<String?> fetchLatestHealthRecordId(String userId) async {
+    print(userId);
+    print('entereddddddd');
+    try {
+      print('agaian');
+      CollectionReference healthRecordsCollection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('healthRecords');
+      print('isIt');
 
-  Future<void> loadHealthRecordDetails() async {
+      QuerySnapshot querySnapshot = await healthRecordsCollection.orderBy('timestamp', descending: true).limit(1).get();
+print(querySnapshot.docs.first.id);
+print('isIt');
+      if (querySnapshot.docs.isNotEmpty) {
+        latestHealthRecordId=querySnapshot.docs.first.id;
+
+        print('recordrecoredrecord');
+        print(latestHealthRecordId);
+        setState(() {
+          loadHealthRecordDetails(latestHealthRecordId);
+        });
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  Future<void> loadHealthRecordDetails(String latestHealthRecordId) async {
+
     String userID = currentUser.uid;
 
     try {
@@ -53,14 +88,24 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('users')
           .doc(userID)
           .collection('healthRecords')
-          .orderBy('timestamp', descending: true)
-          .limit(1)
-          .get();
+          .doc(latestHealthRecordId)
+          .collection('medicine_dosage_duration')
+      .get();
 
-      if (snapshot.docs.isNotEmpty) {
-        var latestRecord = snapshot.docs.first.data();
-        setState(() {});
+
+      for (QueryDocumentSnapshot document in snapshot.docs) {
+String medicineName = document['medicine_name'];
+//print(medicineName);
+      items.add(medicineName);
+      setState(() {
+
+      });
+
       }
+
+
+
+
     } catch (e) {
       print("Error loading health record details: $e");
     }
@@ -97,9 +142,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
         .add(addDetails);
   }
 
-  String dropdownvalue = 'Item 1';
+  String dropdownvalue = 'select';
 
-  var items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'];
+
 
   var colors = [
     Color(0x5903593f),
@@ -141,16 +186,16 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Set Reminders',
                   style: siz31Black(),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Center(
-                  child: Image.asset(
-                    'assets/images/dashboard_1.png',
-                    height: 202,
-                    width: 202,
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 40,
+                // ),
+                // Center(
+                //   child: Image.asset(
+                //     'assets/images/dashboard_1.png',
+                //     height: 202,
+                //     width: 202,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -187,7 +232,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Text(
                   'Type',
@@ -211,22 +256,25 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         );
                       }),
                 ),
+                SizedBox(height: 30,),
 
-                Card(
-                  margin: EdgeInsets.fromLTRB(5, 15, 5, 5),
-                  elevation: 10,
+                Container(
+                 // / margin: EdgeInsets.all(20),
+                  //height: 180,
+                  width: double.infinity,
 
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    height: 180,
-                    width: double.infinity,
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color:  Colors.yellow,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         Row(
                           children: [
                             Text(
-                              'Start',
+                              'Start    ',
                               style: siz20Black(),
                             ),
                             CustomDropdown(
@@ -234,13 +282,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               initialValue: 'Today',
                               onChanged: (String newValue) {},
                             ),
-                            Icon(Icons.add),
+
                           ],
                         ),
                         Row(
                           children: [
                             Text(
-                              'Duration',
+                              'Duration    ',
                               style: siz20Black(),
                             ),
                             SizedBox(
@@ -271,7 +319,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         Row(
                           children: [
                             Text(
-                              'Frequency',
+                              'Frequency     ',
                               style: siz20Black(),
                             ),
                             CustomDropdown(
@@ -293,13 +341,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                                 });
                               },
                             ),
-                            Icon(Icons.add),
+
                           ],
                         ),
                         Row(
                           children: [
                             Text(
-                              'Alarm',
+                              'Alarm     ',
                               style: siz20Black(),
                             ),
                             Icon(Icons.add),
@@ -355,31 +403,29 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 //   ),
                 // ),
                 SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
                 Center(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff08346D),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          )),
-                      onPressed: () {
-                        addUserDetails();
-                        print(newValueController.text);
-                        print(frequencyController.text);
-                        print(durationController.text);
-                        print('pressed');
-                        print(futureDateController.text);
-                        print(futureTime);
-                        for (int i = 0; i < timeControllers.length; i++) {
-                          print("Time ${i + 1}: ${timeControllers[i].text}");
-                        }
-                      },
-                      child: Text(
-                        "Add Reminders",
-                        style: size20White(),
-                      )),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff08346D),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                        onPressed: () {
+                          addUserDetails();
+                          for (int i = 0; i < timeControllers.length; i++) {
+                            print("Time ${i + 1}: ${timeControllers[i].text}");
+                          }
+                        },
+                        child: Text(
+                          "Add Reminders",
+                          style: size20White(),
+                        )),
+                  ),
                 )
               ],
             ),

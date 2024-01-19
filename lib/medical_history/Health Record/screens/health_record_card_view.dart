@@ -32,7 +32,7 @@ class HealthRecordCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             image: DecorationImage(
-              image: AssetImage("assets/images/card_background.png"),
+              image: AssetImage("assets/images/dashboard_card.png"),
               fit: BoxFit.cover,
             ),
           ),

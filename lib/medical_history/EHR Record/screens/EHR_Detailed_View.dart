@@ -56,68 +56,81 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: ehrAppbar(context),
-        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(userID)
-              .collection("healthRecords")
-              .doc(widget.uniqueDiagnosisNumber)
-              .collection("ehr_folders")
-              .doc(widget.folderName)
-              .collection('${widget.folderName}_images')
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Text('No EHR File Uploaded'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String url = snapshot.data!.docs[index]['downloadURL'];
-                  String description = 'description';
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EHRScreen(
+                    uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber)));
+        return false;
+      },
+      child: Scaffold(
+          appBar: ehrAppbar(context),
+          body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(userID)
+                .collection("healthRecords")
+                .doc(widget.uniqueDiagnosisNumber)
+                .collection("ehr_folders")
+                .doc(widget.folderName)
+                .collection('${widget.folderName}_images')
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Text('No EHR File Uploaded'),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String url = snapshot.data!.docs[index]['downloadURL'];
+                    String description = 'description';
 
-                  return EhrCardView(url: url, description: description);
-                },
-              );
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ImageUpload(
-                          userID: userID,
-                          folderName: widget.folderName,
-                          uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
-                        )));
-          },
-          backgroundColor: Colors.purple.shade300,
-          child: Container(
-            width: 100,
-            child: Icon(Icons.upload_outlined, size: 30, color: Colors.white),
+                    return EhrCardView(url: url, description: description);
+                  },
+                );
+              }
+            },
           ),
-        ));
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ImageUpload(
+                            userID: userID,
+                            folderName: widget.folderName,
+                            uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
+                          )));
+            },
+            backgroundColor: Colors.purple.shade300,
+            child: Container(
+              width: 100,
+              child: Icon(Icons.upload_outlined, size: 30, color: Colors.white),
+            ),
+          )),
+    );
   }
 
   AppBar ehrAppbar(BuildContext context) {
     return AppBar(
+      shadowColor: Colors.deepPurple.shade200,
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back,
@@ -129,10 +142,10 @@ class _EHRArticleDetailScreenState extends State<EHRArticleDetailScreen> {
       ),
       title: Text('EHR Detail',
           style: TextStyle(
+            fontWeight: FontWeight.w400,
             color: Color.fromRGBO(124, 67, 166, 1.0),
           )),
-      backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+      backgroundColor: Color.fromRGBO(246, 238, 250, 1.0),
     );
   }
 }
-
