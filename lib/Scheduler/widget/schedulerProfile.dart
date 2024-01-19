@@ -3,7 +3,9 @@ import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerSettingsScreen.da
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 
+import '../../User_Profile/controller/upload_profile_image_contoller.dart';
 import '../../User_Profile/screens/UserProfile.dart';
 
 
@@ -59,14 +61,26 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 18,
-                    color: Colors.black,
-                  ),
+                GetBuilder<ShowUserProfileImageController>(
+                  builder: (controller) {
+                    final profileImageUrl = controller.profileImageUrl;
+
+                    return CircleAvatar(
+                      child: ClipOval(
+                        child: profileImageUrl != null
+                            ? Image.network(
+                          profileImageUrl,
+                          fit: BoxFit
+                              .cover, // Use BoxFit.cover to ensure the image covers the circular area
+                        )
+                            : Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Color.fromRGBO(227, 209, 236, 1.0),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(
                   width: 10,
