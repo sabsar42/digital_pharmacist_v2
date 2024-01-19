@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../Camera Scanner/camera_screen.dart';
 import '../Gemini Digi-BOT/gemini_screen.dart';
+import '../Gemini Digi-BOT/sections/chat.dart';
+import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../Google Berd/BardHomePage.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
 import '../User_Profile/UserProfile.dart';
@@ -254,7 +256,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GeminiScreen(),
+                  builder: (context) => SectionTextInput(),
                 ),
               );
           }

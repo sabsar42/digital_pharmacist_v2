@@ -22,11 +22,6 @@ class EhrCardView extends StatefulWidget {
 }
 
 class _EhrCardViewState extends State<EhrCardView> {
-  @override
-  void initState() {
-    super.initState();
-    shareImage();
-  }
 
   Future<void> showFullDialog() {
     return showDialog(
