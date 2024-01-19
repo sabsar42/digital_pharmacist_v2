@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
+import 'package:digi_pharma_app_test/User_Profile/controller/upload_profile_image_contoller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 
-import '../User_Profile/User_Account_screen/UserProfile.dart';
+import '../User_Profile/screens/UserProfile.dart';
+import '../User_Profile/widget/user_profile_circle_avatar_get.dart';
 import 'drawer_dashboard.dart';
 
 class DashboardAppbar extends StatefulWidget {
@@ -44,7 +47,6 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Stack(
         children: [
           Container(
@@ -73,14 +75,26 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                 SizedBox(
                   width: 4,
                 ),
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 18,
-                    color: Colors.black,
-                  ),
+                GetBuilder<ShowUserProfileImageController>(
+                  builder: (controller) {
+                    final profileImageUrl = controller.profileImageUrl;
+
+                    return CircleAvatar(
+                      child: ClipOval(
+                        child: profileImageUrl != null
+                            ? Image.network(
+                                profileImageUrl,
+                                fit: BoxFit
+                                    .cover, // Use BoxFit.cover to ensure the image covers the circular area
+                              )
+                            : Icon(
+                                Icons.person,
+                                size: 30,
+                                color: Color.fromRGBO(227, 209, 236, 1.0),
+                              ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(
                   width: 10,
@@ -165,8 +179,8 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                               width: 100,
                               height: 35,
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.black26, width: 0.9),
+                                border: Border.all(
+                                    color: Colors.black26, width: 0.9),
                                 color: Color.fromRGBO(227, 209, 236, 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -183,14 +197,13 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
               ],
             ),
           ),
-
         ],
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/dashboard_card.png",  // Replace with the URL of your image
+            "assets/images/dashboard_card.png", // Replace with the URL of your image
           ),
           fit: BoxFit.cover,
         ),

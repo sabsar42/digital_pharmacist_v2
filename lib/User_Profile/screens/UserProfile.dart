@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../LogIn_UI/LoginPage.dart';
+import '../widget/user_profile_circle_avatar_get.dart';
 import 'edit_user_account_screen.dart';
 
 class UserProfile extends StatefulWidget {
@@ -59,13 +60,7 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
-              radius: 50,
-              child: Image.asset(
-                "assets/images/patient.png",
-              ),
-            ),
+            UserProfileCircleAvatar(),
             SizedBox(height: 16.0),
             Text(
               userInfo['full_name'] ?? 'Name not available',

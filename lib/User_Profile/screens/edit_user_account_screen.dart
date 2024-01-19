@@ -174,22 +174,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       height: 100,
                       child: InkWell(
                         child: GetBuilder<ShowUserProfileImageController>(
-                            builder: (controller) {
-                          print('here ${controller.profileImageUrl}');
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: (controller.profileImageUrl == null
-                                ? Image.file(
-                                    _image!,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    controller.profileImageUrl!,
-                                    fit: BoxFit.cover,
-                                  )),
-                          );
-                        }),
-                        onTap: () => imagePickerMethod(ImageSource.gallery),
+                          builder: (controller) {
+                            final profileImageUrl = controller.profileImageUrl;
+
+                            return CircleAvatar(
+                              child: ClipOval(
+                                child: profileImageUrl != null
+                                    ? Image.network(
+                                  profileImageUrl,
+                                  fit: BoxFit.cover,  // Use BoxFit.cover to ensure the image covers the circular area
+                                )
+                                    : Icon(
+                                  Icons.person,
+                                  size: 30,
+                                  color: Color.fromRGBO(227, 209, 236, 1.0),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                          onTap: () => imagePickerMethod(ImageSource.gallery),
                       ),
                     ),
                     Positioned(
