@@ -79,21 +79,23 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                   builder: (controller) {
                     final profileImageUrl = controller.profileImageUrl;
 
-                    return CircleAvatar(
+                    return Container(
+                      height: 50, // Adjust the height as needed
+                      width: 50,  // Adjust the width as needed
                       child: ClipOval(
                         child: profileImageUrl != null
                             ? Image.network(
-                                profileImageUrl,
-                                fit: BoxFit
-                                    .cover, // Use BoxFit.cover to ensure the image covers the circular area
-                              )
+                          profileImageUrl,
+                          fit: BoxFit.cover,
+                        )
                             : Icon(
-                                Icons.person,
-                                size: 30,
-                                color: Color.fromRGBO(227, 209, 236, 1.0),
-                              ),
+                          Icons.person,
+                          size: 30,
+                          color: Color.fromRGBO(227, 209, 236, 1.0),
+                        ),
                       ),
                     );
+
                   },
                 ),
                 SizedBox(

@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../show_snackbar.dart';
 import '../controller/upload_profile_image_contoller.dart';
+import 'UserProfile.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
@@ -42,11 +43,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   String? userID;
 
+
+
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-
+    showUserProfileImageController.loadUserImageData();
   }
 
   Future<void> getCurrentUser() async {
@@ -54,18 +57,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (user != null) {
       setState(() {
         currentUser = user;
-        userID = currentUser.uid;
       });
       loadUserData();
-      showUserProfileImageController.loadUserImageData();
     }
   }
-
   Future<void> loadUserData() async {
     String userID = currentUser.uid;
     var userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID).get();
-    showUserProfileImageController.loadUserImageData();
+    await FirebaseFirestore.instance.collection('users').doc(userID).get();
+
     if (userDoc.exists) {
       Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
       setState(() {
@@ -82,10 +82,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-  Future<void> addUserDetails() async {
-    String userID = currentUser.uid;
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
+  Future<void> addUserProfilePicture() async {
+    String userID = currentUser.uid;
     Reference ref = FirebaseStorage.instance
         .ref()
         .child("${userID}/user_profile_folder")
@@ -95,8 +94,29 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     String userProfileImageUrl = await ref.getDownloadURL();
     print(userProfileImageUrl);
 
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+
+    if (userDoc.exists) {
+      await FirebaseFirestore.instance.collection('users').doc(userID).update({
+        'user_profile_picture': userProfileImageUrl,
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(userID).set({
+        'password': passwordController.text,
+      });
+    }
+  }
+
+
+
+
+
+
+  Future<void> addUserDetails() async {
+    String userID = currentUser.uid;
+
     var userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       await FirebaseFirestore.instance.collection('users').doc(userID).update({
@@ -109,19 +129,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         'gender': genderController.text,
         'blood_group': bloodGroupController.text,
         'password': passwordController.text,
-        'user_profile_picture': userProfileImageUrl,
       });
     } else {
       await FirebaseFirestore.instance.collection('users').doc(userID).set({
         'full_name': fullNameController.text,
         'age': ageController.text,
         'email': emailController.text,
-        'phone': phoneController.text,
-        'height': weightController.text,
-        'weight': heightController.text,
+        'height': heightController.text,
         'gender': genderController.text,
         'blood_group': bloodGroupController.text,
-        'password': passwordController.text,
       });
     }
   }
@@ -177,12 +193,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           builder: (controller) {
                             final profileImageUrl = controller.profileImageUrl;
 
-                            return CircleAvatar(
+                            return Container(
+                              height: 50, // Adjust the height as needed
+                              width: 50,  // Adjust the width as needed
                               child: ClipOval(
                                 child: profileImageUrl != null
                                     ? Image.network(
                                   profileImageUrl,
-                                  fit: BoxFit.cover,  // Use BoxFit.cover to ensure the image covers the circular area
+                                  fit: BoxFit.cover,
                                 )
                                     : Icon(
                                   Icons.person,
@@ -306,7 +324,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             addUserDetails();
-                            Navigator.pop(context);
+                            addUserProfilePicture();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => UserProfile()),
+                            );
+
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

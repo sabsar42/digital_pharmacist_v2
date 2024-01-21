@@ -14,7 +14,7 @@ class UserProfileCircleAvatar extends StatelessWidget {
           height: 200,
           width: double.infinity,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(20),
             child: profileImageUrl != null
                 ? Image.network(
               profileImageUrl,
