@@ -18,6 +18,7 @@ class _MedicineCardState extends State<MedicineCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.deepPurple.shade50,
       margin: EdgeInsets.all(10),
       child: InkWell(
         onTap: () {
@@ -28,6 +29,7 @@ class _MedicineCardState extends State<MedicineCard> {
         child: Column(
           children: [
             ListTile(
+              
               title: Text(widget.medicine.brandName),
               subtitle: Text(widget.medicine.type),
               trailing: Icon(
@@ -40,19 +42,45 @@ class _MedicineCardState extends State<MedicineCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Brand ID: ${widget.medicine.brandId}"),
-                    Text("Slug: ${widget.medicine.slug}"),
-                    Text("Dosage Form: ${widget.medicine.dosageForm}"),
-                    Text("Generic: ${widget.medicine.generic}"),
-                    Text("Strength: ${widget.medicine.strength}"),
-                    Text("Manufacturer: ${widget.medicine.manufacturer}"),
-                    Text("Package Container: ${widget.medicine.packageContainer}"),
-                    Text("Package Size: ${widget.medicine.packageSize}"),
+                    _buildInfoRow("Brand ID", widget.medicine.brandId),
+                    _buildInfoRow("Slug", widget.medicine.slug),
+                    _buildInfoRow("Dosage Form", widget.medicine.dosageForm),
+                    _buildInfoRow("Generic", widget.medicine.generic),
+                    _buildInfoRow("Strength", widget.medicine.strength),
+                    _buildInfoRow("Manufacturer", widget.medicine.manufacturer),
+                    _buildInfoRow(
+                        "Package Container", widget.medicine.packageContainer),
+                    _buildInfoRow("Package Size", widget.medicine.packageSize),
                   ],
                 ),
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$label:",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
       ),
     );
   }

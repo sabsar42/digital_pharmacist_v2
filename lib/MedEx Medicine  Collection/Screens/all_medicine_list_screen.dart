@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
+import 'package:get/get.dart';
 
 import '../../style.dart';
 import '../Model/medicine_model.dart';
 import '../widgets/medicine_card.dart';
-
 
 class AllMedicineList extends StatefulWidget {
   @override
@@ -14,19 +14,41 @@ class AllMedicineList extends StatefulWidget {
 }
 
 class _AllMedicineListState extends State<AllMedicineList> {
-  final List<MedicineModel> medicines = [];
+  List<MedicineModel> medicines = [];
+
+  List<MedicineModel> _searchMedicine = [];
 
   @override
   void initState() {
     super.initState();
+    _searchMedicine = medicines;
     loadMedicineData();
   }
 
-  Future<void> loadMedicineData() async {
-    final ByteData data = await rootBundle.load('assets/medicineCSV/medicine.csv');
-    final String rawMedicineData = String.fromCharCodes(data.buffer.asUint8List());
+  void runFilter(String enteredKeyWord) {
+    List<MedicineModel> results = [];
+    if (enteredKeyWord.isEmpty) {
+      results = medicines;
+    } else {
+      results = medicines
+          .where((medicine) => medicine.brandName
+              .toLowerCase()
+              .contains(enteredKeyWord.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      _searchMedicine = results;
+    });
+  }
 
-    List<List<dynamic>> parsedCsv = const CsvToListConverter().convert(rawMedicineData);
+  Future<void> loadMedicineData() async {
+    final ByteData data =
+        await rootBundle.load('assets/medicineCSV/medicine.csv');
+    final String rawMedicineData =
+        String.fromCharCodes(data.buffer.asUint8List());
+
+    List<List<dynamic>> parsedCsv =
+        const CsvToListConverter().convert(rawMedicineData);
 
     List<MedicineModel> loadedMedicines = [];
 
@@ -58,8 +80,8 @@ class _AllMedicineListState extends State<AllMedicineList> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar:PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
@@ -95,11 +117,34 @@ class _AllMedicineListState extends State<AllMedicineList> {
             ),
           ),
         ),
-        body: ListView.builder(
-          itemCount: medicines.length,
-          itemBuilder: (context, index) {
-            return MedicineCard(medicine: medicines[index]);
-          },
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                cursorColor: Colors.deepPurple,
+                onChanged: (value) => runFilter(value),
+                decoration: InputDecoration(
+                  labelText: 'Search medicine',
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.purple,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _searchMedicine.length,
+                  itemBuilder: (context, index) {
+                    return MedicineCard(medicine: _searchMedicine[index]);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
