@@ -28,6 +28,7 @@ class _ResultScreenState extends State<ResultScreen> {
     recAndPromptText = promptText + widget.text;
   }
 
+
   @override
   Widget build(BuildContext context) {
     final BardAIController controller = Get.put(BardAIController());

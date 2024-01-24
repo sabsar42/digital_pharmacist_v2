@@ -10,6 +10,7 @@ import '../Gemini Digi-BOT/gemini_screen.dart';
 import '../Gemini Digi-BOT/sections/chat.dart';
 import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../Google Berd/BardHomePage.dart';
+import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
@@ -114,6 +115,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           MedicineInformation()));
+                            }else if (index == 4) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AllMedicineList()));
                             }
                             // Add more conditions for other grid items
                           },
