@@ -18,7 +18,7 @@ class _MedicineCardState extends State<MedicineCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.deepPurple.shade50,
+      color: Colors.blue.shade50,
       margin: EdgeInsets.all(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
@@ -33,9 +33,9 @@ class _MedicineCardState extends State<MedicineCard> {
               title: Text(
                 widget.medicine.brandName,
                 style: TextStyle(
-                    fontWeight: FontWeight.w200,
+                    fontWeight: FontWeight.w400,
                     fontSize: 16,
-                    color: Colors.black),
+                    color: Colors.black87),
               ),
               subtitle: Text(
                 widget.medicine.type,
