@@ -21,6 +21,7 @@ class _MedicineCardState extends State<MedicineCard> {
       color: Colors.deepPurple.shade50,
       margin: EdgeInsets.all(10),
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           setState(() {
             isExpanded = !isExpanded;
@@ -29,9 +30,16 @@ class _MedicineCardState extends State<MedicineCard> {
         child: Column(
           children: [
             ListTile(
-              
-              title: Text(widget.medicine.brandName),
-              subtitle: Text(widget.medicine.type),
+              title: Text(
+                widget.medicine.brandName,
+                style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 16,
+                    color: Colors.black),
+              ),
+              subtitle: Text(
+                widget.medicine.type,
+              ),
               trailing: Icon(
                 isExpanded ? Icons.expand_less : Icons.expand_more,
               ),
