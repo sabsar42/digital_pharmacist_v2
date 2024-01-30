@@ -220,6 +220,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               FontWeight.bold),
                                                     )
                                                   ],
+                                                ):index == 4
+                                              ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/dashboard_2.png',
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                    SizedBox(height: 12,),
+                                                    Text(
+                                                      'Medicines Data',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              62, 34, 148, 1.0),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
                                                 )
                                               : Text('None'),
                             ),
