@@ -172,7 +172,6 @@ class _CameraScreenState extends State<CameraScreen>
       return;
     }
 
-
     CameraDescription? camera;
     for (var i = 0; i < cameras.length; i++) {
       final CameraDescription current = cameras[i];
@@ -213,9 +212,12 @@ class _CameraScreenState extends State<CameraScreen>
 
       final file = File(pictureFile.path);
 
-      final inputImage = InputImage.fromFile(file); /// The Input Image Is HERE !!!!!
+      final inputImage = InputImage.fromFile(file);
+
+      /// The Input Image Is HERE !!!!!
       final recognizedText = await textRecognizer.processImage(inputImage);
 
+      print(recognizedText.text);
       await navigator.push(
         MaterialPageRoute(
           builder: (BuildContext context) =>

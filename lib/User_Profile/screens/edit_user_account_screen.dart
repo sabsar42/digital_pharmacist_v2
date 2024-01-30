@@ -1,7 +1,22 @@
+import 'dart:io';
+import 'package:animated_weight_picker/animated_weight_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../show_snackbar.dart';
+import '../controller/upload_profile_image_contoller.dart';
+import 'UserProfile.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
@@ -19,12 +34,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController bloodGroupController = TextEditingController();
 
+  ShowUserProfileImageController showUserProfileImageController =
+      Get.find<ShowUserProfileImageController>();
+
+  File? _image;
+  final imagePicker = ImagePicker();
   late User currentUser;
+
+  String? userID;
+
+
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    showUserProfileImageController.loadUserImageData();
   }
 
   Future<void> getCurrentUser() async {
@@ -36,11 +61,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       loadUserData();
     }
   }
-
   Future<void> loadUserData() async {
     String userID = currentUser.uid;
     var userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
@@ -58,11 +82,41 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
+
+  Future<void> addUserProfilePicture() async {
+    String userID = currentUser.uid;
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("${userID}/user_profile_folder")
+        .child("${userID}_dp.jpg");
+
+    await ref.putFile(_image!);
+    String userProfileImageUrl = await ref.getDownloadURL();
+    print(userProfileImageUrl);
+
+    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+
+    if (userDoc.exists) {
+      await FirebaseFirestore.instance.collection('users').doc(userID).update({
+        'user_profile_picture': userProfileImageUrl,
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(userID).set({
+        'password': passwordController.text,
+      });
+    }
+  }
+
+
+
+
+
+
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
 
     var userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       await FirebaseFirestore.instance.collection('users').doc(userID).update({
@@ -88,6 +142,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
+  Future imagePickerMethod(ImageSource source) async {
+    final pick = await imagePicker.pickImage(source: source);
+    setState(() {
+      if (pick != null) {
+        _image = File(pick.path);
+
+        showSnackBar(
+            'Image Uploaded Successfully', Duration(microseconds: 300), true);
+      } else {
+        showSnackBar('No Image Selected', Duration(microseconds: 300), false);
+      }
+    });
+  }
+
   bool obscurePassword = true;
 
   @override
@@ -100,8 +168,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios,
-          color: Color.fromRGBO(13, 44, 82, 1.0),),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromRGBO(13, 44, 82, 1.0),
+          ),
         ),
         title: Text("EDIT PROFILE",
             style: Theme.of(context).textTheme.titleMedium),
@@ -118,11 +188,30 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     SizedBox(
                       width: 100,
                       height: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image(
-                          image: AssetImage("assets/images/patient.png"),
+                      child: InkWell(
+                        child: GetBuilder<ShowUserProfileImageController>(
+                          builder: (controller) {
+                            final profileImageUrl = controller.profileImageUrl;
+
+                            return Container(
+                              height: 50, // Adjust the height as needed
+                              width: 50,  // Adjust the width as needed
+                              child: ClipOval(
+                                child: profileImageUrl != null
+                                    ? Image.network(
+                                  profileImageUrl,
+                                  fit: BoxFit.cover,
+                                )
+                                    : Icon(
+                                  Icons.person,
+                                  size: 30,
+                                  color: Color.fromRGBO(227, 209, 236, 1.0),
+                                ),
+                              ),
+                            );
+                          },
                         ),
+                          onTap: () => imagePickerMethod(ImageSource.gallery),
                       ),
                     ),
                     Positioned(
@@ -235,7 +324,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             addUserDetails();
-                            Navigator.pop(context);
+                            addUserProfilePicture();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => UserProfile()),
+                            );
+
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

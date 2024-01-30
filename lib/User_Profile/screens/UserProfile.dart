@@ -4,8 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../LogIn_UI/LoginPage.dart';
-import 'User_Account_screen/user_account_screen.dart';
+import '../../LogIn_UI/LoginPage.dart';
+import '../widget/user_profile_circle_avatar_get.dart';
+import 'edit_user_account_screen.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -39,6 +40,10 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  Future<void> _refresh() async {
+    await loadUserInfo();
+  }
+
   Widget buildBannerCard() {
     return Card(
       elevation: 5.0,
@@ -59,13 +64,7 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.greenAccent[400],
-              radius: 50,
-              child: Image.asset(
-                "assets/images/patient.png",
-              ),
-            ),
+            UserProfileCircleAvatar(),
             SizedBox(height: 16.0),
             Text(
               userInfo['full_name'] ?? 'Name not available',
@@ -133,7 +132,7 @@ class _UserProfileState extends State<UserProfile> {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       style: ElevatedButton.styleFrom(
-        backgroundColor:   Color.fromRGBO(103, 15, 15, 1.0),
+        backgroundColor: Color.fromRGBO(103, 15, 15, 1.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -166,30 +165,33 @@ class _UserProfileState extends State<UserProfile> {
         ),
       ),
       body: CommonBackground(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              buildBannerCard(),
-              SizedBox(height: 16.0),
-              buildListTile("My Account", Icons.account_circle, () {
-                // Navigate to MyAccountScreen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateProfileScreen()),
-                );
-              }),
-              buildListTile("Notification", Icons.notifications, () {
-                // Handle tile tap
-              }),
-              buildListTile("Settings", Icons.settings, () {
-                // Handle tile tap
-              }),
-              SizedBox(height: 16.0),
-              buildLogoutTile(context),
-            ],
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buildBannerCard(),
+                SizedBox(height: 16.0),
+                buildListTile("My Account", Icons.account_circle, () {
+                  // Navigate to MyAccountScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateProfileScreen()),
+                  );
+                }),
+                buildListTile("Notification", Icons.notifications, () {
+                  // Handle tile tap
+                }),
+                buildListTile("Settings", Icons.settings, () {
+                  // Handle tile tap
+                }),
+                SizedBox(height: 16.0),
+                buildLogoutTile(context),
+              ],
+            ),
           ),
         ),
       ),

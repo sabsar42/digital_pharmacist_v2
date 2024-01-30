@@ -107,7 +107,7 @@ class _monthlyMedState extends State<monthlyMed> {
                               builder: (context) => MonthlyMedDetails(
                                     index: index,
                                     time1: dateController,
-                                    time2: prevDateController,
+                                    // time2: prevDateController,
                                   )));
                     } else {
                       Navigator.push(

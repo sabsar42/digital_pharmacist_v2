@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:digi_pharma_app_test/User_Profile/UserProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../LogIn_UI/LoginPage.dart';
+import '../User_Profile/controller/upload_profile_image_contoller.dart';
+import '../User_Profile/screens/UserProfile.dart';
+import '../User_Profile/widget/user_profile_circle_avatar_get.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -27,7 +30,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   Future<Map<String, dynamic>> getUserInfo(String userId) async {
-    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    var userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     if (userDoc.exists) {
       return userDoc.data() as Map<String, dynamic>;
@@ -35,11 +39,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
       return {};
     }
   }
+
   void showSnackBar(String message) {
     var snackbar = SnackBar(content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               borderRadius: BorderRadius.circular(8.0),
               image: DecorationImage(
                 image: AssetImage(
-                  "assets/images/dashboard_card.png",  // Replace with the URL of your image
+                  "assets/images/dashboard_card.png", // Replace with the URL of your image
                 ),
                 fit: BoxFit.cover,
               ),
@@ -62,14 +66,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Color.fromRGBO(175, 184, 196, 1.0),
-                  child: Icon(
-                    Icons.person,
-                    size: 30,
-                    color: Color.fromRGBO(227, 209, 236, 1.0),
-                  ),
+                GetBuilder<ShowUserProfileImageController>(
+                  builder: (controller) {
+                    final profileImageUrl = controller.profileImageUrl;
+
+                    return Container(
+                      height: 50, // Adjust the height as needed
+                      width: 50,  // Adjust the width as needed
+                      child: ClipOval(
+                        child: profileImageUrl != null
+                            ? Image.network(
+                          profileImageUrl,
+                          fit: BoxFit.cover,
+                        )
+                            : Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Color.fromRGBO(227, 209, 236, 1.0),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -91,7 +108,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ],
             ),
           ),
-
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text('Dashboard'),
@@ -121,32 +137,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
           ),
           ListTile(
-            leading:
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await FirebaseAuth.instance.signOut();
+            leading: ElevatedButton(
+              onPressed: () async {
+                try {
+                  await FirebaseAuth.instance.signOut();
 
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LogInScreen()),
-                    );
-                  } catch (e) {
-                    print("Sign out error: $e");
-
-                  }
-                },
-                child: Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(154, 5, 5, 1.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogInScreen()),
+                  );
+                } catch (e) {
+                  print("Sign out error: $e");
+                }
+              },
+              child: Text(
+                'Logout',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(154, 5, 5, 1.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
+            ),
           ),
         ],
       ),

@@ -10,8 +10,8 @@ import '../Gemini Digi-BOT/gemini_screen.dart';
 import '../Gemini Digi-BOT/sections/chat.dart';
 import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../Google Berd/BardHomePage.dart';
+import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
-import '../User_Profile/UserProfile.dart';
 import '../medical_history/Api_Health_Record_Screen.dart';
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
@@ -115,6 +115,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           MedicineInformation()));
+                            }else if (index == 4) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AllMedicineList()));
                             }
                             // Add more conditions for other grid items
                           },
@@ -206,6 +212,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     SizedBox(height: 12,),
                                                     Text(
                                                       'Drugs Collection',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              62, 34, 148, 1.0),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                ):index == 4
+                                              ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/dashboard_2.png',
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                    SizedBox(height: 12,),
+                                                    Text(
+                                                      'Medicines Data',
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               62, 34, 148, 1.0),
