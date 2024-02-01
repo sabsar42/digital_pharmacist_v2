@@ -5,7 +5,6 @@ import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({Key? key}) : super(key: key);
 
@@ -33,10 +32,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-  fetchLatestHealthRecordId(currentUser.uid);
-   // loadHealthRecordDetails();
+    fetchLatestHealthRecordId(currentUser.uid);
+    // loadHealthRecordDetails();
     int timesPerDay = calculateTimesPerDay();
-    timeControllers = List.generate(timesPerDay, (index) => TextEditingController());
+    timeControllers =
+        List.generate(timesPerDay, (index) => TextEditingController());
   }
 
   Future<void> getCurrentUser() async {
@@ -47,6 +47,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
+
   Future<String?> fetchLatestHealthRecordId(String userId) async {
     print(userId);
     print('entereddddddd');
@@ -58,11 +59,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('healthRecords');
       print('isIt');
 
-      QuerySnapshot querySnapshot = await healthRecordsCollection.orderBy('timestamp', descending: true).limit(1).get();
-print(querySnapshot.docs.first.id);
-print('isIt');
+      QuerySnapshot querySnapshot = await healthRecordsCollection
+          .orderBy('timestamp', descending: true)
+          .limit(1)
+          .get();
+      print(querySnapshot.docs.first.id);
+      print('isIt');
       if (querySnapshot.docs.isNotEmpty) {
-        latestHealthRecordId=querySnapshot.docs.first.id;
+        latestHealthRecordId = querySnapshot.docs.first.id;
 
         print('recordrecoredrecord');
         print(latestHealthRecordId);
@@ -78,9 +82,7 @@ print('isIt');
     }
   }
 
-
   Future<void> loadHealthRecordDetails(String latestHealthRecordId) async {
-
     String userID = currentUser.uid;
 
     try {
@@ -90,22 +92,14 @@ print('isIt');
           .collection('healthRecords')
           .doc(latestHealthRecordId)
           .collection('medicine_dosage_duration')
-      .get();
-
+          .get();
 
       for (QueryDocumentSnapshot document in snapshot.docs) {
-String medicineName = document['medicine_name'];
+        String medicineName = document['medicine_name'];
 //print(medicineName);
-      items.add(medicineName);
-      setState(() {
-
-      });
-
+        items.add(medicineName);
+        setState(() {});
       }
-
-
-
-
     } catch (e) {
       print("Error loading health record details: $e");
     }
@@ -118,10 +112,8 @@ String medicineName = document['medicine_name'];
     for (int i = 0; i < timeControllers.length; i++) {
       int timeValue = int.parse(timeControllers[i].text);
 
-
       pillSchedule.add(timeValue);
     }
-
 
     Map<String, dynamic> addDetails = {
       'medicineName': newValueController.text,
@@ -131,9 +123,7 @@ String medicineName = document['medicine_name'];
       'validtill': futureTime,
       'timestamp': FieldValue.serverTimestamp(),
       'listoftimes': pillSchedule,
-
     };
-
 
     await _firestore
         .collection('users')
@@ -143,8 +133,6 @@ String medicineName = document['medicine_name'];
   }
 
   String dropdownvalue = 'select';
-
-
 
   var colors = [
     Color(0x5903593f),
@@ -256,16 +244,18 @@ String medicineName = document['medicine_name'];
                         );
                       }),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
 
                 Container(
-                 // / margin: EdgeInsets.all(20),
+                  // / margin: EdgeInsets.all(20),
                   //height: 180,
                   width: double.infinity,
 
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color:  Colors.yellow,
+                    color: Colors.yellow,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -282,7 +272,6 @@ String medicineName = document['medicine_name'];
                               initialValue: 'Today',
                               onChanged: (String newValue) {},
                             ),
-
                           ],
                         ),
                         Row(
@@ -333,15 +322,12 @@ String medicineName = document['medicine_name'];
                                 setState(() {
                                   frequencyController.text = newValue!;
                                   int timesPerDay = calculateTimesPerDay();
-                                  timeControllers =
-                                      List.generate(timesPerDay,
-                                              (index) => TextEditingController());
+                                  timeControllers = List.generate(timesPerDay,
+                                      (index) => TextEditingController());
                                   _showTimeDialog();
-
                                 });
                               },
                             ),
-
                           ],
                         ),
                         Row(
@@ -409,7 +395,6 @@ String medicineName = document['medicine_name'];
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff08346D),
                             shape: RoundedRectangleBorder(
@@ -450,14 +435,12 @@ String medicineName = document['medicine_name'];
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.yellow,
-
           title: Text('Select Pill Schedule'),
           content: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Column(
-
                   children: List.generate(timesPerDay, (index) {
                     return Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -472,7 +455,8 @@ String medicineName = document['medicine_name'];
                                 fillColor: colors[index],
                                 filled: true,
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -485,15 +469,16 @@ String medicineName = document['medicine_name'];
                               items: ['AM', 'PM'].map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-
                                   child: Text(value),
                                 );
                               }).toList(),
                               onChanged: (String? value) {
                                 if (value == 'PM') {
-                                  timeControllers[index].text = (int.parse(timeControllers[index].text) + 12).toString();
+                                  timeControllers[index].text =
+                                      (int.parse(timeControllers[index].text) +
+                                              12)
+                                          .toString();
                                 }
-
                               },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -502,12 +487,12 @@ String medicineName = document['medicine_name'];
                             ),
                           ),
                         ],
-
                       ),
                     );
                   }),
                 ),
-                Text('NB: After Selecting AM/PM time will automatic generated in 24hr time format!!'),
+                Text(
+                    'NB: After Selecting AM/PM time will automatic generated in 24hr time format!!'),
               ],
             ),
           ),
@@ -515,9 +500,11 @@ String medicineName = document['medicine_name'];
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(onPressed: (){
-                  Navigator.of(context).pop();
-                }, child: Text('Cancel')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel')),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
