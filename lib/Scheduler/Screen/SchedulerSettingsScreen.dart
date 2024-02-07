@@ -33,7 +33,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     super.initState();
     getCurrentUser();
     fetchLatestHealthRecordId(currentUser.uid);
-    // loadHealthRecordDetails();
     int timesPerDay = calculateTimesPerDay();
     timeControllers =
         List.generate(timesPerDay, (index) => TextEditingController());
@@ -105,7 +104,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     }
   }
 
-  Future<void> addUserDetails() async {
+  Future<void> addMedicineInfo() async {
     String userID = currentUser.uid;
     print(futureTime);
     List<int> pillSchedule = [];
@@ -141,6 +140,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     Color(0x5903593f),
     Color(0x59F11212),
   ];
+  var medImgForm = [
+    Image.asset('assets/images/syrup.png'),
+    Image.asset('assets/images/dashboard_2.png'),
+    Image.asset('assets/images/eye-drops.png'),
+    Image.asset('assets/images/dashboard_4.png'),
+    Image.asset('assets/images/dashboard_1.png'),
+  ];
+  var medFormName = ['Syrup', 'Tablet', 'Drops', 'Injection', 'Capsule'];
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +181,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Set Reminders',
                   style: siz31Black(),
                 ),
-
                 const SizedBox(
                   height: 40,
                 ),
@@ -182,63 +188,102 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Medicine Name',
                   style: siz20Black(),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  height: 44,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.amberAccent,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Color(0xff040359), width: 2)),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    dropdownColor: Colors.yellow,
-                    borderRadius: BorderRadius.circular(30),
-                    elevation: 0,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        newValueController.text = newValue!;
-                        dropdownvalue = newValue!;
-                      });
-                    },
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 75,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                        height: 44,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.grey, width: 2)),
+                        child: Row(
+                          children: [
+                            DropdownButton(
+                              value: dropdownvalue,
+                              dropdownColor: Colors.grey,
+                              borderRadius: BorderRadius.circular(30),
+                              elevation: 0,
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  newValueController.text = newValue!;
+                                  dropdownvalue = newValue!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 35,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            backgroundColor: Color(0xff68BBE3),
+                          ),
+                          onPressed: () {
+                            _showDialog(context);
+                          },
+                          child: Text(
+                            'Enter Manually',
+                            style: size14White(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 30,
                 ),
                 Text(
-                  'Type',
-                  style: siz20System(),
+                  'Medicine Form',
+                  style: siz20Black(),
                 ),
                 Container(
-                  height: 100,
+                  height: 150,
                   child: ListView.builder(
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          height: 72,
-                          width: 82,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: colors[index],
-                          ),
-                          //color: Colors.red,
+                        return Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              height: 72,
+                              width: 82,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
+                              child: medImgForm[index],
+                              //color: Colors.red,
+                            ),
+                            Text(
+                              medFormName[index],style: size15Black(),
+                            ),
+                          ],
                         );
                       }),
                 ),
                 SizedBox(
                   height: 30,
                 ),
-
                 Container(
                   // / margin: EdgeInsets.all(20),
                   //height: 180,
@@ -334,7 +379,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   height: 30,
                 ),
@@ -343,12 +387,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff08346D),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            )),
+                          backgroundColor: Color(0xff08346D),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                         onPressed: () {
-                          addUserDetails();
+                          addMedicineInfo();
                           for (int i = 0; i < timeControllers.length; i++) {
                             print("Time ${i + 1}: ${timeControllers[i].text}");
                           }
@@ -477,5 +522,38 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       default:
         return 1;
     }
+  }
+
+  void _showDialog(BuildContext context) {
+    TextEditingController textFieldController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Text'),
+          content: TextField(
+            controller: textFieldController,
+            decoration: InputDecoration(hintText: 'Type something...'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                newValueController.text = textFieldController.text;
+
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
