@@ -15,6 +15,7 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late User currentUser;
+  bool switchValue = false;
   late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -161,7 +162,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     builder: (BuildContext context) => SchedulerScreen()));
           },
           child: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: Colors.black,
             size: 30,
           ),
@@ -188,6 +189,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Medicine Name',
                   style: siz20Black(),
                 ),
+                SizedBox(
+                  height: 2,
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -200,28 +204,26 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.grey, width: 2)),
-                        child: Row(
-                          children: [
-                            DropdownButton(
-                              value: dropdownvalue,
-                              dropdownColor: Colors.grey,
-                              borderRadius: BorderRadius.circular(30),
-                              elevation: 0,
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  newValueController.text = newValue!;
-                                  dropdownvalue = newValue!;
-                                });
-                              },
-                            ),
-                          ],
+                        child: Center(
+                          child: DropdownButton(
+                            value: dropdownvalue,
+                            dropdownColor: Colors.grey,
+                            borderRadius: BorderRadius.circular(30),
+                            elevation: 0,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                newValueController.text = newValue!;
+                                dropdownvalue = newValue!;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -234,7 +236,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            backgroundColor: Color(0xff68BBE3),
+                            backgroundColor: Color(0xff4695f1),
                           ),
                           onPressed: () {
                             _showDialog(context);
@@ -254,6 +256,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 Text(
                   'Medicine Form',
                   style: siz20Black(),
+                ),
+                SizedBox(
+                  height: 2,
                 ),
                 Container(
                   height: 150,
@@ -282,102 +287,150 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       }),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
-                Container(
-                  // / margin: EdgeInsets.all(20),
-                  //height: 180,
-                  width: double.infinity,
 
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.yellow,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Start    ',
-                              style: siz20Black(),
-                            ),
-                            CustomDropdown(
-                              items: ['Today', 'Yesterday'],
-                              initialValue: 'Today',
-                              onChanged: (String newValue) {},
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Duration    ',
-                              style: siz20Black(),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomDropdown(
-                              items: [
-                                '3',
-                                '7',
-                                '10',
-                                '15',
-                                '20',
-                                '25',
-                                '30',
-                                '40',
-                                '60',
-                              ],
-                              initialValue: '3',
-                              onChanged: (value) {
-                                setState(() {
-                                  durationController.text = value;
-                                  calculateDate();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Frequency     ',
-                              style: siz20Black(),
-                            ),
-                            CustomDropdown(
-                              items: [
-                                'Everyday',
-                                'Twice a Day',
-                                'Thrice a Day'
-                              ],
-                              initialValue: 'Everyday',
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  frequencyController.text = newValue!;
-                                  int timesPerDay = calculateTimesPerDay();
-                                  timeControllers = List.generate(timesPerDay,
-                                      (index) => TextEditingController());
-                                  _showTimeDialog();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Alarm     ',
-                              style: siz20Black(),
-                            ),
-                            Icon(Icons.add),
-                          ],
-                        ),
-                      ],
+
+                Row(
+                  children: [
+                    Expanded(
+                      flex:30,
+                      child: Text(
+                        'Start From ',
+                        style: siz20Black(),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      flex:70,
+                      child: Container(
+                        height: 44,
+
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.grey, width: 2),),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: ['Today', 'Yesterday'],
+                            initialValue: 'Today',
+                            onChanged: (String newValue) {},
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                      flex:28,
+                      child: Text(
+                        'Duration    ',
+                        style: siz20Black(),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex:72,
+                      child: Container(
+                        height: 44,
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: [
+                              '3',
+                              '7',
+                              '10',
+                              '15',
+                              '20',
+                              '25',
+                              '30',
+                              '40',
+                              '60',
+                            ],
+                            initialValue: '3',
+                            onChanged: (value) {
+                              setState(() {
+                                durationController.text = value;
+                                calculateDate();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                      flex:30,
+                      child: Text(
+                        'Frequency     ',
+                        style: siz20Black(),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 70,
+                      child: Container(
+                        height: 44,
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: [
+                              'Everyday',
+                              'Twice a Day',
+                              'Thrice a Day'
+                            ],
+                            initialValue: 'Everyday',
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                frequencyController.text = newValue!;
+                                int timesPerDay = calculateTimesPerDay();
+                                timeControllers = List.generate(timesPerDay,
+                                    (index) => TextEditingController());
+                                _showTimeDialog();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Text(
+                      'Alarm     ',
+                      style: siz20Black(),
+                    ),
+                    SizedBox(width: 20,),
+                    Switch(
+                     inactiveTrackColor: Colors.white,
+                      inactiveThumbColor: Colors.red,
+                      value: switchValue, onChanged: (value){
+                      switchValue= value;
+                      setState(() {
+
+                      });
+
+                    },)
+                  ],
                 ),
                 SizedBox(
                   height: 30,
@@ -387,7 +440,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff08346D),
+                          backgroundColor: Color(0xff4695f1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -531,10 +584,10 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Enter Text'),
+          title: Text('Enter Name'),
           content: TextField(
             controller: textFieldController,
-            decoration: InputDecoration(hintText: 'Type something...'),
+            decoration: InputDecoration(hintText: 'Medicine Name'),
           ),
           actions: <Widget>[
             TextButton(
