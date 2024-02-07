@@ -109,7 +109,7 @@ class _MedicineInformationState extends State<MedicineInformation> {
     setState(() {});
   }
 
-  @override
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
