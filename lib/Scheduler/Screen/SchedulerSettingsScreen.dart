@@ -27,6 +27,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
+  int  medTypeIsSelected = -1;
   var items = ['select'];
 
   @override
@@ -135,11 +136,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   String dropdownvalue = 'select';
 
   var colors = [
-    Color(0x5903593f),
-    Color(0x59F11212),
-    Color(0xFFFF6B00),
-    Color(0x5903593f),
-    Color(0x59F11212),
+    Colors.white,
+    Colors.white,
+    Colors.white,
   ];
   var medImgForm = [
     Image.asset('assets/images/syrup.png'),
@@ -266,23 +265,38 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              height: 72,
-                              width: 82,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.white,
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(15),
+
+                          onTap: (){
+                            if(medTypeIsSelected==index){
+                              medTypeIsSelected = -1;
+                            }
+                            else medTypeIsSelected= index;
+                            setState(() {
+
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                height: 72,
+                                width: 82,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: medTypeIsSelected==index ? Color(
+                                      0xff86bbfa) : Colors.white,
+
+                                ),
+                                child: medImgForm[index],
+                                //color: Colors.red,
                               ),
-                              child: medImgForm[index],
-                              //color: Colors.red,
-                            ),
-                            Text(
-                              medFormName[index],style: size15Black(),
-                            ),
-                          ],
+                              Text(
+                                medFormName[index],style: size15Black(),
+                              ),
+                            ],
+                          ),
                         );
                       }),
                 ),
@@ -479,7 +493,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.yellow,
+          backgroundColor: Colors.white,
           title: Text('Select Pill Schedule'),
           content: Container(
             child: Column(
