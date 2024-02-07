@@ -174,16 +174,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   'Set Reminders',
                   style: siz31Black(),
                 ),
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                // Center(
-                //   child: Image.asset(
-                //     'assets/images/dashboard_1.png',
-                //     height: 202,
-                //     width: 202,
-                //   ),
-                // ),
+
                 const SizedBox(
                   height: 40,
                 ),
