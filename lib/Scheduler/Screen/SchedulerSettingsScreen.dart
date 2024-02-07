@@ -343,51 +343,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                   ),
                 ),
-                // Text(
-                //   'Time & Schedule',
-                //   style: size25Black(),
-                // ),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.green,
-                //         ),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.yellow,
-                //         ),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.deepOrangeAccent,
-                //         ),
-                //       ),
-                //       ElevatedButton(
-                //           style: ElevatedButton.styleFrom(
-                //               backgroundColor: Color(0xff08346D)),
-                //           onPressed: () {
-                //             _showTimeDialog();
-                //           },
-                //           child: Icon(Icons.add))
-                //     ],
-                //   ),
-                // ),
+
                 SizedBox(
                   height: 30,
                 ),
