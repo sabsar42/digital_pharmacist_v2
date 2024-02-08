@@ -134,6 +134,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   }
 
   String dropdownvalue = 'select';
+  bool manualDropdownFlag = false;
 
   var colors = [
     Colors.white,
@@ -205,7 +206,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             border: Border.all(color: Colors.grey, width: 2)),
                         child: Center(
                           child: DropdownButton(
-                            value: dropdownvalue,
+
+                            value: manualDropdownFlag? newValueController.text : dropdownvalue,
                             dropdownColor: Colors.grey,
                             borderRadius: BorderRadius.circular(30),
                             elevation: 0,
@@ -613,6 +615,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
             TextButton(
               onPressed: () {
                 newValueController.text = textFieldController.text;
+                items.add(newValueController.text);
+                manualDropdownFlag = true;
+                setState(() {
+
+                });
 
                 Navigator.of(context).pop();
               },
