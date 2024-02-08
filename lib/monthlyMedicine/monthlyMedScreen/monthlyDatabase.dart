@@ -259,7 +259,7 @@
 //                             spots: data.map((entry) {
 //                               return FlSpot(
 //                                 data.indexOf(entry).toDouble(),
-//                                 entry['your_data_key'],
+//                                 entry[medicines],
 //                               );
 //                             }).toList(),
 //                             isCurved: true,

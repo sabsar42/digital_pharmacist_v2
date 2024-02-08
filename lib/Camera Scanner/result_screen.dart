@@ -23,8 +23,9 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    String promptText =
-        "Add a Page Title name is : (AI Prescription) and Organize this in stream Text and Give: 1.Doctor Info, 2.Medicines in Table Format, 3.Diagnosis, 4.Summary of the Diagnosis";
+    String promptText = "Extract the Medicines Name only and Give them in CSV Format with its medicine name,dosags,duration";
+        // "Add a Page Title name is : (AI Prescription) and Organize this in stream Text and Give: 1.Doctor Info, 2.Medicines in Table Format, 3.Diagnosis, 4.Summary of the Diagnosis";
+
     recAndPromptText = promptText + widget.text;
   }
 
