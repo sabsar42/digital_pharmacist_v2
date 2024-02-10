@@ -46,14 +46,14 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
       result.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-
         String medicineName = data['medicineName'] ?? 'Unknown Medicine';
         String type = data['type'] ?? 'Unknown Type';
+        String pilltime = data['pilltime'] ?? 'Unknown';
+        String pilllimit = data['pilllimit'] ?? 'Unknown';
         String duration = data['duration'] ?? 'Unknown Duration';
         Timestamp startedDate = data['timestamp'] ?? 'Unknown Time';
         Timestamp validtillFB = data['validtill'] ?? 'Unknown Time';
-        List<int> medicineTimes =
-        List<int>.from(data['listoftimes'] ?? []);
+        List<int> medicineTimes = List<int>.from(data['listoftimes'] ?? []);
         DateTime dateTime = startedDate.toDate().toLocal();
         DateTime validtillTime = validtillFB.toDate().toLocal();
         Duration difference = validtillTime.difference(DateTime.now());
@@ -68,6 +68,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'duration': duration,
           'time': formattedDateTime,
           'listoftimes': medicineTimes,
+          'pilltime': pilltime,
+          'pilllimit': pilllimit,
         });
       });
 
@@ -146,69 +148,70 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                           children: last7Days
                               .map(
                                 (date) => GestureDetector(
-                              onTap: () {
-                                print('Clicked on date');
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: date.contains(
-                                        DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Colors.deepOrange
-                                        : Colors.transparent,
+                                  onTap: () {
+                                    print('Clicked on date');
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
+                                            ? Colors.deepOrange
+                                            : Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      date,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
+                                            ? Colors.blue
+                                            : null,
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Text(
-                                  date,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: date.contains(
-                                        DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Colors.blue
-                                        : null,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                              )
                               .toList(),
                         ),
                         Row(
                           children: upComingDays
                               .map(
                                 (date) => Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: date.contains(
-                                      DateFormat('dd MMM')
-                                          .format(DateTime.now()))
-                                      ? Colors.blue
-                                      : Colors.transparent,
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: date.contains(DateFormat('dd MMM')
+                                              .format(DateTime.now()))
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    date,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: date.contains(
+                                        DateFormat('dd MMM').format(
+                                          DateTime.now(),
+                                        ),
+                                      )
+                                          ? Colors.blue
+                                          : null,
+                                    ),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                date,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: date.contains(
-                                      DateFormat('dd MMM')
-                                          .format(DateTime.now()))
-                                      ? Colors.blue
-                                      : null,
-                                ),
-                              ),
-                            ),
-                          )
+                              )
                               .toList(),
                         ),
                       ],
@@ -220,7 +223,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
             Expanded(
               flex: 60,
               child: Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
+                // margin: EdgeInsets.only(left: 10, right: 10),
                 child: FutureBuilder<List<Map<String, dynamic>>>(
                   future: getData(),
                   builder: (context, snapshot) {
@@ -238,8 +241,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String type = record['type'];
                         String duration = record['duration'];
                         String stDate = record['time'];
+                        String pillTime = record['pilltime'];
+                        String pillLimit = record['pilllimit'];
                         List<int> times =
-                        List<int>.from(record['listoftimes'] ?? []);
+                            List<int>.from(record['listoftimes'] ?? []);
                         List<String> amPm = [];
                         for (int i = 0; i < times.length; i++) {
                           if (times[i] > 12) {
@@ -251,52 +256,57 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
                         for (int time in times) {
                           Widget medicineWidget = Container(
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            decoration: BoxDecoration(),
                             child: ListTile(
                               title: Text(
                                 medicineName,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Text(type),
-                              trailing: Column(
-                                children: [
-                                  Text('Duration: $duration Days'),
-                                  Text('Remaining: $stDate Days'),
-                                ],
+                                style: siz30White(),
                               ),
                             ),
                           );
 
                           Widget timeWidget = Container(
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            decoration: BoxDecoration(),
                             child: ListTile(
-                              title: Text('${formatTime(time)}'),
+                              title: Text(
+                                '${formatTime(time)}',
+                                style: siz30White(),
+                              ),
                             ),
                           );
 
                           Widget combinedRow = Container(
-                            margin: EdgeInsets.all(5),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 70,
-                                  child: medicineWidget,
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  flex: 30,
-                                  child: timeWidget,
-                                ),
-                              ],
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(12, 5, 12, 5),
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Color(0xff02a676),
+                                  borderRadius: BorderRadius.circular(10),),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 50,
+                                      child: medicineWidget),
+                                  Expanded(
+                                    flex: 30,
+                                      child: timeWidget),
+                                  Expanded(
+                                    flex: 20,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context){
+                                              return MyDialog(index: time,medName:medicineName);
+
+                                            }
+                                        );
+                                      },
+                                      icon: Icon(Icons.unfold_more_rounded,color: Colors.white,),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
 
@@ -327,6 +337,38 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyDialog extends StatelessWidget {
+  final int index;
+  final String medName;
+
+  const MyDialog({Key? key, required this.index, required this.medName})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Details for Item $medName'),
+      content: Column(
+        children: [
+          Text('Pill Time : '),
+          Text('Pill Limit'),
+          Text('Duration'),
+          Text('Remaining'),
+          Text('Medicine Form'),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Close'),
+        ),
+      ],
     );
   }
 }

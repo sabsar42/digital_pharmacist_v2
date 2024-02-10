@@ -15,6 +15,14 @@ TextStyle size16White() {
   );
 }
 
+TextStyle size17White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 17,
+  );
+}
+
 TextStyle size14White() {
   return const TextStyle(
     color: Colors.white,

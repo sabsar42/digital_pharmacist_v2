@@ -18,16 +18,18 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   bool switchValue = false;
   late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  double _currentSliderValue = 1;
   final TextEditingController newValueController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController futureDateController = TextEditingController();
+  final TextEditingController pillTimeController = TextEditingController();
+  final TextEditingController pillLimitController = TextEditingController();
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
-  int  medTypeIsSelected = -1;
+  int medTypeIsSelected = -1;
   var items = ['select'];
 
   @override
@@ -97,7 +99,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
 
       for (QueryDocumentSnapshot document in snapshot.docs) {
         String medicineName = document['medicine_name'];
-//print(medicineName);
         items.add(medicineName);
         setState(() {});
       }
@@ -124,6 +125,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       'validtill': futureTime,
       'timestamp': FieldValue.serverTimestamp(),
       'listoftimes': pillSchedule,
+      'pilltime': pillTimeController.text,
+      'pilllimit':pillLimitController.text,
     };
 
     await _firestore
@@ -173,7 +176,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       body: ListView(
         children: [
           Container(
-            margin: EdgeInsets.fromLTRB(15, 15, 10, 10),
+            margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +186,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   style: siz31Black(),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Text(
                   'Medicine Name',
@@ -206,8 +209,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             border: Border.all(color: Colors.grey, width: 2)),
                         child: Center(
                           child: DropdownButton(
-
-                            value: manualDropdownFlag? newValueController.text : dropdownvalue,
+                            value: manualDropdownFlag
+                                ? newValueController.text
+                                : dropdownvalue,
                             dropdownColor: Colors.grey,
                             borderRadius: BorderRadius.circular(30),
                             elevation: 0,
@@ -237,7 +241,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            backgroundColor: Color(0xff4695f1),
+                            backgroundColor: Color(0xff02a676),
                           ),
                           onPressed: () {
                             _showDialog(context);
@@ -269,62 +273,124 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           borderRadius: BorderRadius.circular(15),
-
-                          onTap: (){
-                            if(medTypeIsSelected==index){
+                          onTap: () {
+                            if (medTypeIsSelected == index) {
                               medTypeIsSelected = -1;
-                            }
-                            else medTypeIsSelected= index;
-                            setState(() {
-
-                            });
+                            } else
+                              {medTypeIsSelected = index;
+                              typeController.text = medFormName[index];
+                              }
+                            setState(() {});
                           },
                           child: Column(
                             children: [
                               Container(
                                 margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                height: 72,
-                                width: 82,
+                                padding: EdgeInsets.all(8),
+                                height: medTypeIsSelected == index ? 80 : 72,
+                                width: medTypeIsSelected == index ? 80 : 72,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: medTypeIsSelected==index ? Color(
-                                      0xff86bbfa) : Colors.white,
-
+                                  color: medTypeIsSelected == index
+                                      ? Color(0xff02a676)
+                                      : Colors.white,
                                 ),
                                 child: medImgForm[index],
                                 //color: Colors.red,
                               ),
                               Text(
-                                medFormName[index],style: size15Black(),
+                                medFormName[index],
+                                style: medTypeIsSelected == index ?  size25Black():size15Black(),
                               ),
                             ],
                           ),
                         );
                       }),
                 ),
+                Text(
+                  'Pill Limit',
+                  style: siz20Black(),
+                ),
+                Slider(
+                  value: _currentSliderValue,
+                  max: 5,
+                  divisions: 5,
+                  activeColor: Color(0xff02a676),
+                  label: _currentSliderValue.round().toString(),
+                  onChanged: ( value) {
+                    setState(() {
+                      _currentSliderValue = value;
+                      int x = value.toInt();
+                      pillLimitController.text= x.toString();
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
-
-
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        pillTimeController.text='Before Meal';
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.amberAccent,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "Before Meal",
+                          style: size15Black(),
+                        )),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        pillTimeController.text='After Meal';
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "After Meal",
+                          style: size17White(),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: [
                     Expanded(
-                      flex:30,
+                      flex: 30,
                       child: Text(
                         'Start From ',
                         style: siz20Black(),
                       ),
                     ),
                     Expanded(
-                      flex:70,
+                      flex: 70,
                       child: Container(
                         height: 44,
-
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.grey, width: 2),),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
                         child: Center(
                           child: CustomDropdown(
                             items: ['Today', 'Yesterday'],
@@ -334,15 +400,15 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                         ),
                       ),
                     ),
-
-
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: [
                     Expanded(
-                      flex:28,
+                      flex: 28,
                       child: Text(
                         'Duration    ',
                         style: siz20Black(),
@@ -352,14 +418,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       width: 10,
                     ),
                     Expanded(
-                      flex:72,
+                      flex: 72,
                       child: Container(
                         height: 44,
-
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey, width: 2),),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
                         child: Center(
                           child: CustomDropdown(
                             items: [
@@ -386,11 +452,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: [
                     Expanded(
-                      flex:30,
+                      flex: 30,
                       child: Text(
                         'Frequency     ',
                         style: siz20Black(),
@@ -400,18 +468,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                       flex: 70,
                       child: Container(
                         height: 44,
-
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey, width: 2),),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
                         child: Center(
                           child: CustomDropdown(
-                            items: [
-                              'Everyday',
-                              'Twice a Day',
-                              'Thrice a Day'
-                            ],
+                            items: ['Everyday', 'Twice a Day', 'Thrice a Day'],
                             initialValue: 'Everyday',
                             onChanged: (String? newValue) {
                               setState(() {
@@ -428,24 +492,27 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: [
                     Text(
                       'Alarm     ',
                       style: siz20Black(),
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Switch(
-                     inactiveTrackColor: Colors.white,
+                      inactiveTrackColor: Colors.white,
                       inactiveThumbColor: Colors.red,
-                      value: switchValue, onChanged: (value){
-                      switchValue= value;
-                      setState(() {
-
-                      });
-
-                    },)
+                      value: switchValue,
+                      onChanged: (value) {
+                        switchValue = value;
+                        setState(() {});
+                      },
+                    )
                   ],
                 ),
                 SizedBox(
@@ -456,7 +523,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff4695f1),
+                          backgroundColor: Color(0xff02a676),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -617,9 +684,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 newValueController.text = textFieldController.text;
                 items.add(newValueController.text);
                 manualDropdownFlag = true;
-                setState(() {
-
-                });
+                setState(() {});
 
                 Navigator.of(context).pop();
               },
@@ -631,3 +696,5 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     );
   }
 }
+
+
