@@ -149,17 +149,17 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   ];
   var medImgForm = [
     Image.asset('assets/images/syrup.png'),
-    Image.asset('assets/images/dashboard_2.png'),
+    Image.asset('assets/images/tablet.png'),
     Image.asset('assets/images/eye-drops.png'),
     Image.asset('assets/images/dashboard_4.png'),
-    Image.asset('assets/images/dashboard_1.png'),
+    Image.asset('assets/images/capsule.png'),
   ];
   var medicineImage = [
     'assets/images/syrup.png',
-    'assets/images/dashboard_2.png',
+    'assets/images/tablet.png',
     'assets/images/eye-drops.png',
     'assets/images/dashboard_4.png',
-    'assets/images/dashboard_1.png'
+    'assets/images/capsule.png'
   ];
   var medFormName = ['Syrup', 'Tablet', 'Drops', 'Injection', 'Capsule'];
 
