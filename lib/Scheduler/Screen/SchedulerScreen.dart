@@ -288,7 +288,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(pillImage),
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
