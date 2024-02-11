@@ -251,7 +251,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            backgroundColor: Color(0xff02a676),
+                            backgroundColor: Color(0xff45967f),
                           ),
                           onPressed: () {
                             _showDialog(context);
