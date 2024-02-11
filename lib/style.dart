@@ -40,6 +40,15 @@ TextStyle siz30White() {
   );
 }
 
+
+TextStyle siz25White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 25,
+  );
+}
+
 TextStyle siz20Black() {
   return const TextStyle(
     color: Colors.black87,

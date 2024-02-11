@@ -26,6 +26,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   final TextEditingController futureDateController = TextEditingController();
   final TextEditingController pillTimeController = TextEditingController();
   final TextEditingController pillLimitController = TextEditingController();
+  final TextEditingController pillImageController = TextEditingController();
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
@@ -126,7 +127,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       'timestamp': FieldValue.serverTimestamp(),
       'listoftimes': pillSchedule,
       'pilltime': pillTimeController.text,
-      'pilllimit':pillLimitController.text,
+      'pilllimit': pillLimitController.text,
+      'pillImage': pillImageController.text,
     };
 
     await _firestore
@@ -150,6 +152,13 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     Image.asset('assets/images/eye-drops.png'),
     Image.asset('assets/images/dashboard_4.png'),
     Image.asset('assets/images/dashboard_1.png'),
+  ];
+  var medicineImage = [
+    'assets/images/syrup.png',
+    'assets/images/dashboard_2.png',
+    'assets/images/eye-drops.png',
+    'assets/images/dashboard_4.png',
+    'assets/images/dashboard_1.png'
   ];
   var medFormName = ['Syrup', 'Tablet', 'Drops', 'Injection', 'Capsule'];
 
@@ -276,10 +285,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                           onTap: () {
                             if (medTypeIsSelected == index) {
                               medTypeIsSelected = -1;
-                            } else
-                              {medTypeIsSelected = index;
+                            } else {
+                              medTypeIsSelected = index;
                               typeController.text = medFormName[index];
-                              }
+                              pillImageController.text = medicineImage[index];
+                            }
                             setState(() {});
                           },
                           child: Column(
@@ -300,7 +310,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               ),
                               Text(
                                 medFormName[index],
-                                style: medTypeIsSelected == index ?  size25Black():size15Black(),
+                                style: medTypeIsSelected == index
+                                    ? size25Black()
+                                    : size15Black(),
                               ),
                             ],
                           ),
@@ -317,11 +329,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   divisions: 5,
                   activeColor: Color(0xff02a676),
                   label: _currentSliderValue.round().toString(),
-                  onChanged: ( value) {
+                  onChanged: (value) {
                     setState(() {
                       _currentSliderValue = value;
                       int x = value.toInt();
-                      pillLimitController.text= x.toString();
+                      pillLimitController.text = x.toString();
                     });
                   },
                 ),
@@ -332,7 +344,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        pillTimeController.text='Before Meal';
+                        pillTimeController.text = 'Before Meal';
                       },
                       child: Container(
                         margin: EdgeInsets.all(5),
@@ -351,7 +363,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        pillTimeController.text='After Meal';
+                        pillTimeController.text = 'After Meal';
                       },
                       child: Container(
                         margin: EdgeInsets.all(5),
@@ -696,5 +708,3 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     );
   }
 }
-
-

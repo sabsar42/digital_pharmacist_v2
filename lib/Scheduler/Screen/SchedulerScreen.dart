@@ -51,6 +51,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
         String pilltime = data['pilltime'] ?? 'Unknown';
         String pilllimit = data['pilllimit'] ?? 'Unknown';
         String duration = data['duration'] ?? 'Unknown Duration';
+        String pillImage = data['pillImage'] ?? 'unknown';
         Timestamp startedDate = data['timestamp'] ?? 'Unknown Time';
         Timestamp validtillFB = data['validtill'] ?? 'Unknown Time';
         List<int> medicineTimes = List<int>.from(data['listoftimes'] ?? []);
@@ -70,6 +71,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'listoftimes': medicineTimes,
           'pilltime': pilltime,
           'pilllimit': pilllimit,
+          'pillImage': pillImage,
         });
       });
 
@@ -243,6 +245,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String stDate = record['time'];
                         String pillTime = record['pilltime'];
                         String pillLimit = record['pilllimit'];
+                        String pillImage = record['pillImage'];
                         List<int> times =
                             List<int>.from(record['listoftimes'] ?? []);
                         List<String> amPm = [];
@@ -255,54 +258,124 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         }
 
                         for (int time in times) {
-                          Widget medicineWidget = Container(
-                            decoration: BoxDecoration(),
-                            child: ListTile(
-                              title: Text(
-                                medicineName,
-                                style: siz30White(),
-                              ),
-                            ),
+                          Widget medicineWidget = Text(
+                            medicineName,
+                            style: size20Gray(),
                           );
 
-                          Widget timeWidget = Container(
-                            decoration: BoxDecoration(),
-                            child: ListTile(
-                              title: Text(
-                                '${formatTime(time)}',
-                                style: siz30White(),
-                              ),
-                            ),
+                          Widget timeWidget = Text(
+                            'Time: ${formatTime(time)}',
+                            style: size25Black(),
                           );
 
-                          Widget combinedRow = Container(
+                          Widget combinedRow = Card(
+                            margin: EdgeInsets.only(
+                                bottom: 20, left: 10, right: 10),
+                            elevation: 2,
+                            color: Colors.white,
                             child: Container(
-                              margin: EdgeInsets.fromLTRB(12, 5, 12, 5),
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: Color(0xff02a676),
-                                  borderRadius: BorderRadius.circular(10),),
+                              color: Colors.white,
+                              height: 110,
                               child: Row(
                                 children: [
                                   Expanded(
-                                      flex: 50,
-                                      child: medicineWidget),
+                                    flex: 25,
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.only(left: 5, right: 5),
+                                      height: 70,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(pillImage),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                   Expanded(
-                                    flex: 30,
-                                      child: timeWidget),
+                                    flex: 65,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 15),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          timeWidget,
+                                          medicineWidget,
+                                          Container(
+                                            margin: EdgeInsets.only(top: 5),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  height: 30,
+                                                  width: 90,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Before Meal',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xff03805d),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0x9002a676),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Container(
+                                                  height: 30,
+                                                  width: 90,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0x86FF8D8D),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Amount: 2X',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFF64A4A),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                   Expanded(
-                                    flex: 20,
+                                    flex: 10,
                                     child: IconButton(
                                       onPressed: () {
                                         showDialog(
                                             context: context,
-                                            builder: (BuildContext context){
-                                              return MyDialog(index: time,medName:medicineName);
-
-                                            }
-                                        );
+                                            builder: (BuildContext context) {
+                                              return MyDialog(
+                                                  index: time,
+                                                  medName: medicineName);
+                                            });
                                       },
-                                      icon: Icon(Icons.unfold_more_rounded,color: Colors.white,),
+                                      icon: Icon(
+                                        Icons.unfold_more_rounded,
+                                        color: Color(0xea02a676),
+                                      ),
                                     ),
                                   ),
                                 ],
