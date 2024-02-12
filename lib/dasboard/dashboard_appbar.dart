@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import '../User_Profile/screens/UserProfile.dart';
 import '../User_Profile/widget/user_profile_circle_avatar_get.dart';
 import 'drawer_dashboard.dart';
@@ -187,11 +187,11 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            Text(
-                              "9.00AM",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            )
+                            // Text(
+                            //   // timeWidget,
+                            //   style: TextStyle(
+                            //       fontSize: 18, fontWeight: FontWeight.w500),
+                            // )
                           ],
                         ),
                       ],
