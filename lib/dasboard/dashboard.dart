@@ -1,18 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:digi_pharma_app_test/Upload%20to%20Scanner/UploadScreenPreview.dart';
+import 'package:digi_pharma_app_test/BMI-calculator/bmi_screens/input_page.dart';
 import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:digi_pharma_app_test/rapidAPI/medicine_info_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../Camera Scanner/camera_screen.dart';
-import '../Gemini Digi-BOT/gemini_screen.dart';
-import '../Gemini Digi-BOT/sections/chat.dart';
 import '../Gemini Digi-BOT/sections/text_only.dart';
-import '../Google Berd/BardHomePage.dart';
 import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
-import '../medical_history/Api_Health_Record_Screen.dart';
+
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import '../style.dart';
@@ -115,12 +111,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           MedicineInformation()));
-                            }else if (index == 4) {
+                            } else if (index == 4) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          AllMedicineList()));
+                                      builder: (context) => AllMedicineList()));
+                            } else if (index == 5) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InputPage(),
+                                ),
+                              );
                             }
                             // Add more conditions for other grid items
                           },
@@ -145,7 +147,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           width: 60,
                                           height: 60,
                                         ),
-                                        SizedBox(height: 12,),
+                                        SizedBox(
+                                          height: 12,
+                                        ),
                                         Text(
                                           'Health Records',
                                           style: TextStyle(
@@ -166,7 +170,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               width: 60,
                                               height: 60,
                                             ),
-                                            SizedBox(height: 12,),
+                                            SizedBox(
+                                              height: 12,
+                                            ),
                                             Text(
                                               'Monthly Med',
                                               style: TextStyle(
@@ -187,7 +193,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   width: 60,
                                                   height: 60,
                                                 ),
-                                                SizedBox(height: 12,),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
                                                 Text(
                                                   'Med Scheduler',
                                                   style: TextStyle(
@@ -209,7 +217,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       width: 60,
                                                       height: 60,
                                                     ),
-                                                    SizedBox(height: 12,),
+                                                    SizedBox(
+                                                      height: 12,
+                                                    ),
                                                     Text(
                                                       'Drugs Collection',
                                                       style: TextStyle(
@@ -220,29 +230,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               FontWeight.bold),
                                                     )
                                                   ],
-                                                ):index == 4
-                                              ? Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/dashboard_2.png',
-                                                      width: 60,
-                                                      height: 60,
-                                                    ),
-                                                    SizedBox(height: 12,),
-                                                    Text(
-                                                      'Medicines Data',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              62, 34, 148, 1.0),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
                                                 )
-                                              : Text('None'),
+                                              : index == 4
+                                                  ? Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/dashboard_2.png',
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 12,
+                                                        ),
+                                                        Text(
+                                                          'Medicines Data',
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      62,
+                                                                      34,
+                                                                      148,
+                                                                      1.0),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      ],
+                                                    )
+                                                  : index == 5
+                                                      ? Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/images/dashboard_2.png',
+                                                              width: 60,
+                                                              height: 60,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              'BMI Calculator',
+                                                              style: TextStyle(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          62,
+                                                                          34,
+                                                                          148,
+                                                                          1.0),
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ],
+                                                        )
+                                                      : Text('None'),
                             ),
                           ),
                         );

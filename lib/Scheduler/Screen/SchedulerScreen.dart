@@ -126,22 +126,16 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 25,
+              flex: 22,
               child: SizedBox(height: 200, child: schedulerProfileBar()),
             ),
             Expanded(
-              flex: 15,
+              flex: 8,
               child: Container(
                 margin: EdgeInsets.only(left: 5, right: 5),
                 child: Column(children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Reminders',
-                    style: size30Black(),
-                  ),
-                  SizedBox(height: 10),
+
+
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -160,7 +154,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                         color: date.contains(
                                                 DateFormat('dd MMM')
                                                     .format(DateTime.now()))
-                                            ? Colors.deepOrange
+                                            ? Color(0xea02a676)
                                             : Colors.transparent,
                                       ),
                                       borderRadius: BorderRadius.circular(8),
@@ -174,7 +168,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                         color: date.contains(
                                                 DateFormat('dd MMM')
                                                     .format(DateTime.now()))
-                                            ? Colors.blue
+                                            ?Color(0xFFFF8D8D)
                                             : null,
                                       ),
                                     ),
@@ -192,7 +186,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                     border: Border.all(
                                       color: date.contains(DateFormat('dd MMM')
                                               .format(DateTime.now()))
-                                          ? Colors.blue
+                                          ? Color(0x86FF8D8D)
                                           : Colors.transparent,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
@@ -208,7 +202,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                           DateTime.now(),
                                         ),
                                       )
-                                          ? Colors.blue
+                                          ? Color(0xea02a676)
                                           : null,
                                     ),
                                   ),
@@ -223,7 +217,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
               ),
             ),
             Expanded(
-              flex: 60,
+              flex: 70,
               child: Container(
                 // margin: EdgeInsets.only(left: 10, right: 10),
                 child: FutureBuilder<List<Map<String, dynamic>>>(

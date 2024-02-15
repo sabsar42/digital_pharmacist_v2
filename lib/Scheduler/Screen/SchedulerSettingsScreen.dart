@@ -303,7 +303,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   color: medTypeIsSelected == index
-                                      ? Color(0xff02a676)
+                                      ? Color(0x9602a676)
                                       : Colors.white,
                                 ),
                                 child: medImgForm[index],
