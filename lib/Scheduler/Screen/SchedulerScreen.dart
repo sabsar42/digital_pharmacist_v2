@@ -279,10 +279,29 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                             style: size20Gray(),
                           );
 
-                          Widget timeWidget = Text(
-                            'Time: ${formatTime(time)}',
-                            style: size25Black(),
-                          );
+                          String pillTime = formatTime(time);
+                          String currentTime =
+                              DateFormat('hh a').format(DateTime.now());
+                          print('Pill Time: $pillTime');
+
+                          DateTime pillDateTime =
+                              DateFormat('hh a').parse(pillTime);
+                          DateTime currentDateTime = DateTime.now();
+
+                          Widget timeWidget;
+                          if (pillDateTime.hour >= currentDateTime.hour) {
+                            // The pill time is ahead of the current time
+                            timeWidget = Text(
+                              'Time: $pillTime',
+                              style: size25Black(),
+                            );
+                          } else {
+                            timeWidget = Text('Time: $pillTime',
+                                style: TextStyle(
+                                  color: Colors.black12,
+                                  fontSize: 25,
+                                ));
+                          }
 
                           Widget combinedRow = Card(
                             margin: EdgeInsets.only(

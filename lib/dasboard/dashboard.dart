@@ -9,6 +9,7 @@ import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
+import '../monthlyMedicine/monthlyMedScreen/monthlyDatabase.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import '../style.dart';
 import 'dashboard_appbar.dart';
