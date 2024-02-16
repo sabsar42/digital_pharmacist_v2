@@ -279,53 +279,68 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   Row CompletedanndSaveRow() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: 8,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.yellowAccent,
-                width: 2,
-              )),
-          child: CircleAvatar(
-            backgroundColor: isCompleted ? Colors.green : Colors.grey,
-            radius: 18,
-            child: IconButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+        // SizedBox(
+        //   width: 8,
+        // ),
+      Expanded(
+        flex: 4,
+        child: Row(
+
+            children:[  Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.yellowAccent,
+                  width: 2,
+                )),
+            child: CircleAvatar(
+              backgroundColor: isCompleted ? Colors.green : Colors.grey,
+              radius: 18,
+              child: IconButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow,
+                ),
+                icon: Icon(
+                  Icons.done_outline_rounded,
+                  color: isCompleted ? Colors.white : Colors.black45,
+                  size: 22,
+                ),
+                onPressed: () {
+                  isCompleted = !isCompleted;
+                  setState(() {});
+                },
               ),
-              icon: Icon(
-                Icons.done_outline_rounded,
-                color: isCompleted ? Colors.white : Colors.black45,
-                size: 22,
-              ),
-              onPressed: () {
-                isCompleted = !isCompleted;
-                setState(() {});
-              },
             ),
           ),
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            width: 70,
+            child: isCompleted ? Text('Completed') : Text('Ongoing'),
+          ),]
         ),
-        SizedBox(
-          width: 10,
+      ),
+        Expanded(
+          flex: 3,
+          child: SizedBox(
+
+          ),
         ),
-        Container(
-          width: 70,
-          child: isCompleted ? Text('Completed') : Text('Ongoing'),
-        ),
-        SizedBox(
-          width: 185,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            addHealthRecordDetails();
-          },
-          child: Text("+ SAVE"),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple.shade700,
+        Expanded(
+          flex: 3,
+          child: ElevatedButton(
+            onPressed: () {
+              addHealthRecordDetails();
+            },
+            child: Text("+ SAVE",style: TextStyle(
+              color: Colors.white,
+            ),),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+            ),
           ),
         ),
       ],
