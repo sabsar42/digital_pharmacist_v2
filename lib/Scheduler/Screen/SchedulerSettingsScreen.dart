@@ -95,7 +95,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('users')
           .doc(userID)
           .collection('healthRecords')
-          .doc(latestHealthRecordId)
+          .doc( latestHealthRecordId)
           .collection('medicine_dosage_duration')
           .get();
 

@@ -24,11 +24,11 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
   void updateSchedulerScreen() {
     setState(() {
-      // Any additional logic you want to perform when updating the SchedulerScreen
+
     });
   }
 
-  Future<void> getCurrentUser() async {
+  Future<void> getCurrentUser() async  {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
@@ -262,6 +262,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String pillImage = record['pillImage'];
                         List<int> times =
                         List<int>.from(record['listoftimes'] ?? []);
+
                         List<String> amPm = [];
                         for (int i = 0; i < times.length; i++) {
                           if (times[i] > 12) {
@@ -272,6 +273,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         }
 
                         for (int time in times) {
+
                           Widget medicineWidget = Text(
                             medicineName,
                             style: size20Gray(),

@@ -8,7 +8,6 @@ import '../Camera Scanner/camera_screen.dart';
 import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
-
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
 import '../style.dart';
@@ -26,13 +25,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final user = FirebaseAuth.instance.currentUser!;
   Map<String, dynamic> userInfo = {};
   int _selectedIndex = 0;
+  late User currentUser;
+  List<int> sortedList=[];
+  late int upcomingMedicine;
+
 
   @override
   void initState() {
     super.initState();
+    getCurrentUser();
+    getAllListofTimes();
     loadUserInfo();
-  }
 
+  }
+  Future<void> getCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+    }
+  }
   Future<void> loadUserInfo() async {
     String userID = user.uid;
     userInfo = await getUserInfo(userID);
@@ -49,6 +62,144 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return {};
     }
   }
+
+  Future<List<List<int>>> getAllListofTimes() async {
+    try {
+
+      String userId = currentUser.uid;
+      print(userId);
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('remindersSet')
+          .where("validtill", isGreaterThanOrEqualTo: Timestamp.now())
+          .get();
+
+      List<List<int>> allListofTimes = [];
+
+      result.docs.forEach((DocumentSnapshot document) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+        List<int> listoftimes = List<int>.from(data['listoftimes'] ?? []);
+        allListofTimes.add(listoftimes);
+      });
+      print('heretimes');
+      Set<int> mergedSet = allListofTimes.expand((list) => list).toSet();
+
+      print(mergedSet);
+      sortedList = mergedSet.toList()..sort();
+      List<int> upcomingTimes = getUpcomingTimes(sortedList);
+      print(upcomingTimes.length);
+      for (int time in upcomingTimes) {
+        print('Upcoming Time: $time');
+      }
+      print(sortedList);
+      print(allListofTimes);
+
+      return allListofTimes;
+    } catch (error) {
+      print("Error fetching listoftimes: $error");
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getData() async {
+    try {
+      String userID = currentUser.uid;
+
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('remindersSet')
+          .where("validtill", isGreaterThanOrEqualTo: Timestamp.now())
+          .get();
+
+      List<Map<String, dynamic>> records = [];
+
+      result.docs.forEach((DocumentSnapshot document) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+        String medicineName = data['medicineName'] ?? 'Unknown Medicine';
+        String type = data['type'] ?? 'Unknown Type';
+        String pilltime = data['pilltime'] ?? 'Unknown';
+        String pilllimit = data['pilllimit'] ?? 'Unknown';
+        String duration = data['duration'] ?? 'Unknown Duration';
+        String pillImage = data['pillImage'] ?? 'unknown';
+        Timestamp startedDate = data['timestamp'] ?? 'Unknown Time';
+        Timestamp validtillFB = data['validtill'] ?? 'Unknown Time';
+        List<int> medicineTimes = List<int>.from(data['listoftimes'] ?? []);
+        DateTime dateTime = startedDate.toDate().toLocal();
+        DateTime validtillTime = validtillFB.toDate().toLocal();
+        Duration difference = validtillTime.difference(DateTime.now());
+        int indays = difference.inDays;
+        String formattedDateTime = indays.toString();
+        print('$medicineName: $medicineTimes');
+
+        records.add({
+          'documentID': document.id,
+          'medicineName': medicineName,
+          'type': type,
+          'duration': duration,
+          'time': formattedDateTime,
+          'listoftimes': medicineTimes,
+          'pilltime': pilltime,
+          'pilllimit': pilllimit,
+          'pillImage': pillImage,
+        });
+      });
+
+      return records;
+    } catch (error) {
+      print("Error fetching records: $error");
+      return [];
+    }
+  }
+  String formatTime(int time) {
+    int formattedTime = time % 12;
+    if (formattedTime == 0) {
+      formattedTime = 12;
+    }
+    String period = time >= 12 ? 'PM' : 'AM';
+    return '$formattedTime $period';
+  }
+
+  List<int> getUpcomingTimes(List<int> times) {
+    int currentHour = DateTime.now().hour;
+
+    print('Current Hour: $currentHour');
+    List<int> upcomingTimes = [];
+    print(times);
+
+    for (int time in times) {
+      int hour = time; // Extract the hour portion
+      print('kadsjf');print(hour);
+
+      // Check if the time is after the current hour
+      if (hour > currentHour) {
+        upcomingTimes.add(time-12);
+      }
+    }
+
+    if (upcomingTimes.isEmpty) {
+      // If no times found for today, consider times for the next day
+      for (int time in times) {
+        if (time < currentHour && time<12) {
+          upcomingTimes.add(time); // Add 24 hours to consider the next day
+        }
+      }
+    }
+
+    upcomingTimes.sort(); // Sort the upcoming times
+     upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
+    print('Upcoming Times: $upcomingTimes');
+    upcomingMedicine=upcomingTimes[0];
+    print(upcomingTimes);
+
+    return upcomingTimes;
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +219,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     "Medical History",
                     style: TextStyle(fontSize: 31, color: Colors.black),
                   ),
+                  Text(sortedList.length > 1 ? upcomingMedicine.toString() : 'wait'),
+
+
                   Container(
                     margin: EdgeInsets.all(5),
                     child: GridView.builder(
