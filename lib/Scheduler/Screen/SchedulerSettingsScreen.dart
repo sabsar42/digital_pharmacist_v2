@@ -300,7 +300,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   height: 2,
                 ),
                 Container(
-                  height: 130,
+                  height: 150,
                   child: ListView.builder(
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
@@ -504,6 +504,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                               '30',
                               '40',
                               '60',
+                              '90'
                             ],
                             initialValue: '3',
                             onChanged: (value) {
@@ -582,7 +583,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Center(
                   child: SizedBox(

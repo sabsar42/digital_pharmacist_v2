@@ -68,7 +68,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     child: Icon(
                       Icons.menu,
                       size: 30,
-                      color: Color.fromRGBO(175, 184, 196, 1.0),
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -112,10 +112,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                       children: [
                         Text(
                           userInfo['full_name'] ?? 'Name not available',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                          ),
+                          style:size20White(),
                         ),
                         Text(
                           'Age :  ${userInfo['age']}',
@@ -131,84 +128,85 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
               ],
             ),
           ),
-          Positioned(
-            top: 130,
-            left: 60,
-            right: 49,
-            child: Stack(
-              children: [
-                Container(
-                  height: 40,
-                  width: 280,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54, width: 1),
-                      color: Color.fromRGBO(238, 217, 217, 1.0),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                Positioned(
-                    bottom: 5,
-                    top: 5,
-                    left: 40,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                'assets/images/dashboard_3.png',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Pill 2X",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w100),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.black26, width: 0.9),
-                                color: Color.fromRGBO(227, 209, 236, 1.0),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            // Text(
-                            //   // timeWidget,
-                            //   style: TextStyle(
-                            //       fontSize: 18, fontWeight: FontWeight.w500),
-                            // )
-                          ],
-                        ),
-                      ],
-                    ))
-              ],
-            ),
-          ),
+          // Positioned(
+          //   top: 130,
+          //   left: 60,
+          //   right: 49,
+          //   child: Stack(
+          //     children: [
+          //       Container(
+          //         height: 40,
+          //         width: 280,
+          //         decoration: BoxDecoration(
+          //             border: Border.all(color: Colors.black54, width: 1),
+          //             color: Color.fromRGBO(238, 217, 217, 1.0),
+          //             borderRadius: BorderRadius.circular(10)),
+          //       ),
+          //       Positioned(
+          //           bottom: 5,
+          //           top: 5,
+          //           left: 40,
+          //           child: Row(
+          //             children: [
+          //               Container(
+          //                 width: 30,
+          //                 height: double.infinity,
+          //                 decoration: BoxDecoration(
+          //                   image: DecorationImage(
+          //                     image: AssetImage(
+          //                       'assets/images/dashboard_3.png',
+          //                     ),
+          //                     fit: BoxFit.cover,
+          //                   ),
+          //                 ),
+          //               ),
+          //               SizedBox(
+          //                 width: 10,
+          //               ),
+          //               Text(
+          //                 "Pill 2X",
+          //                 style: TextStyle(
+          //                     fontSize: 20, fontWeight: FontWeight.w100),
+          //               ),
+          //               SizedBox(
+          //                 width: 20,
+          //               ),
+          //               Stack(
+          //                 alignment: Alignment.center,
+          //                 children: [
+          //                   Container(
+          //                     width: 100,
+          //                     height: 35,
+          //                     decoration: BoxDecoration(
+          //                       border: Border.all(
+          //                           color: Colors.black26, width: 0.9),
+          //                       color: Color.fromRGBO(227, 209, 236, 1.0),
+          //                       borderRadius: BorderRadius.circular(8),
+          //                     ),
+          //                   ),
+          //                   // Text(
+          //                   //   // timeWidget,
+          //                   //   style: TextStyle(
+          //                   //       fontSize: 18, fontWeight: FontWeight.w500),
+          //                   // )
+          //                 ],
+          //               ),
+          //             ],
+          //           ))
+          //     ],
+          //   ),
+          // ),
         ],
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/images/dashboard_card.png", // Replace with the URL of your image
-          ),
-          fit: BoxFit.cover,
-        ),
+        color:   Color(0xff008081),
+        // image: DecorationImage(
+        //   image: AssetImage(
+        //     "assets/images/dashboard_card.png", // Replace with the URL of your image
+        //   ),
+        //   fit: BoxFit.cover,
+        // ),
       ),
     );
   }
