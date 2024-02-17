@@ -209,338 +209,335 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawer(),
-      body: Column(
-        children: [
-          SizedBox(height: 120, child: DashboardAppbar()),
-          SizedBox(height: 20,),
-          Stack(
-            children: [
-              Container(
-                height: 50,
-                width: 320,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black54, width: 1),
-                    color:  Color(0x91008081),
-                    borderRadius: BorderRadius.circular(10)),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 120, child: DashboardAppbar()),
+            SizedBox(height: 20,),
+            Container(
+              width: 200,
+              child: Center(child: Text('DASHBOARD',style: siz30White(),)),
+              decoration: BoxDecoration(
+                color:  Color(0xff008081),
+                borderRadius: BorderRadius.circular(20),
               ),
-              Positioned(
-                  bottom: 5,
-                  top: 5,
-                  left: 20,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'assets/images/dashboard_3.png',
-                            ),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Next Medicine At",
-                        style: siz20Black(),),
-                      SizedBox(
-                        width: 18,
-                      ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 35,
-                            child: Center(
-                              child: FutureBuilder(
-                                future: getAllListofTimes(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    return Text(
-                                      sortedList.length > 1
-                                          ? upcomingMedicineAmPm
-                                          : 'wait',style: size16White(),
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black26, width: 0.9),
-                              color:  Color(0xff008081),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          // Text(
-                          //   // timeWidget,
-                          //   style: TextStyle(
-                          //       fontSize: 18, fontWeight: FontWeight.w500),
-                          // )
-                        ],
-                      ),
-                    ],
-                  ))
-            ],
-          ),
-          SizedBox(height: 30,),
-          Text('DASHBOARD',style: size30Black(),),
-          Container(
-            //   margin: EdgeInsets.only(left: 20, top: 18,right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            SizedBox(height: 30,),
+            Stack(
               children: [
-                // Text(
-                //   "Medical History",
-                //   style: TextStyle(fontSize: 31, color: Colors.black),
-                // ),
-
                 Container(
-                  margin: EdgeInsets.all(5),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 2.0,
-                      mainAxisSpacing: 2.0,
-                    ),
-                    itemCount: 9,
-                    // Adjust based on your data
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        splashColor: Colors.purple,
-                        onTap: () {
-                          if (index == 0) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HealthRecordScreen(),
-                              ),
-                            );
-                          } else if (index == 1) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => monthlyMed(),
-                              ),
-                            );
-                          } else if (index == 2) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SchedulerScreen(),
-                              ),
-                            );
-                          } else if (index == 3) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        MedicineInformation()));
-                          } else if (index == 4) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllMedicineList()));
-                          } else if (index == 5) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => InputPage(),
-                              ),
-                            );
-                          }
-                          // Add more conditions for other grid items
-                        },
-                        child: Container(
-                          height: 68,
+                  height: 50,
+                  width: 320,
+                  decoration: BoxDecoration(
+                    //  border: Border.all(color: Colors.black54, width: 1),
+                      color:  Color(0x91008081),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                Positioned(
+                    bottom: 5,
+                    top: 5,
+                    left: 20,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.transparent,
-                            border: Border.all(
-                              color: Colors.black12,
-                              width: 0.99,
+                            image: DecorationImage(
+                              image: AssetImage(
+                                'assets/images/dashboard_3.png',
+                              ),
+                              fit: BoxFit.contain,
                             ),
                           ),
-                          child: Center(
-                            child: index == 0
-                                ? Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/syrup.png',
-                                        width: 60,
-                                        height: 60,
-                                      ),
-                                      SizedBox(
-                                        height: 12,
-                                      ),
-                                      Text(
-                                        'Health Records',
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                62, 34, 148, 1.0),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                    ],
-                                  )
-                                : index == 1
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/dashboard_4.png',
-                                            width: 60,
-                                            height: 60,
-                                          ),
-                                          SizedBox(
-                                            height: 12,
-                                          ),
-                                          Text(
-                                            'Monthly Med',
-                                            style: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    62, 34, 148, 1.0),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      )
-                                    : index == 2
-                                        ? Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/alarm-clock.png',
-                                                width: 60,
-                                                height: 60,
-                                              ),
-                                              SizedBox(
-                                                height: 12,
-                                              ),
-                                              Text(
-                                                'Med Scheduler',
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        62, 34, 148, 1.0),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          )
-                                        : index == 3
-                                            ? Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                    'assets/images/dashboard_1.png',
-                                                    width: 60,
-                                                    height: 60,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 12,
-                                                  ),
-                                                  Text(
-                                                    'Drugs Collection',
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            62, 34, 148, 1.0),
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                ],
-                                              )
-                                            : index == 4
-                                                ? Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/images/dashboard_2.png',
-                                                        width: 60,
-                                                        height: 60,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 12,
-                                                      ),
-                                                      Text(
-                                                        'Medicines Data',
-                                                        style: TextStyle(
-                                                            color: Color
-                                                                .fromRGBO(
-                                                                    62,
-                                                                    34,
-                                                                    148,
-                                                                    1.0),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )
-                                                    ],
-                                                  )
-                                                : index == 5
-                                                    ? Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Image.asset(
-                                                            'assets/images/dashboard_2.png',
-                                                            width: 60,
-                                                            height: 60,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 12,
-                                                          ),
-                                                          Text(
-                                                            'BMI Calculator',
-                                                            style: TextStyle(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        62,
-                                                                        34,
-                                                                        148,
-                                                                        1.0),
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        ],
-                                                      )
-                                                    : Text('None'),
-                          ),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Next Medicine At",
+                          style: siz20Black(),),
+                        SizedBox(
+                          width: 18,
+                        ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 35,
+                              child: Center(
+                                child: FutureBuilder(
+                                  future: getAllListofTimes(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      return Text(
+                                        sortedList.length > 1
+                                            ? upcomingMedicineAmPm
+                                            : 'wait',style: size16White(),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.black26, width: 0.9),
+                                color:  Color(0xff008081),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            // Text(
+                            //   // timeWidget,
+                            //   style: TextStyle(
+                            //       fontSize: 18, fontWeight: FontWeight.w500),
+                            // )
+                          ],
+                        ),
+                      ],
+                    ))
               ],
             ),
-          ),
-        ],
+          //  SizedBox(height: 30,),
+
+            Container(
+              //   margin: EdgeInsets.only(left: 20, top: 18,right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   "Medical History",
+                  //   style: TextStyle(fontSize: 31, color: Colors.black),
+                  // ),
+
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 2.0,
+                        mainAxisSpacing: 2.0,
+                      ),
+                      itemCount: 9,
+                      // Adjust based on your data
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          splashColor: Color(0x91008081),
+                          onTap: () {
+                            if (index == 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HealthRecordScreen(),
+                                ),
+                              );
+                            } else if (index == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => monthlyMed(),
+                                ),
+                              );
+                            } else if (index == 2) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SchedulerScreen(),
+                                ),
+                              );
+                            } else if (index == 3) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MedicineInformation()));
+                            } else if (index == 4) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllMedicineList()));
+                            } else if (index == 5) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InputPage(),
+                                ),
+                              );
+                            }
+                            // Add more conditions for other grid items
+                          },
+                          child: Container(
+                            height: 68,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 0.99,
+                              ),
+                            ),
+                            child: Center(
+                              child: index == 0
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/syrup.png',
+                                          width: 60,
+                                          height: 60,
+                                        ),
+                                        SizedBox(
+                                          height: 12,
+                                        ),
+                                        Text(
+                                          'Health Records',
+                                          style: TextStyle(
+                                              color: Color(0xFF008081),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    )
+                                  : index == 1
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/dashboard_4.png',
+                                              width: 60,
+                                              height: 60,
+                                            ),
+                                            SizedBox(
+                                              height: 12,
+                                            ),
+                                            Text(
+                                              'Monthly Med',
+                                              style: TextStyle(
+                                                  color: Color(0xFF008081),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          ],
+                                        )
+                                      : index == 2
+                                          ? Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/alarm-clock.png',
+                                                  width: 60,
+                                                  height: 60,
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Text(
+                                                  'Med Scheduler',
+                                                  style: TextStyle(
+                                                      color: Color(0xFF008081),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            )
+                                          : index == 3
+                                              ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/dashboard_1.png',
+                                                      width: 60,
+                                                      height: 60,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 12,
+                                                    ),
+                                                    Text(
+                                                      'Drugs Collection',
+                                                      style: TextStyle(
+                                                          color: Color(0xFF008081),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                )
+                                              : index == 4
+                                                  ? Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/dashboard_2.png',
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 12,
+                                                        ),
+                                                        Text(
+                                                          'Medicines Data',
+                                                          style: TextStyle(
+                                                              color: Color(0xFF008081),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      ],
+                                                    )
+                                                  : index == 5
+                                                      ? Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/images/dashboard_2.png',
+                                                              width: 60,
+                                                              height: 60,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              'BMI Calculator',
+                                                              style: TextStyle(
+                                                                  color: Color(0xFF008081),
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ],
+                                                        )
+                                                      : Text('None'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
