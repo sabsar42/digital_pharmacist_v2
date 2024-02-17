@@ -95,6 +95,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'pilllimit': pilllimit,
           'pillImage': pillImage,
           'medDuration':medDuration,
+          'remainingDays':formattedDateTime,
         });
       });
 
@@ -261,6 +262,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String beforeAfterMeal = record['pilltime'];
                         String pillLimit = record['pilllimit'];
                         String pillImage = record['pillImage'];
+                        String remainingDays = record['remainingDays'];
                         List<int> times =
                         List<int>.from(record['listoftimes'] ?? []);
 
@@ -404,6 +406,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                               beforeAfterMeal:beforeAfterMeal,
                                               pillLimit:pillLimit,
                                                 medType:type,
+                                                remainingDays:remainingDays,
                                                 medDuration:medDuration,
                                               updateSchedulerScreen: () {
                                                 setState(() {});
@@ -468,7 +471,7 @@ class MyDialog extends StatefulWidget {
   final String pillLimit;
   final String medDuration;
   final String medType;
-
+final String remainingDays;
 
 
   const MyDialog({
@@ -479,7 +482,7 @@ class MyDialog extends StatefulWidget {
     required this.updateValidTill,
     required  this.updateSchedulerScreen,
     required this.pillImage,
-    required this.beforeAfterMeal, required this.pillLimit, required this.medDuration, required this.medType,
+    required this.beforeAfterMeal, required this.pillLimit, required this.medDuration, required this.medType, required this.remainingDays,
   }) : super(key: key);
 
   @override
@@ -516,12 +519,15 @@ class _MyDialogState extends State<MyDialog> {
           Text('${widget.beforeAfterMeal} '),
           Text('Pill Limit  ${widget.pillLimit}X'),
           Text('Duration ${widget.medDuration} Days'),
-          Text('Remaining'),
+          Text('Remaining ${widget.remainingDays} days'),
           Text('Medicine-Form  ${widget.medType}'),
 
         ],
       ),
       actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
@@ -550,7 +556,7 @@ class _MyDialogState extends State<MyDialog> {
             }
           },
           child: Text('Close'),
-        ),
+        ),],),
       ],
     );
   }
@@ -561,7 +567,7 @@ class _MyDialogState extends State<MyDialog> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation'),
-          content: Text('Confirm the deletion of this medication?'),
+          content: Text('Confirm the deletion of this medicine?'),
           actions: [
             TextButton(
               onPressed: () {
