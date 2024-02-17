@@ -9,9 +9,7 @@ import '../Gemini Digi-BOT/sections/text_only.dart';
 import '../MedEx Medicine  Collection/Screens/all_medicine_list_screen.dart';
 import '../Scheduler/Screen/SchedulerScreen.dart';
 import '../medical_history/Health Record/screens/Health_Record_Screen.dart';
-import '../monthlyMedicine/monthlyMedScreen/monthlyDatabase.dart';
 import '../monthlyMedicine/monthlyMedScreen/monthlyMed.dart';
-import '../style.dart';
 import 'dashboard_appbar.dart';
 import 'drawer_dashboard.dart';
 
@@ -29,6 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late User currentUser;
   List<int> sortedList=[];
   late int upcomingMedicine;
+  late String upcomingMedicineAmPm;
 
 
   @override
@@ -172,20 +171,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print(times);
 
     for (int time in times) {
-      int hour = time; // Extract the hour portion
+      int hour = time;
       print('kadsjf');print(hour);
 
-      // Check if the time is after the current hour
-      if (hour > currentHour) {
+
+      if (hour > currentHour ) {
+      if(currentHour>12) {
+
         upcomingTimes.add(time-12);
+
+      }
+      else {upcomingTimes.add(time);
+
+      }
       }
     }
 
     if (upcomingTimes.isEmpty) {
-      // If no times found for today, consider times for the next day
+
       for (int time in times) {
         if (time < currentHour && time<12) {
-          upcomingTimes.add(time); // Add 24 hours to consider the next day
+          upcomingTimes.add(time);
+
         }
       }
     }
@@ -194,6 +201,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
      upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
     print('Upcoming Times: $upcomingTimes');
     upcomingMedicine=upcomingTimes[0];
+    if(upcomingMedicine>12){
+      upcomingMedicine-=12;
+      upcomingMedicineAmPm= '${upcomingMedicine} AM';
+    }
+    else{
+      upcomingMedicineAmPm= '${upcomingMedicine} PM';
+    }
     print(upcomingTimes);
 
     return upcomingTimes;
@@ -220,7 +234,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     "Medical History",
                     style: TextStyle(fontSize: 31, color: Colors.black),
                   ),
-                  Text(sortedList.length > 1 ? upcomingMedicine.toString() : 'wait'),
+
+                  FutureBuilder(
+                    future: getAllListofTimes(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+
+                        return Text(
+                          sortedList.length > 1
+                              ? upcomingMedicineAmPm
+                              : 'wait',
+                        );
+                      }
+                    },
+                  ),
 
 
                   Container(

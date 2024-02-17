@@ -32,6 +32,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late List<TextEditingController> timeControllers;
   int medTypeIsSelected = -1;
   var items = ['select'];
+  bool isLoading = false;
 
 
   @override
@@ -52,6 +53,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
+
 
   Future<String?> fetchLatestHealthRecordId(String userId) async {
     print(userId);
@@ -110,7 +112,12 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   }
 
   Future<void> addMedicineInfo() async {
-    String userID = currentUser.uid;
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      String userID = currentUser.uid;
     print(futureTime);
     List<int> pillSchedule = [];
     for (int i = 0; i < timeControllers.length; i++) {
@@ -137,6 +144,18 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
         .doc(userID)
         .collection('remindersSet')
         .add(addDetails);
+
+      setState(() {
+        isLoading = false;
+      });
+    }catch (e) {
+      print("Error adding medicine info: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+
+
   }
 
   String dropdownvalue = 'select';
@@ -542,12 +561,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                           ),
                         ),
                         onPressed: () {
+                          isLoading=true;
+
                           addMedicineInfo();
                           for (int i = 0; i < timeControllers.length; i++) {
                             print("Time ${i + 1}: ${timeControllers[i].text}");
                           }
                         },
-                        child: Text(
+                        child: isLoading ? CircularProgressIndicator(   color: Colors.white,) : Text(
                           "Add Reminders",
                           style: size20White(),
                         )),
