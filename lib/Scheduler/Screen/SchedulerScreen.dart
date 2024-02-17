@@ -72,7 +72,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
         String type = data['type'] ?? 'Unknown Type';
         String pilltime = data['pilltime'] ?? 'Unknown';
         String pilllimit = data['pilllimit'] ?? 'Unknown';
-        String duration = data['duration'] ?? 'Unknown Duration';
+        String medDuration = data['duration'] ?? 'Unknown Duration';
         String pillImage = data['pillImage'] ?? 'unknown';
         Timestamp startedDate = data['timestamp'] ?? 'Unknown Time';
         Timestamp validtillFB = data['validtill'] ?? 'Unknown Time';
@@ -88,12 +88,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'documentID': document.id,
           'medicineName': medicineName,
           'type': type,
-          'duration': duration,
+          'duration': medDuration,
           'time': formattedDateTime,
           'listoftimes': medicineTimes,
           'pilltime': pilltime,
           'pilllimit': pilllimit,
           'pillImage': pillImage,
+          'medDuration':medDuration,
         });
       });
 
@@ -255,9 +256,9 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                       records.forEach((record) {
                         String medicineName = record['medicineName'];
                         String type = record['type'];
-                        String duration = record['duration'];
+                        String medDuration = record['medDuration'];
                         String stDate = record['time'];
-                        String pillTime = record['pilltime'];
+                        String beforeAfterMeal = record['pilltime'];
                         String pillLimit = record['pilllimit'];
                         String pillImage = record['pillImage'];
                         List<int> times =
@@ -289,19 +290,10 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                           DateTime currentDateTime = DateTime.now();
 
                           Widget timeWidget;
-                          if (pillDateTime.hour >= currentDateTime.hour) {
-                            // The pill time is ahead of the current time
-                            timeWidget = Text(
-                              'Time: $pillTime',
-                              style: size25Black(),
-                            );
-                          } else {
+
                             timeWidget = Text('Time: $pillTime',
-                                style: TextStyle(
-                                  color: Colors.black12,
-                                  fontSize: 25,
-                                ));
-                          }
+                                style:size25Black());
+
 
                           Widget combinedRow = Card(
                             margin: EdgeInsets.only(
@@ -348,7 +340,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                                   width: 90,
                                                   child: Center(
                                                     child: Text(
-                                                      'Before Meal',
+                                                      '$beforeAfterMeal',
                                                       style: TextStyle(
                                                         color:
                                                         Color(0xff03805d),
@@ -378,7 +370,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                                   ),
                                                   child: Center(
                                                     child: Text(
-                                                      'Amount: 2X',
+                                                      'Amount: ${pillLimit}X',
                                                       style: TextStyle(
                                                         color:
                                                         Color(0xFFF64A4A),
@@ -403,10 +395,16 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return MyDialog(
+
                                               index: time,
                                               medName: medicineName,
                                               documentId: record['documentID'],
                                               updateValidTill: updateValidTill,
+                                              pillImage: pillImage,
+                                              beforeAfterMeal:beforeAfterMeal,
+                                              pillLimit:pillLimit,
+                                                medType:type,
+                                                medDuration:medDuration,
                                               updateSchedulerScreen: () {
                                                 setState(() {});
                                               },
@@ -465,6 +463,11 @@ class MyDialog extends StatefulWidget {
   final String documentId;
   final Function(String, DateTime) updateValidTill;
   final Function updateSchedulerScreen;
+  final String pillImage;
+  final String beforeAfterMeal;
+  final String pillLimit;
+  final String medDuration;
+  final String medType;
 
 
 
@@ -475,6 +478,8 @@ class MyDialog extends StatefulWidget {
     required this.documentId,
     required this.updateValidTill,
     required  this.updateSchedulerScreen,
+    required this.pillImage,
+    required this.beforeAfterMeal, required this.pillLimit, required this.medDuration, required this.medType,
   }) : super(key: key);
 
   @override
@@ -482,40 +487,102 @@ class MyDialog extends StatefulWidget {
 }
 
 class _MyDialogState extends State<MyDialog> {
+  bool _isConfirmed = false;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Details for Item ${widget.medName}'),
+      title: Text('Details for Medicine ${widget.medName}',style: siz20Black(),),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Pill Time : '),
-          Text('Pill Limit'),
-          Text('Duration'),
-          Text('Remaining'),
-          Text('Medicine Form'),
-          IconButton(
-            onPressed: () {
-              DateTime newValidTill =
-              widget.updateValidTill(widget.documentId,DateTime.now());
-            },
-            icon: Icon(Icons.update),
+          Center(
+            child: Container(
+              margin:
+              EdgeInsets.only(left: 5, right: 5),
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(widget.pillImage),
+                  fit: BoxFit.contain,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
+
+          Text('${widget.beforeAfterMeal} '),
+          Text('Pill Limit  ${widget.pillLimit}X'),
+          Text('Duration ${widget.medDuration} Days'),
+          Text('Remaining'),
+          Text('Medicine-Form  ${widget.medType}'),
+
         ],
       ),
       actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          onPressed: () async {
+
+            bool? confirmed = await _showConfirmationDialog(context);
+            if (confirmed ?? false) {
+              DateTime newValidTill =
+              widget.updateValidTill(widget.documentId, DateTime.now());
+
+              setState(() {
+                _isConfirmed = true;
+              });
+              widget.updateSchedulerScreen();
+            }
+          },
+          child: Icon(Icons.delete,color: Colors.white,),
+        ),
         TextButton(
           onPressed: () async {
             Navigator.of(context).pop();
-            // Delay for a short time to ensure the dialog is fully closed before triggering the SchedulerScreen update
             await Future.delayed(Duration(milliseconds: 300));
-
-            // Call the updateSchedulerScreen method to trigger a rebuild of SchedulerScreen
-            widget.updateSchedulerScreen();
+            if (_isConfirmed) {
+              widget.updateSchedulerScreen();
+            }
           },
           child: Text('Close'),
         ),
       ],
     );
   }
+
+  Future<bool?> _showConfirmationDialog(BuildContext context) async {
+    return showDialog<bool?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text('Confirm the deletion of this medication?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () {
+                widget.updateSchedulerScreen();
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Confirm',style: TextStyle(color: Colors.white),),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+

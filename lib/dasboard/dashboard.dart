@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late User currentUser;
   List<int> sortedList=[];
   late int upcomingMedicine;
-  late String upcomingMedicineAmPm;
+  String upcomingMedicineAmPm='No medicine';
 
 
   @override
@@ -54,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<Map<String, dynamic>> getUserInfo(String userId) async {
     var userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
     if (userDoc.exists) {
       return userDoc.data() as Map<String, dynamic>;
@@ -83,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         List<int> listoftimes = List<int>.from(data['listoftimes'] ?? []);
         allListofTimes.add(listoftimes);
       });
-      print('heretimes');
+
       Set<int> mergedSet = allListofTimes.expand((list) => list).toSet();
 
       print(mergedSet);
@@ -93,8 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       for (int time in upcomingTimes) {
         print('Upcoming Time: $time');
       }
-      print(sortedList);
-      print(allListofTimes);
+
 
       return allListofTimes;
     } catch (error) {
@@ -133,7 +132,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Duration difference = validtillTime.difference(DateTime.now());
         int indays = difference.inDays;
         String formattedDateTime = indays.toString();
-        print('$medicineName: $medicineTimes');
+
 
         records.add({
           'documentID': document.id,
@@ -174,41 +173,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
       int hour = time;
 
       if (hour > currentHour ) {
-      if(currentHour>12) {
+        if(currentHour>12) {
 
-        upcomingTimes.add(time);
+          upcomingTimes.add(time);
 
-      }
-      else {upcomingTimes.add(time);
+        }
+        else {upcomingTimes.add(time);
 
-      }
+        }
       }
     }
 
     if (upcomingTimes.isEmpty) {
 
       for (int time in times) {
-        if (time < currentHour && time<12) {
+
+        if (time < currentHour) {
           upcomingTimes.add(time);
 
         }
       }
     }
 
-    upcomingTimes.sort(); // Sort the upcoming times
-     upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
-    print('Upcoming Times: $upcomingTimes');
+    upcomingTimes.sort();
+    upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
+
     upcomingMedicine=upcomingTimes[0];
-    print('upccheck $upcomingMedicine');
-    if(upcomingMedicine>12){
-      print('upc $upcomingMedicine');
+
+    if(upcomingMedicine>12 && upcomingMedicine!=24){
+
       upcomingMedicine-=12;
       upcomingMedicineAmPm= '${upcomingMedicine} PM';
+    }
+    else if(upcomingMedicine==24){
+      upcomingMedicineAmPm ='${upcomingMedicine-12} AM';
     }
     else{
       upcomingMedicineAmPm= '${upcomingMedicine} AM';
     }
-    print(upcomingTimes);
+
 
     return upcomingTimes;
   }
@@ -327,159 +330,159 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Center(
                               child: index == 0
                                   ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/syrup.png',
-                                          width: 60,
-                                          height: 60,
-                                        ),
-                                        SizedBox(
-                                          height: 12,
-                                        ),
-                                        Text(
-                                          'Health Records',
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  62, 34, 148, 1.0),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    )
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/syrup.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'Health Records',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            62, 34, 148, 1.0),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              )
                                   : index == 1
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/dashboard_4.png',
-                                              width: 60,
-                                              height: 60,
-                                            ),
-                                            SizedBox(
-                                              height: 12,
-                                            ),
-                                            Text(
-                                              'Monthly Med',
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      62, 34, 148, 1.0),
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          ],
-                                        )
-                                      : index == 2
-                                          ? Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset(
-                                                  'assets/images/alarm-clock.png',
-                                                  width: 60,
-                                                  height: 60,
-                                                ),
-                                                SizedBox(
-                                                  height: 12,
-                                                ),
-                                                Text(
-                                                  'Med Scheduler',
-                                                  style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          62, 34, 148, 1.0),
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            )
-                                          : index == 3
-                                              ? Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/dashboard_1.png',
-                                                      width: 60,
-                                                      height: 60,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                    Text(
-                                                      'Drugs Collection',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              62, 34, 148, 1.0),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                )
-                                              : index == 4
-                                                  ? Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Image.asset(
-                                                          'assets/images/dashboard_2.png',
-                                                          width: 60,
-                                                          height: 60,
-                                                        ),
-                                                        SizedBox(
-                                                          height: 12,
-                                                        ),
-                                                        Text(
-                                                          'Medicines Data',
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      62,
-                                                                      34,
-                                                                      148,
-                                                                      1.0),
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )
-                                                      ],
-                                                    )
-                                                  : index == 5
-                                                      ? Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Image.asset(
-                                                              'assets/images/dashboard_2.png',
-                                                              width: 60,
-                                                              height: 60,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 12,
-                                                            ),
-                                                            Text(
-                                                              'BMI Calculator',
-                                                              style: TextStyle(
-                                                                  color: Color
-                                                                      .fromRGBO(
-                                                                          62,
-                                                                          34,
-                                                                          148,
-                                                                          1.0),
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ],
-                                                        )
-                                                      : Text('None'),
+                                  ? Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dashboard_4.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'Monthly Med',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            62, 34, 148, 1.0),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              )
+                                  : index == 2
+                                  ? Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/alarm-clock.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'Med Scheduler',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            62, 34, 148, 1.0),
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight.bold),
+                                  )
+                                ],
+                              )
+                                  : index == 3
+                                  ? Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dashboard_1.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'Drugs Collection',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            62, 34, 148, 1.0),
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight.bold),
+                                  )
+                                ],
+                              )
+                                  : index == 4
+                                  ? Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dashboard_2.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'Medicines Data',
+                                    style: TextStyle(
+                                        color: Color
+                                            .fromRGBO(
+                                            62,
+                                            34,
+                                            148,
+                                            1.0),
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .bold),
+                                  )
+                                ],
+                              )
+                                  : index == 5
+                                  ? Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dashboard_2.png',
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(
+                                    'BMI Calculator',
+                                    style: TextStyle(
+                                        color: Color
+                                            .fromRGBO(
+                                            62,
+                                            34,
+                                            148,
+                                            1.0),
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight
+                                            .bold),
+                                  )
+                                ],
+                              )
+                                  : Text('None'),
                             ),
                           ),
                         );
