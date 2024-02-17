@@ -270,7 +270,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            backgroundColor: Color(0xff45967f),
+                            backgroundColor: Color(0xff008081),
                           ),
                           onPressed: () {
                             _showDialog(context);
@@ -322,7 +322,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   color: medTypeIsSelected == index
-                                      ? Color(0x9602a676)
+                                      ? Color(0xff008081)
                                       : Colors.white,
                                 ),
                                 child: medImgForm[index],
@@ -555,7 +555,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff02a676),
+                          backgroundColor: Color(0xff008081),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),

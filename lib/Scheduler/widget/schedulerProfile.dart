@@ -53,7 +53,7 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
           children: [
             Container(
               padding: EdgeInsets.only(top: 50, left:0 ),
-              color:   Color(0xff45967f),
+              color: Color(0xff04a8a9),
               height: 130,
             ),
             // Positioned(
