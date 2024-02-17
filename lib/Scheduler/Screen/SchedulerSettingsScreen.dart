@@ -19,6 +19,8 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   double _currentSliderValue = 1;
+  bool beforeMealSelected = false;
+  bool afterMealSelected = false;
   final TextEditingController newValueController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
@@ -33,7 +35,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   int medTypeIsSelected = -1;
   var items = ['select'];
   bool isLoading = false;
-
 
   @override
   void initState() {
@@ -53,7 +54,6 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
-
 
   Future<String?> fetchLatestHealthRecordId(String userId) async {
     print(userId);
@@ -97,7 +97,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('users')
           .doc(userID)
           .collection('healthRecords')
-          .doc( latestHealthRecordId)
+          .doc(latestHealthRecordId)
           .collection('medicine_dosage_duration')
           .get();
 
@@ -118,44 +118,42 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
 
       String userID = currentUser.uid;
-    print(futureTime);
-    List<int> pillSchedule = [];
-    for (int i = 0; i < timeControllers.length; i++) {
-      int timeValue = int.parse(timeControllers[i].text);
+      print(futureTime);
+      List<int> pillSchedule = [];
+      for (int i = 0; i < timeControllers.length; i++) {
+        int timeValue = int.parse(timeControllers[i].text);
 
-      pillSchedule.add(timeValue);
-    }
+        pillSchedule.add(timeValue);
+      }
 
-    Map<String, dynamic> addDetails = {
-      'medicineName': newValueController.text,
-      'type': typeController.text,
-      'duration': durationController.text,
-      'frequency': frequencyController.text,
-      'validtill': futureTime,
-      'timestamp': FieldValue.serverTimestamp(),
-      'listoftimes': pillSchedule,
-      'pilltime': pillTimeController.text,
-      'pilllimit': pillLimitController.text,
-      'pillImage': pillImageController.text,
-    };
+      Map<String, dynamic> addDetails = {
+        'medicineName': newValueController.text,
+        'type': typeController.text,
+        'duration': durationController.text,
+        'frequency': frequencyController.text,
+        'validtill': futureTime,
+        'timestamp': FieldValue.serverTimestamp(),
+        'listoftimes': pillSchedule,
+        'pilltime': pillTimeController.text,
+        'pilllimit': pillLimitController.text,
+        'pillImage': pillImageController.text,
+      };
 
-    await _firestore
-        .collection('users')
-        .doc(userID)
-        .collection('remindersSet')
-        .add(addDetails);
+      await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('remindersSet')
+          .add(addDetails);
 
       setState(() {
         isLoading = false;
       });
-    }catch (e) {
+    } catch (e) {
       print("Error adding medicine info: $e");
       setState(() {
         isLoading = false;
       });
     }
-
-
   }
 
   String dropdownvalue = 'select';
@@ -188,10 +186,15 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => SchedulerScreen()));
+                    builder: (BuildContext context) => SchedulerScreen()),
+                (route) => false);
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => SchedulerScreen()));
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -199,6 +202,11 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
             size: 30,
           ),
         ),
+        title:Text(
+          'Set Reminders',
+          style: siz31Black(),
+        ),
+
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -210,12 +218,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Set Reminders',
-                  style: siz31Black(),
-                ),
+
                 const SizedBox(
-                  height: 20,
+                  height: 18,
                 ),
                 Text(
                   'Medicine Name',
@@ -285,7 +290,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text(
                   'Medicine Form',
@@ -295,7 +300,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                   height: 2,
                 ),
                 Container(
-                  height: 150,
+                  height: 130,
                   child: ListView.builder(
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
@@ -363,41 +368,70 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 Row(
                   children: [
                     InkWell(
+                      borderRadius: BorderRadius.circular(18),
                       onTap: () {
                         pillTimeController.text = 'Before Meal';
+                        setState(() {
+                          beforeMealSelected = true;
+                          afterMealSelected = false;
+                        });
                       },
                       child: Container(
                         margin: EdgeInsets.all(5),
                         height: 30,
                         width: 100,
                         decoration: BoxDecoration(
-                          color: Colors.amberAccent,
+                          color: beforeMealSelected
+                              ? Colors.amberAccent
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: beforeMealSelected
+                                ? Colors.amberAccent
+                                : Color(0xff02a676),
+                            width: 2,
+                          ),
                         ),
                         child: Center(
-                            child: Text(
-                          "Before Meal",
-                          style: size15Black(),
-                        )),
+                          child: Text(
+                            "Before Meal",
+                            style: size15Black(),
+                          ),
+                        ),
                       ),
                     ),
                     InkWell(
+                      borderRadius: BorderRadius.circular(18),
                       onTap: () {
                         pillTimeController.text = 'After Meal';
+                        setState(() {
+                          beforeMealSelected = false;
+                          afterMealSelected = true;
+                        });
                       },
                       child: Container(
                         margin: EdgeInsets.all(5),
                         height: 30,
                         width: 100,
                         decoration: BoxDecoration(
-                          color: Colors.indigo,
+                          color:
+                              afterMealSelected ? Colors.indigo : Colors.white,
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: afterMealSelected
+                                ? Colors.indigo
+                                : Color(0xff02a676),
+                            width: 2,
+                          ),
                         ),
                         child: Center(
-                            child: Text(
-                          "After Meal",
-                          style: size17White(),
-                        )),
+                          child: Text(
+                            "After Meal",
+                            style: afterMealSelected
+                                ? size17White()
+                                : size15Black(),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -561,17 +595,21 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                           ),
                         ),
                         onPressed: () {
-                          isLoading=true;
+                          isLoading = true;
 
                           addMedicineInfo();
                           for (int i = 0; i < timeControllers.length; i++) {
                             print("Time ${i + 1}: ${timeControllers[i].text}");
                           }
                         },
-                        child: isLoading ? CircularProgressIndicator(   color: Colors.white,) : Text(
-                          "Add Reminders",
-                          style: size20White(),
-                        )),
+                        child: isLoading
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                "Add Reminders",
+                                style: size20White(),
+                              )),
                   ),
                 )
               ],

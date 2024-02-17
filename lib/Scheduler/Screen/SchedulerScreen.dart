@@ -19,16 +19,13 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-
   }
 
   void updateSchedulerScreen() {
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-  Future<void> getCurrentUser() async  {
+  Future<void> getCurrentUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
@@ -94,8 +91,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
           'pilltime': pilltime,
           'pilllimit': pilllimit,
           'pillImage': pillImage,
-          'medDuration':medDuration,
-          'remainingDays':formattedDateTime,
+          'medDuration': medDuration,
+          'remainingDays': formattedDateTime,
         });
       });
 
@@ -166,70 +163,70 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                           children: last7Days
                               .map(
                                 (date) => GestureDetector(
-                              onTap: () {
-                                print('Clicked on date');
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: date.contains(
-                                        DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Color(0xea02a676)
-                                        : Colors.transparent,
+                                  onTap: () {
+                                    print('Clicked on date');
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
+                                            ? Color(0xea02a676)
+                                            : Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      date,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: date.contains(
+                                                DateFormat('dd MMM')
+                                                    .format(DateTime.now()))
+                                            ? Color(0xFFFF8D8D)
+                                            : null,
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Text(
-                                  date,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: date.contains(
-                                        DateFormat('dd MMM')
-                                            .format(DateTime.now()))
-                                        ? Color(0xFFFF8D8D)
-                                        : null,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                              )
                               .toList(),
                         ),
                         Row(
                           children: upComingDays
                               .map(
                                 (date) => Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: date.contains(DateFormat('dd MMM')
-                                      .format(DateTime.now()))
-                                      ? Color(0x86FF8D8D)
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                date,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: date.contains(
-                                    DateFormat('dd MMM').format(
-                                      DateTime.now(),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: date.contains(DateFormat('dd MMM')
+                                              .format(DateTime.now()))
+                                          ? Color(0x86FF8D8D)
+                                          : Colors.transparent,
                                     ),
-                                  )
-                                      ? Color(0xea02a676)
-                                      : null,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    date,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: date.contains(
+                                        DateFormat('dd MMM').format(
+                                          DateTime.now(),
+                                        ),
+                                      )
+                                          ? Color(0xea02a676)
+                                          : null,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          )
+                              )
                               .toList(),
                         ),
                       ],
@@ -264,7 +261,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         String pillImage = record['pillImage'];
                         String remainingDays = record['remainingDays'];
                         List<int> times =
-                        List<int>.from(record['listoftimes'] ?? []);
+                            List<int>.from(record['listoftimes'] ?? []);
 
                         List<String> amPm = [];
                         for (int i = 0; i < times.length; i++) {
@@ -276,7 +273,6 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                         }
 
                         for (int time in times) {
-
                           Widget medicineWidget = Text(
                             medicineName,
                             style: size20Gray(),
@@ -293,9 +289,8 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
 
                           Widget timeWidget;
 
-                            timeWidget = Text('Time: $pillTime',
-                                style:size25Black());
-
+                          timeWidget =
+                              Text('Time: $pillTime', style: size25Black());
 
                           Widget combinedRow = Card(
                             margin: EdgeInsets.only(
@@ -311,7 +306,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                     flex: 25,
                                     child: Container(
                                       margin:
-                                      EdgeInsets.only(left: 5, right: 5),
+                                          EdgeInsets.only(left: 5, right: 5),
                                       height: 70,
                                       width: 100,
                                       decoration: BoxDecoration(
@@ -329,7 +324,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                       margin: EdgeInsets.only(left: 15),
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           timeWidget,
                                           medicineWidget,
@@ -345,17 +340,17 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                                       '$beforeAfterMeal',
                                                       style: TextStyle(
                                                         color:
-                                                        Color(0xff03805d),
+                                                            Color(0xff03805d),
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: Color(0x9002a676),
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -367,17 +362,17 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                                   decoration: BoxDecoration(
                                                     color: Color(0x86FF8D8D),
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                   child: Center(
                                                     child: Text(
                                                       'Amount: ${pillLimit}X',
                                                       style: TextStyle(
                                                         color:
-                                                        Color(0xFFF64A4A),
+                                                            Color(0xFFF64A4A),
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -397,26 +392,22 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return MyDialog(
-
                                               index: time,
                                               medName: medicineName,
                                               documentId: record['documentID'],
                                               updateValidTill: updateValidTill,
                                               pillImage: pillImage,
-                                              beforeAfterMeal:beforeAfterMeal,
-                                              pillLimit:pillLimit,
-                                                medType:type,
-                                                remainingDays:remainingDays,
-                                                medDuration:medDuration,
+                                              beforeAfterMeal: beforeAfterMeal,
+                                              pillLimit: pillLimit,
+                                              medType: type,
+                                              remainingDays: remainingDays,
+                                              medDuration: medDuration,
                                               updateSchedulerScreen: () {
                                                 setState(() {});
                                               },
                                             );
-
                                           },
                                         );
-
-
                                       },
                                       icon: Icon(
                                         Icons.unfold_more_rounded,
@@ -471,8 +462,7 @@ class MyDialog extends StatefulWidget {
   final String pillLimit;
   final String medDuration;
   final String medType;
-final String remainingDays;
-
+  final String remainingDays;
 
   const MyDialog({
     Key? key,
@@ -480,9 +470,13 @@ final String remainingDays;
     required this.medName,
     required this.documentId,
     required this.updateValidTill,
-    required  this.updateSchedulerScreen,
+    required this.updateSchedulerScreen,
     required this.pillImage,
-    required this.beforeAfterMeal, required this.pillLimit, required this.medDuration, required this.medType, required this.remainingDays,
+    required this.beforeAfterMeal,
+    required this.pillLimit,
+    required this.medDuration,
+    required this.medType,
+    required this.remainingDays,
   }) : super(key: key);
 
   @override
@@ -495,15 +489,17 @@ class _MyDialogState extends State<MyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Details for Medicine ${widget.medName}',style: siz20Black(),),
+      title: Text(
+        'Details for Medicine ${widget.medName}',
+        style: siz20Black(),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: Container(
-              margin:
-              EdgeInsets.only(left: 5, right: 5),
+              margin: EdgeInsets.only(left: 5, right: 5),
               height: 100,
               width: 100,
               decoration: BoxDecoration(
@@ -515,48 +511,50 @@ class _MyDialogState extends State<MyDialog> {
               ),
             ),
           ),
-
           Text('${widget.beforeAfterMeal} '),
           Text('Pill Limit  ${widget.pillLimit}X'),
           Text('Duration ${widget.medDuration} Days'),
           Text('Remaining ${widget.remainingDays} days'),
           Text('Medicine-Form  ${widget.medType}'),
-
         ],
       ),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-          ),
-          onPressed: () async {
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () async {
+                bool? confirmed = await _showConfirmationDialog(context);
+                if (confirmed ?? false) {
+                  DateTime newValidTill =
+                      widget.updateValidTill(widget.documentId, DateTime.now());
 
-            bool? confirmed = await _showConfirmationDialog(context);
-            if (confirmed ?? false) {
-              DateTime newValidTill =
-              widget.updateValidTill(widget.documentId, DateTime.now());
-
-              setState(() {
-                _isConfirmed = true;
-              });
-              widget.updateSchedulerScreen();
-            }
-          },
-          child: Icon(Icons.delete,color: Colors.white,),
+                  setState(() {
+                    _isConfirmed = true;
+                  });
+                  widget.updateSchedulerScreen();
+                }
+              },
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await Future.delayed(Duration(milliseconds: 300));
+                if (_isConfirmed) {
+                  widget.updateSchedulerScreen();
+                }
+              },
+              child: Text('Close'),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-            await Future.delayed(Duration(milliseconds: 300));
-            if (_isConfirmed) {
-              widget.updateSchedulerScreen();
-            }
-          },
-          child: Text('Close'),
-        ),],),
       ],
     );
   }
@@ -583,7 +581,10 @@ class _MyDialogState extends State<MyDialog> {
                 widget.updateSchedulerScreen();
                 Navigator.of(context).pop(true);
               },
-              child: Text('Confirm',style: TextStyle(color: Colors.white),),
+              child: Text(
+                'Confirm',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -591,4 +592,3 @@ class _MyDialogState extends State<MyDialog> {
     );
   }
 }
-

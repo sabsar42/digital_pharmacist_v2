@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerSettingsScreen.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,14 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
                   child: Row(
 
                     children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new),color: Colors.white,),
+                      IconButton(onPressed: (){
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => DashboardScreen()),
+                                (route) => false);
+                      }, icon: Icon(Icons.arrow_back_ios_new),color: Colors.white,),
 
                       Text(
                         'Reminders',
