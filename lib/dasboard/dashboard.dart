@@ -172,13 +172,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     for (int time in times) {
       int hour = time;
-      print('kadsjf');print(hour);
-
 
       if (hour > currentHour ) {
       if(currentHour>12) {
 
-        upcomingTimes.add(time-12);
+        upcomingTimes.add(time);
 
       }
       else {upcomingTimes.add(time);
@@ -201,12 +199,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
      upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
     print('Upcoming Times: $upcomingTimes');
     upcomingMedicine=upcomingTimes[0];
+    print('upccheck $upcomingMedicine');
     if(upcomingMedicine>12){
+      print('upc $upcomingMedicine');
       upcomingMedicine-=12;
-      upcomingMedicineAmPm= '${upcomingMedicine} AM';
+      upcomingMedicineAmPm= '${upcomingMedicine} PM';
     }
     else{
-      upcomingMedicineAmPm= '${upcomingMedicine} PM';
+      upcomingMedicineAmPm= '${upcomingMedicine} AM';
     }
     print(upcomingTimes);
 
