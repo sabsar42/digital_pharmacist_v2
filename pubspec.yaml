@@ -130,6 +130,7 @@ flutter:
     - assets/images/bmi_calculator.png
     - assets/images/health_records.png
     - assets/images/monthly_med.png
+    - - assets/images/med_scheduler.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

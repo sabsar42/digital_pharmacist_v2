@@ -93,70 +93,68 @@ class _monthlyMedState extends State<monthlyMed> {
       ),
       body: Container(
 
-        child: CommonBackground(
-          child: ListView.builder(
-              itemCount: monthList.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    updateDate(index);
-                    if (index == 0) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MonthlyMedDetails(
-                                index: index,
-                                time1: dateController,
-                                time2: prevDateController,
-                              )));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MonthlyMedDetails(
-                                index: index,
-                                time1: dateController,
-                                time2: prevDateController,
-                              ),),);
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    height: 176,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/dashboard_card.png",  // Replace with the URL of your image
-                        ),
-                        fit: BoxFit.cover,
+        child: ListView.builder(
+            itemCount: monthList.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  updateDate(index);
+                  if (index == 0) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MonthlyMedDetails(
+                              index: index,
+                              time1: dateController,
+                              time2: prevDateController,
+                            )));
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MonthlyMedDetails(
+                              index: index,
+                              time1: dateController,
+                              time2: prevDateController,
+                            ),),);
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  height: 176,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "assets/images/dashboard_card.png",  // Replace with the URL of your image
                       ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                                margin: EdgeInsets.only(left: 10, top: 10),
-                                child: Text(
-                                  "2024",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ))),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${monthList[index]}",
-                              style: siz30White(),
-                            )),
-
-                      ],
+                      fit: BoxFit.cover,
                     ),
                   ),
-                );
-              }),
-        ),
+                  child: Stack(
+                    children: [
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                              margin: EdgeInsets.only(left: 10, top: 10),
+                              child: Text(
+                                "2024",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ))),
+                      Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${monthList[index]}",
+                            style: siz30White(),
+                          )),
+
+                    ],
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }

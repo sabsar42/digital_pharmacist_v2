@@ -33,6 +33,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
   final TextEditingController bloodGroupController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ShowUserProfileImageController showUserProfileImageController =
       Get.find<ShowUserProfileImageController>();
@@ -229,6 +230,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                 // Form Fields
                 Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       TextFormField(
@@ -245,6 +247,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           labelText: "Email",
                           prefixIcon: Icon(Icons.email),
                         ),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter an email';
+                          }
+
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(value!);
+                          if (emailValid == false) {
+                            return 'Enter valid Email';
+                          }
+
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -253,6 +269,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           labelText: "Phone Number",
                           prefixIcon: Icon(Icons.phone),
                         ),
+                        validator: (String? value) {
+                          if (value?.trim().isEmpty ?? true) {
+                            return 'Eneter valid Phone Number';
+                          }
+
+                          bool validPhone =
+                              RegExp(r'^01[3-9][0-9]{8}$').hasMatch(value!);
+
+                          /// 11 digit and start with 019,017,018 etc
+                          if (validPhone == false) {
+                            return 'Enter valid Phone Number';
+                          }
+
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -270,6 +301,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             },
                           ),
                         ),
+                        validator: (String? value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Eneter a Password';
+                          }
+                          if (value!.length < 6) {
+                            return 'Enter Password more than 6 letters';
+                          }
+                          bool passwordRegex = RegExp(
+                                  r'^(?!.*(.).*\1)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$')
+                              .hasMatch(value);
+                          if (passwordRegex == false) {
+                            return 'Enter Strong Password';
+                          }
+
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -318,13 +365,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            addUserDetails();
-                            addUserProfilePicture();
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserProfile()),
-                            );
+                            if (_formKey.currentState!.validate()) {
+                              addUserDetails();
+                              addUserProfilePicture();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserProfile()),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

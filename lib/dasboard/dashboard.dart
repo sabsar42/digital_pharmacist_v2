@@ -191,11 +191,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
 
     upcomingMedicine = upcomingTimes[0];
+    print(upcomingTimes[0]);
 
     if (upcomingMedicine > 12 && upcomingMedicine != 24) {
       upcomingMedicine -= 12;
       upcomingMedicineAmPm = '${upcomingMedicine} PM';
-    } else if (upcomingMedicine == 24) {
+    }
+    else if (upcomingMedicine == 12) {
+      upcomingMedicineAmPm = '${upcomingMedicine } PM';
+    }
+
+    else if (upcomingMedicine == 24) {
       upcomingMedicineAmPm = '${upcomingMedicine - 12} AM';
     } else {
       upcomingMedicineAmPm = '${upcomingMedicine} AM';
@@ -212,32 +218,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           children: [
             SizedBox(height: 120, child: DashboardAppbar()),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20,),
             Container(
               width: 200,
-              child: Center(
-                  child: Text(
-                'DASHBOARD',
-                style: siz30White(),
-              )),
+              child: Center(child: Text('DASHBOARD',style: siz30White(),)),
               decoration: BoxDecoration(
-                color: Color(0xff008070),
+                color:  Color(0xff008070),
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30,),
             Stack(
               children: [
                 Container(
                   height: 50,
                   width: 330,
                   decoration: BoxDecoration(
-                      //  border: Border.all(color: Colors.black54, width: 1),
-                      color: Color(0x91008081),
+                    //  border: Border.all(color: Colors.black54, width: 1),
+                      color:  Color(0x91008081),
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 Positioned(
@@ -263,8 +261,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         Text(
                           "Next Medicine At",
-                          style: siz20Black(),
-                        ),
+                          style: siz20Black(),),
                         SizedBox(
                           width: 12,
                         ),
@@ -287,17 +284,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       return Text(
                                         sortedList.length > 0
                                             ? upcomingMedicineAmPm
-                                            : 'wait',
-                                        style: size20White(),
+                                            : 'wait',style:size20White(),
                                       );
                                     }
                                   },
                                 ),
                               ),
+
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Colors.black26, width: 0.9),
-                                color: Color(0xff008081),
+                                color:  Color(0xff008081),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
@@ -312,15 +309,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ))
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
+           SizedBox(height: 20,),
+
             Container(
               //   margin: EdgeInsets.only(left: 20, top: 18,right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
+
                   Container(
                     margin: EdgeInsets.all(5),
                     child: GridView.builder(
@@ -332,6 +330,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisSpacing: 2.0,
                       ),
                       itemCount: 5,
+
                       itemBuilder: (context, index) {
                         return InkWell(
                           splashColor: Color(0x91008081),
@@ -433,7 +432,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/alarm-clock.png',
+                                                  'assets/images/med_scheduler.png',
                                                   width: 60,
                                                   height: 60,
                                                 ),
@@ -451,64 +450,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               ],
                                             )
                                           : index == 3
-                                              ? Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/medicine_collection.png',
-                                                      width: 60,
-                                                      height: 60,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                    Text(
-                                                      'Medicines Data',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xFF008081),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+
+                                                  ? Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/medicine_collection.png',
+                                                          width: 60,
+                                                          height: 60,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 12,
+                                                        ),
+                                                        Text(
+                                                          'Medicines Data',
+                                                          style: TextStyle(
+                                                              color: Color(0xFF008081),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      ],
                                                     )
-                                                  ],
-                                                )
-                                              : index == 4
-                                                  ? Expanded(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Image.asset(
-                                                            'assets/images/bmi_calculator.png',
-                                                            width: 60,
-                                                            height: 60,
+                                                  : index == 4
+                                                      ? Expanded(
+                                                        child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/images/bmi_calculator.png',
+                                                                width: 60,
+                                                                height: 60,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 12,
+                                                              ),
+                                                              Text(
+                                                                'BMI Calculator',
+                                                                style: TextStyle(
+                                                                    color: Color(0xFF008081),
+                                                                    fontSize: 15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
                                                           ),
-                                                          SizedBox(
-                                                            height: 12,
-                                                          ),
-                                                          Text(
-                                                            'BMI Calculator',
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF008081),
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Text('None'),
+                                                      )
+                                                      : Text('None'),
                             ),
                           ),
                         );
                       },
                     ),
                   ),
+
                 ],
               ),
             ),

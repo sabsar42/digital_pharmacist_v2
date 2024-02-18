@@ -40,6 +40,9 @@ class _LogInScreenState extends State<LogInScreen> {
           context, MaterialPageRoute(builder: (context) => DashboardScreen()));
       showSnackBar("Login Successfull");
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       print("Failed: $e");
       showSnackBar("Invalid email or password");
     }
@@ -154,10 +157,18 @@ class _LogInScreenState extends State<LogInScreen> {
                             if (value!.length < 6) {
                               return 'Enter Password more than 6 letters';
                             }
+                         //    bool passwordRegex =
+                         //    RegExp(r'^(?!.*(.).*\1)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$')
+                         // .hasMatch(value);
+                         //    if(passwordRegex==false){
+                         //      return 'Enter Strong Password';
+                         //    }
+
                             return null;
                           },
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
                         child: Align(
