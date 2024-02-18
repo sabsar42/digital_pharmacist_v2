@@ -1,5 +1,4 @@
 import 'package:digi_pharma_app_test/common_background.dart';
-
 import '../../style.dart';
 import 'package:flutter/material.dart';
 import 'monthlyDatabase.dart';
@@ -118,7 +117,7 @@ class _monthlyMedState extends State<monthlyMed> {
                                 index: index,
                                 time1: dateController,
                                 time2: prevDateController,
-                              )));
+                              ),),);
                     }
                   },
                   child: Container(
@@ -151,16 +150,7 @@ class _monthlyMedState extends State<monthlyMed> {
                               "${monthList[index]}",
                               style: siz30White(),
                             )),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 10, bottom: 5),
-                            child: Text(
-                              "Total Medicine : 10 ",
-                              style: size20White(),
-                            ),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),

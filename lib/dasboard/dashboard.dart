@@ -28,7 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late User currentUser;
   List<int> sortedList = [];
   late int upcomingMedicine;
-  String upcomingMedicineAmPm = 'No medicine';
+  String upcomingMedicineAmPm = 'wait';
 
   @override
   void initState() {
@@ -277,9 +277,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       return Text('Error: ${snapshot.error}');
                                     } else {
                                       return Text(
-                                        sortedList.length > 1
+                                        sortedList.length > 0
                                             ? upcomingMedicineAmPm
-                                            : 'wait',style: size16White(),
+                                            : 'wait',style:size20White(),
                                       );
                                     }
                                   },
@@ -572,7 +572,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
           }
         },
-        backgroundColor:   Color(0xff008081),
+        backgroundColor: Color(0xff008081),
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
         showUnselectedLabels: true,

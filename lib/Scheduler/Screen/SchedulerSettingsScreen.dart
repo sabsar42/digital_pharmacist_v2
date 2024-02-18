@@ -148,6 +148,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       setState(() {
         isLoading = false;
       });
+      showSnackBar("Added into medicine Reminder");
     } catch (e) {
       print("Error adding medicine info: $e");
       setState(() {
@@ -179,6 +180,15 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
     'assets/images/capsule.png'
   ];
   var medFormName = ['Syrup', 'Tablet', 'Drops', 'Injection', 'Capsule'];
+
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -610,9 +620,9 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                             : Text(
                                 "Add Reminders",
                                 style: size20White(),
-                              )),
+                              ),),
                   ),
-                )
+                ),
               ],
             ),
           ),
