@@ -305,7 +305,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ))
               ],
             ),
-          //  SizedBox(height: 30,),
+           SizedBox(height: 20,),
 
             Container(
               //   margin: EdgeInsets.only(left: 20, top: 18,right: 20),
@@ -313,10 +313,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Text(
-                  //   "Medical History",
-                  //   style: TextStyle(fontSize: 31, color: Colors.black),
-                  // ),
+
 
                   Container(
                     margin: EdgeInsets.all(5),
@@ -328,8 +325,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisSpacing: 2.0,
                         mainAxisSpacing: 2.0,
                       ),
-                      itemCount: 9,
-                      // Adjust based on your data
+                      itemCount: 5,
+
                       itemBuilder: (context, index) {
                         return InkWell(
                           splashColor: Color(0x91008081),
@@ -359,14 +356,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          MedicineInformation()));
-                            } else if (index == 4) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
                                       builder: (context) => AllMedicineList()));
-                            } else if (index == 5) {
+                            } else if (index == 4) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -455,29 +446,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               ],
                                             )
                                           : index == 3
-                                              ? Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/dashboard_1.png',
-                                                      width: 60,
-                                                      height: 60,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                    Text(
-                                                      'Drugs Collection',
-                                                      style: TextStyle(
-                                                          color: Color(0xFF008081),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                )
-                                              : index == 4
+
                                                   ? Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -502,7 +471,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                         )
                                                       ],
                                                     )
-                                                  : index == 5
+                                                  : index == 4
                                                       ? Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
