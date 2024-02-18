@@ -483,7 +483,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                     .center,
                                                             children: [
                                                               Image.asset(
-                                                                'assets/images/bmi_calculator.png',
+                                                                'assets/images/bmi.png',
                                                                 width: 60,
                                                                 height: 60,
                                                               ),
