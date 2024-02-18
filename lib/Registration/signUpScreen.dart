@@ -53,6 +53,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       showSnackBar('Registration Successfull');
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       print('FirebaseAuthException: $e');
       showDialog(
         context: context,
@@ -77,14 +80,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SingleChildScrollView(
         child: SizedBox(
           height: 1000,
           child: Column(
             children: [
               Padding(
-                padding:  EdgeInsets.fromLTRB(0, 70, 320, 0),
+                padding: EdgeInsets.fromLTRB(0, 70, 320, 0),
                 child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -107,12 +109,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(33.0, 10, 30, 20),
+                padding: const EdgeInsets.fromLTRB(33.0, 10, 30, 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Registration",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Registration",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10,),
+                      Text(
+                        ' In password section use combination of Lowercase, Uppercase, Number and Special characters',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -195,6 +207,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (value!.length < 6) {
                             return 'Enter Password more than 6 letters';
                           }
+                          bool passwordRegex = RegExp(
+                                  r'^(?!.*(.).*\1)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$')
+                              .hasMatch(value);
+                          if (passwordRegex == false) {
+                            return 'Enter Strong Password';
+                          }
+
                           return null;
                         },
                       ),
@@ -214,20 +233,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       child: isLoading
                           ? CircularProgressIndicator(
-                        color: Colors.white,
-                      )
+                              color: Colors.white,
+                            )
                           : Text(
-                        "Register",
-                        style: size20White(),
-                      ),
+                              "Register",
+                              style: size20White(),
+                            ),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         elevation: 4.0,
-                        backgroundColor:  Color(0xff008081),
-                        fixedSize: Size(355.0,
-                            60.0),
+                        backgroundColor: Color(0xff008081),
+                        fixedSize: Size(355.0, 60.0),
                       ),
                     ),
                   ],
@@ -254,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: CircleAvatar(
                       radius: 13.5,
                       backgroundColor: Colors.transparent,
-                      child:Image.asset(
+                      child: Image.asset(
                         "assets/images/google.png",
                       ),
                     ),

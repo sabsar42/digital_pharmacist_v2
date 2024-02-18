@@ -191,12 +191,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     upcomingMedicine = (upcomingTimes.isNotEmpty ? upcomingTimes.first : null)!;
 
     upcomingMedicine = upcomingTimes[0];
+    print(upcomingTimes[0]);
 
     if (upcomingMedicine > 12 && upcomingMedicine != 24) {
       upcomingMedicine -= 12;
       upcomingMedicineAmPm = '${upcomingMedicine} PM';
     }
-   
+    else if (upcomingMedicine == 12) {
+      upcomingMedicineAmPm = '${upcomingMedicine } PM';
+    }
+
     else if (upcomingMedicine == 24) {
       upcomingMedicineAmPm = '${upcomingMedicine - 12} AM';
     } else {
@@ -428,7 +432,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Image.asset(
-                                                  'assets/images/alarm-clock.png',
+                                                  'assets/images/med_scheduler.png',
                                                   width: 60,
                                                   height: 60,
                                                 ),

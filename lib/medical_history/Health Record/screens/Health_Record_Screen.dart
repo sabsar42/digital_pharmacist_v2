@@ -208,28 +208,26 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
           ),
         ),
       ),
-      body: CommonBackground(
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await fetchHealthRecords();
-          },
-          child: isAddingRecord
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : TransformableListView.builder(
-                  getTransformMatrix: getTransformMatrix,
-                  itemCount: records.length,
-                  itemBuilder: (context, index) {
-                    return HealthRecordCard(
-                      record: records[index],
-                      onDelete: () async {
-                        await deleteHealthRecord(records[index].docID);
-                      },
-                    );
-                  },
-                ),
-        ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await fetchHealthRecords();
+        },
+        child: isAddingRecord
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : TransformableListView.builder(
+                getTransformMatrix: getTransformMatrix,
+                itemCount: records.length,
+                itemBuilder: (context, index) {
+                  return HealthRecordCard(
+                    record: records[index],
+                    onDelete: () async {
+                      await deleteHealthRecord(records[index].docID);
+                    },
+                  );
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
