@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
-// ignore: must_be_immutable
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
@@ -80,7 +79,7 @@ class _InputPageState extends State<InputPage> {
           ),
           Expanded(
             child: ReusableBg(
-              colour: kactiveCardColor,
+              colour: Color(0xFFEDE9EF),
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -107,8 +106,8 @@ class _InputPageState extends State<InputPage> {
                     data: SliderTheme.of(context).copyWith(
                       activeTrackColor: Colors.white,
                       inactiveTrackColor: ksliderInactiveColor,
-                      thumbColor: Color(0xFFEB1555),
-                      overlayColor: Color(0x29EB1555),
+                      thumbColor: Color(0xFF05404D),
+                      overlayColor: Color(0x511EDAD2),
                       thumbShape:
                       RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -134,7 +133,7 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableBg(
-                    colour: kactiveCardColor,
+                    colour: Color(0xFFEDE9EF),
                     cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -176,7 +175,7 @@ class _InputPageState extends State<InputPage> {
                 ),
                 Expanded(
                   child: ReusableBg(
-                    colour: kactiveCardColor,
+                    colour: Color(0xFFEDE9EF),
                     cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -238,15 +237,7 @@ class _InputPageState extends State<InputPage> {
         ],
       ),
 
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Icon(
-      //     Icons.favorite,
-      //     color: Colors.pink,
-      //     size: 23.0,
-      //   ),
-      //   backgroundColor: kactiveCardColor,
-      // ),
+
     );
   }
 }

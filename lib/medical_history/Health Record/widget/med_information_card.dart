@@ -16,7 +16,7 @@ class MedInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      color: Colors.deepPurple.shade50,
+      color: Colors.yellow.shade50,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),

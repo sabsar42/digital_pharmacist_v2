@@ -142,7 +142,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
-                      color: Colors.deepPurple.shade700,
+                      color: Color.fromRGBO(5, 70, 65, 1.0),
                     ),
                   ),
                   SizedBox(
@@ -188,7 +188,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                               children: [Icon(Icons.photo), Text('Gallery')],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.purple, // Background color
+                              primary:  Color.fromRGBO(5, 70, 65, 1.0),// Background color
                               onPrimary: Colors.white, // Text color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -210,7 +210,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.purple, // Background color
+                              primary:  Color.fromRGBO(5, 70, 65, 1.0),// Background color
                               onPrimary: Colors.white, // Text color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -235,7 +235,7 @@ class _ImageToPDFState extends State<ImageToPDF> {
                           savePDF();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.deepPurple.shade900,
+                          primary:  Color.fromRGBO(5, 70, 65, 1.0),
                           // Background color
                           onPrimary: Colors.white,
                           // Text color

@@ -43,7 +43,7 @@ class ResultPage extends StatelessWidget {
           Expanded(
             flex: 5,
             child: ReusableBg(
-              colour: kactiveCardColor,
+              colour: Color(0xFFEFE8F5),
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +82,7 @@ class ResultPage extends StatelessWidget {
                       width: 200.0,
                       height: 56.0,
                     ),
-                    fillColor: Color(0xFF4C4F5E),
+                    fillColor: Color(0xFF83BCC7),
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),

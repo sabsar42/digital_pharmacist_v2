@@ -14,6 +14,13 @@ class ReusableBg extends StatelessWidget {
       decoration: BoxDecoration(
         color: colour,
         borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.teal.withOpacity(0.5),
+            spreadRadius: 0.1,
+            blurRadius: 3,
+          ),
+        ],
       ),
     );
   }

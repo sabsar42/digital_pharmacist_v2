@@ -36,7 +36,7 @@ class Calculate {
     if (_bmi >= 25 || _bmi <= 18.5) {
       return Colors.deepOrangeAccent;
     } else {
-      return Color(0xFF24D876);
+      return Color(0xFF008081);
     }
   }
 }

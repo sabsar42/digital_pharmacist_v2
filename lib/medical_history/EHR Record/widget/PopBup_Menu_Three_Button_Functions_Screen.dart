@@ -44,7 +44,7 @@ class PopUpMenuItems extends StatelessWidget {
       children: [
         Container(
           height: 43,
-          color: Colors.deepPurple[300],
+          color:  Color.fromRGBO(43, 157, 148, 1.0),
           child: Align(
             alignment: Alignment.center,
             child: Container(
@@ -62,7 +62,7 @@ class PopUpMenuItems extends StatelessWidget {
         SizedBox(height: 0.5),
         Container(
           height: 43,
-          color: Colors.deepPurple[200],
+          color:  Color.fromRGBO(32, 98, 94, 1.0),
           child: Align(
             alignment: Alignment.center,
             child: Container(
@@ -80,7 +80,7 @@ class PopUpMenuItems extends StatelessWidget {
         SizedBox(height: 0.3),
         Container(
           height: 43,
-          color: Colors.deepPurple[200],
+          color:  Color.fromRGBO(9, 110, 102, 1.0),
           child: Align(
             alignment: Alignment.center,
             child: Container(

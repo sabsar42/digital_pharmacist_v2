@@ -23,7 +23,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    String promptText = "Extract the Medicines Name only and Give them in CSV Format with its medicine name,dosags,duration";
+    String promptText = "Medicine Start from Rx: Extract the Medicines Name only and Give Information of Medicine Info from Web, Type, Dosage, Duration, ( medicine may start with TAB, Cap; TAB for tablet, Cap for Capsule); The Text is this :";
         // "Add a Page Title name is : (AI Prescription) and Organize this in stream Text and Give: 1.Doctor Info, 2.Medicines in Table Format, 3.Diagnosis, 4.Summary of the Diagnosis";
 
     recAndPromptText = promptText + widget.text;
