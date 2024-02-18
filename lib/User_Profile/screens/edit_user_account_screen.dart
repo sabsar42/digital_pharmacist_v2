@@ -309,7 +309,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             return 'Enter Password more than 6 letters';
                           }
                           bool passwordRegex = RegExp(
-                                  r'^(?!.*(.).*\1)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$')
+                              r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$'
+                          )
                               .hasMatch(value);
                           if (passwordRegex == false) {
                             return 'Enter Strong Password';
