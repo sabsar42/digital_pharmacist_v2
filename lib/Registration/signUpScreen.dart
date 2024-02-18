@@ -128,6 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+
               Form(
                 key: _formKey,
                 child: Column(
@@ -211,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   r'^(?!.*(.).*\1)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{6,}$')
                               .hasMatch(value);
                           if (passwordRegex == false) {
-                            return 'Enter Strong Password';
+                            return 'Enter Strong Password,';
                           }
 
                           return null;
