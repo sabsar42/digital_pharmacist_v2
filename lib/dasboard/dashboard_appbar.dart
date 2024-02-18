@@ -50,6 +50,15 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
       child: Stack(
         children: [
           Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/dashboard_card.png",
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
             padding: EdgeInsets.only(top: 50, left: 10),
             // color: Colors.green,
           ),
@@ -80,8 +89,8 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     final profileImageUrl = controller.profileImageUrl;
 
                     return Container(
-                      height: 50, // Adjust the height as needed
-                      width: 50,  // Adjust the width as needed
+                      height: 50,
+                      width: 50,
                       child: ClipOval(
                         child: profileImageUrl != null
                             ? Image.network(
