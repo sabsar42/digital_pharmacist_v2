@@ -82,9 +82,6 @@ class _UserProfileState extends State<UserProfile> {
                 SizedBox(width: 16.0),
                 UserDetailCard(
                     label: "Gender", value: userInfo['gender'] ?? "N/A"),
-                SizedBox(width: 16.0),
-                UserDetailCard(
-                    label: "Location", value: userInfo['city'] ?? "N/A"),
               ],
             ),
           ],
@@ -153,7 +150,9 @@ class _UserProfileState extends State<UserProfile> {
         title: Text(
           "PROFILE",
           style: TextStyle(
-              color: Colors.teal.shade600, fontWeight: FontWeight.w400, fontSize: 20),
+              color: Colors.teal.shade600,
+              fontWeight: FontWeight.w400,
+              fontSize: 20),
         ),
         backgroundColor: Colors.white,
         elevation: 0,

@@ -9,16 +9,16 @@ class OnBoard extends StatelessWidget {
     return [
       PageViewModel(
 
-        image:Image.asset('assets/images/doctor.png'),
+        image:Image.asset('assets/images/health_records.png'),
         title: "Get medical Consultation",
-        body: "Commmunicate with the finest doctors in your area",
+        body: "Store Health Records",
           decoration: PageDecoration(
           )
 
       ),
       PageViewModel(
         image:Image.asset('assets/images/onboard_3.png'),
-        title: "Medication Reminders",
+        title: "Medicine Reminders",
         body: "Stay on top of your health effortlessly with our Medication Reminders",
 
       ),
