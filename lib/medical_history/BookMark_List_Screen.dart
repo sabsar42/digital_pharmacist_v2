@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'TabBar_View.dart';
 
 class ToDo {
@@ -6,6 +7,14 @@ class ToDo {
   String description;
 
   ToDo(this.title, this.description);
+
+  String toString() {
+    return '$title|$description';
+  }
+  factory ToDo.fromString(String value) {
+    List<String> parts = value.split('|');
+    return ToDo(parts[0], parts[1]);
+  }
 }
 
 class BookMarkScreen extends StatefulWidget {
@@ -23,7 +32,29 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController editTitleController = TextEditingController();
   final TextEditingController editDescriptionController =
-      TextEditingController();
+  TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBookmarks();
+  }
+
+  _loadBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? bookmarks = prefs.getStringList('bookmarks');
+    if (bookmarks != null) {
+      setState(() {
+        toDoList = bookmarks.map((bookmark) => ToDo.fromString(bookmark)).toList();
+      });
+    }
+  }
+
+  _saveBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> bookmarkStrings = toDoList.map((bookmark) => bookmark.toString()).toList();
+    prefs.setStringList('bookmarks', bookmarkStrings);
+  }
 
   void _addTask() {
     String title = titleController.text;
@@ -34,6 +65,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         toDoList.add(ToDo(title, description));
         titleController.clear();
         descriptionController.clear();
+        _saveBookmarks();
       });
     }
   }
@@ -41,6 +73,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   void _deleteTask(int index) {
     setState(() {
       toDoList.removeAt(index);
+      _saveBookmarks();
     });
   }
 
@@ -56,7 +89,8 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: Column(
               children: <Widget>[
                 Container(
@@ -69,12 +103,10 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                       hintText: "Add Title",
                       enabledBorder: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(8, 52, 109, 1.0)),
+                        borderSide: BorderSide(color: Color.fromRGBO(8, 52, 109, 1.0)),
                       ),
                     ),
                     maxLines: null,
-                    // overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
@@ -87,8 +119,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                       hintText: "Add Description",
                       enabledBorder: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(8, 52, 109, 1.0)),
+                        borderSide: BorderSide(color: Color.fromRGBO(8, 52, 109, 1.0)),
                       ),
                     ),
                     maxLines: null,
@@ -100,13 +131,12 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                       selectedTask.title = titleController.text;
                       selectedTask.description = descriptionController.text;
                       Navigator.of(context).pop();
+                      _saveBookmarks();
                     });
                   },
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.fromLTRB(30, 10, 30, 10)),
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(236, 220, 248, 1.0)),
+                    padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(30, 10, 30, 10)),
+                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(240, 255, 248, 1.0),),
                   ),
                   child: Text('Edit Done'),
                 ),
@@ -118,8 +148,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
     );
   }
 
-  void _showBottomSheet(
-      BuildContext context, String BookmarkTitle, String BookmarkDescription) {
+  void _showBottomSheet(BuildContext context, String BookmarkTitle, String BookmarkDescription) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -127,8 +156,8 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
       ),
       builder: (BuildContext context) {
         return Container(
-          color: Color.fromRGBO(236, 220, 248, 1.0),
-          height: 500, // Adjust the height as needed
+          color:Color.fromRGBO(239, 218, 183, 1.0),
+          height: 500,
           child: Column(
             children: [
               ListTile(
@@ -163,7 +192,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(241, 229, 220, 1.0),
+        backgroundColor: Color.fromRGBO(240, 255, 248, 1.0),
         toolbarHeight: 40,
         title: Text(
           "Bookmark Notes",
@@ -176,7 +205,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         centerTitle: true,
       ),
       body: Container(
-        color: Color.fromRGBO(241, 229, 220, 1.0),
+        color: Color.fromRGBO(240, 255, 248, 1.0),
         child: Column(
           children: [
             Container(
@@ -188,8 +217,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                   labelText: ' Title',
                   hintText: "Add Title",
                   enabledBorder: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(30.0), // Set border radius here
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -209,8 +237,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                   labelText: ' Description',
                   hintText: 'Add Description',
                   enabledBorder: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(30.0), // Set border radius here
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -226,12 +253,14 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
               child: Text(
                 'ADD',
                 style: TextStyle(
-                    fontSize: 16.0, color: Color.fromRGBO(8, 52, 109, 1.0)),
+                  fontSize: 16.0,
+                  color: Color.fromRGBO(8, 52, 109, 1.0),
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 elevation: 5.0,
                 padding: EdgeInsets.fromLTRB(40, 16, 40, 16),
-                backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+                backgroundColor: Colors.teal.shade100,
               ),
             ),
             SizedBox(height: 20),
@@ -249,7 +278,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                           Icons.arrow_forward_ios_outlined,
                           color: Color.fromRGBO(255, 255, 255, 1.0),
                         ),
-                        backgroundColor: Color.fromRGBO(144, 125, 227, 1.0),
+                        backgroundColor: Colors.teal.shade500,
                       ),
                       title: Text(
                         toDoList[index].title,
@@ -263,20 +292,23 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                       trailing: IconButton(
                         onPressed: () {
                           String BookmarkTitle = toDoList[index].title;
-                          String BookmarkDescription =
-                              toDoList[index].description;
-                          _showBottomSheet(context, BookmarkTitle,
-                              BookmarkDescription); // Call the _showBottomSheet function
+                          String BookmarkDescription = toDoList[index].description;
+                          _showBottomSheet(
+                            context,
+                            BookmarkTitle,
+                            BookmarkDescription,
+                          );
                         },
                         icon: Icon(Icons.arrow_forward),
                       ),
-                      tileColor: Color.fromRGBO(236, 220, 248, 1.0),
+                      tileColor: Color.fromRGBO(239, 218, 183, 1.0),
                       onLongPress: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("Choosee"),
+                              backgroundColor: Color.fromRGBO(240, 255, 248, 1.0),
+                              title: Text("Choose"),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {

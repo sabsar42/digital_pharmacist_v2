@@ -145,32 +145,30 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
 
   Future<void> loadMedicineData() async {
     final ByteData data =
-    await rootBundle.load('assets/medicineCSV/medicine.csv');
+        await rootBundle.load('assets/medicineCSV/medicine.csv');
     final String rawMedicineData =
-    String.fromCharCodes(data.buffer.asUint8List());
+        String.fromCharCodes(data.buffer.asUint8List());
 
     List<List<dynamic>> parsedCsv =
-    const CsvToListConverter().convert(rawMedicineData);
+        const CsvToListConverter().convert(rawMedicineData);
 
     List<MedicineModel> loadedMedicines = [];
 
     for (List<dynamic> row in parsedCsv) {
-      if (row.length == 10) {
-        loadedMedicines.add(
-          MedicineModel(
-            brandId: row[0].toString(),
-            brandName: row[1].toString(),
-            type: row[2].toString(),
-            slug: row[3].toString(),
-            dosageForm: row[4].toString(),
-            generic: row[5].toString(),
-            strength: row[6].toString(),
-            manufacturer: row[7].toString(),
-            packageContainer: row[8].toString(),
-            packageSize: row[9].toString(),
-          ),
-        );
-      }
+      loadedMedicines.add(
+        MedicineModel(
+          brandId: row[0].toString(),
+          brandName: row[1].toString(),
+          type: row[2].toString(),
+          slug: row[3].toString(),
+          dosageForm: row[4].toString(),
+          generic: row[5].toString(),
+          strength: row[6].toString(),
+          manufacturer: row[7].toString(),
+          packageContainer: row[8].toString(),
+          packageSize: row[9].toString(),
+        ),
+      );
     }
     setState(() {
       medicines.addAll(loadedMedicines);
@@ -237,40 +235,6 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
             return CommonBackground(
               child: Column(
                 children: [
-                  // Container(
-                  //   height: 200,
-                  //   child: LineChart(
-                  //     LineChartData(
-                  //       gridData: FlGridData(show: true),
-                  //       titlesData: FlTitlesData(show: true),
-                  //       borderData: FlBorderData(
-                  //         show: true,
-                  //         border: Border.all(
-                  //           color: const Color(0xff37434d),
-                  //           width: 1,
-                  //         ),
-                  //       ),
-                  //       minX: 0,
-                  //       maxX: data.length.toDouble(),
-                  //       minY: 0,
-                  //       maxY: 100, // Adjust this based on your data range
-                  //       lineBarsData: [
-                  //         LineChartBarData(
-                  //           spots: data.map((entry) {
-                  //             return FlSpot(
-                  //               data.indexOf(entry).toDouble(),
-                  //               entry['value']?.toDouble() ?? 0.0, // Replace 'value' with the actual key
-                  //             );
-                  //           }).toList(),
-                  //           isCurved: true,
-                  //           color: Colors.red,
-                  //           belowBarData: BarAreaData(show: true),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  //
-                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -280,7 +244,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                       itemBuilder: (context, index) {
                         String medicineName = data[index]['medicineName'];
                         MedicineModel? matchedMedicine =
-                        findMedicineByName(medicineName);
+                            findMedicineByName(medicineName);
 
                         if (matchedMedicine != null) {
                           return Container(
@@ -335,8 +299,6 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                               ),
                             ),
                           );
-                        } else {
-                          return Container();
                         }
                       },
                       separatorBuilder: (_, __) {
