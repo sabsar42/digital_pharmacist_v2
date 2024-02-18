@@ -271,7 +271,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ),
                         validator: (String? value) {
                           if (value?.trim().isEmpty ?? true) {
-                            return 'Eneter valid Phone Number';
+                            return 'Enter valid Phone Number';
                           }
 
                           bool validPhone =
