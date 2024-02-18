@@ -163,12 +163,28 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.edit_note_outlined,
-              size: 35,
-              color: Color.fromRGBO(6, 36, 59, 1.0),
+          Card(
+            // padding: EdgeInsets.all(8.0), // Adjust padding as needed
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/images/card_background.png", // Replace with the URL of your image
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              height: 35,
+              width: 60,
+              child: Center(
+                child: Text(
+                  '${records.length} ',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white), // Adjust font size as needed
+                ),
+              ),
             ),
           ),
         ],
@@ -217,7 +233,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        splashColor: Colors.purple,
+        splashColor: Colors.teal,
         backgroundColor: Colors.white70,
         onPressed: () async {
           //  String uniqueDocID = (records.length+1).toString();

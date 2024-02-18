@@ -322,7 +322,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        crossAxisSpacing: 2.0,
+                        crossAxisSpacing: 4.0,
                         mainAxisSpacing: 2.0,
                       ),
                       itemCount: 5,
@@ -472,30 +472,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       ],
                                                     )
                                                   : index == 4
-                                                      ? Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Image.asset(
-                                                              'assets/images/bmi_calculator.png',
-                                                              width: 60,
-                                                              height: 60,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 12,
-                                                            ),
-                                                            Text(
-                                                              'BMI Calculator',
-                                                              style: TextStyle(
-                                                                  color: Color(0xFF008081),
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ],
-                                                        )
+                                                      ? Expanded(
+                                                        child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/images/bmi_calculator.png',
+                                                                width: 60,
+                                                                height: 60,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 12,
+                                                              ),
+                                                              Text(
+                                                                'BMI Calculator',
+                                                                style: TextStyle(
+                                                                    color: Color(0xFF008081),
+                                                                    fontSize: 15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
+                                                          ),
+                                                      )
                                                       : Text('None'),
                             ),
                           ),
@@ -503,6 +505,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                     ),
                   ),
+
                 ],
               ),
             ),

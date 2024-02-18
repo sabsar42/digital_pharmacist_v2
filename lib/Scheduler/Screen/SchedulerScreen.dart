@@ -167,6 +167,7 @@ class _SchedulerScreenState extends State<SchedulerScreen> {
                                     print('Clicked on date');
                                   },
                                   child: Container(
+
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       border: Border.all(

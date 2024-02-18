@@ -48,10 +48,11 @@ class _TabBarScreenState extends State<TabBarScreen> {
                 color: Color.fromRGBO(5, 70, 65, 1.0),
               ),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HealthRecordScreen()));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => HealthRecordScreen()));
+                Navigator.pop(context);
               },
             ),
             actions: <Widget>[

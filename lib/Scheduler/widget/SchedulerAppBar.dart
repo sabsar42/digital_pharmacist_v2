@@ -17,6 +17,7 @@ class _SchedulerAppBarState extends State<SchedulerAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Stack(
         children: [
           Container(
