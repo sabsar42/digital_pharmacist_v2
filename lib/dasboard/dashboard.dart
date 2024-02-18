@@ -196,7 +196,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       upcomingMedicine -= 12;
       upcomingMedicineAmPm = '${upcomingMedicine} PM';
     }
-
+   
     else if (upcomingMedicine == 24) {
       upcomingMedicineAmPm = '${upcomingMedicine - 12} AM';
     } else {
@@ -228,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Container(
                   height: 50,
-                  width: 320,
+                  width: 330,
                   decoration: BoxDecoration(
                     //  border: Border.all(color: Colors.black54, width: 1),
                       color:  Color(0x91008081),
@@ -237,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Positioned(
                     bottom: 5,
                     top: 5,
-                    left: 20,
+                    left: 10,
                     child: Row(
                       children: [
                         Container(
@@ -253,13 +253,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 8,
                         ),
                         Text(
                           "Next Medicine At",
                           style: siz20Black(),),
                         SizedBox(
-                          width: 18,
+                          width: 12,
                         ),
                         Stack(
                           alignment: Alignment.center,
