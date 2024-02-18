@@ -384,7 +384,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          'assets/images/syrup.png',
+                                          'assets/images/health_records.png',
                                           width: 60,
                                           height: 60,
                                         ),
@@ -406,7 +406,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              'assets/images/dashboard_4.png',
+                                              'assets/images/monthly_med.png',
                                               width: 60,
                                               height: 60,
                                             ),
@@ -478,7 +478,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                   .center,
                                                           children: [
                                                             Image.asset(
-                                                              'assets/images/dashboard_2.png',
+                                                              'assets/images/bmi_calculator.png',
                                                               width: 60,
                                                               height: 60,
                                                             ),
