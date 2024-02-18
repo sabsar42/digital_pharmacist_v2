@@ -108,7 +108,55 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
     });
   }
 
+  Future<void> deleteHealthRecord(String uniqueID) async {
+    String userID = currentUser.uid;
 
+    CollectionReference<Map<String, dynamic>> healthRecordsCollection =
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('healthRecords');
+
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.teal.shade50,
+          title: Text("Confirmation"),
+          content: Text("Are you sure you want to delete this health record?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+      await healthRecordsCollection.doc(uniqueID).delete();
+      await fetchHealthRecords();
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +164,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.edit_note_outlined,
               size: 35,
@@ -136,7 +182,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
             )),
         elevation: 10,
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(236, 220, 248, 1.0),
+        backgroundColor: Color.fromRGBO(246, 236, 218, 1.0),
         title: Text(
           'HEALTH RECORDS',
           style: TextStyle(
@@ -159,7 +205,12 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
                   getTransformMatrix: getTransformMatrix,
                   itemCount: records.length,
                   itemBuilder: (context, index) {
-                    return HealthRecordCard(record: records[index]);
+                    return HealthRecordCard(
+                      record: records[index],
+                      onDelete: () async {
+                        await deleteHealthRecord(records[index].docID);
+                      },
+                    );
                   },
                 ),
         ),
@@ -172,6 +223,7 @@ class _HealthRecordScreenState extends State<HealthRecordScreen> {
           //  String uniqueDocID = (records.length+1).toString();
           await addHealthRecord();
           await fetchHealthRecords();
+
           /// !!!!! NEED to be fixed, created an Dupilcate DocID in firebase, EasyFix tho !!!!!
           // Navigator.push(
           //     context,
