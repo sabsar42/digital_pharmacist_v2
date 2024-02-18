@@ -195,7 +195,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (upcomingMedicine > 12 && upcomingMedicine != 24) {
       upcomingMedicine -= 12;
       upcomingMedicineAmPm = '${upcomingMedicine} PM';
-    } else if (upcomingMedicine == 24) {
+    }
+
+    else if (upcomingMedicine == 24) {
       upcomingMedicineAmPm = '${upcomingMedicine - 12} AM';
     } else {
       upcomingMedicineAmPm = '${upcomingMedicine} AM';

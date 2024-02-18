@@ -377,69 +377,73 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
                 ),
                 Row(
                   children: [
-                    InkWell(
-                      borderRadius: BorderRadius.circular(18),
-                      onTap: () {
-                        pillTimeController.text = 'Before Meal';
-                        setState(() {
-                          beforeMealSelected = true;
-                          afterMealSelected = false;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        height: 30,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: beforeMealSelected
-                              ? Colors.amberAccent
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(18),
+                        onTap: () {
+                          pillTimeController.text = 'Before Meal';
+                          setState(() {
+                            beforeMealSelected = true;
+                            afterMealSelected = false;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
                             color: beforeMealSelected
                                 ? Colors.amberAccent
-                                : Color(0xff02a676),
-                            width: 2,
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: beforeMealSelected
+                                  ? Colors.amberAccent
+                                  : Color(0xff02a676),
+                              width: 2,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Before Meal",
-                            style: size15Black(),
+                          child: Center(
+                            child: Text(
+                              "Before Meal",
+                              style: size15Black(),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(18),
-                      onTap: () {
-                        pillTimeController.text = 'After Meal';
-                        setState(() {
-                          beforeMealSelected = false;
-                          afterMealSelected = true;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        height: 30,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color:
-                              afterMealSelected ? Colors.indigo : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: afterMealSelected
-                                ? Colors.indigo
-                                : Color(0xff02a676),
-                            width: 2,
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(18),
+                        onTap: () {
+                          pillTimeController.text = 'After Meal';
+                          setState(() {
+                            beforeMealSelected = false;
+                            afterMealSelected = true;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color:
+                                afterMealSelected ? Colors.indigo : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: afterMealSelected
+                                  ? Colors.indigo
+                                  : Color(0xff02a676),
+                              width: 2,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "After Meal",
-                            style: afterMealSelected
-                                ? size17White()
-                                : size15Black(),
+                          child: Center(
+                            child: Text(
+                              "After Meal",
+                              style: afterMealSelected
+                                  ? size17White()
+                                  : size15Black(),
+                            ),
                           ),
                         ),
                       ),
