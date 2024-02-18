@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/BMI-calculator/bmi_screens/input_page.dart';
-import 'package:digi_pharma_app_test/common_background.dart';
 import 'package:digi_pharma_app_test/rapidAPI/medicine_info_screen.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
