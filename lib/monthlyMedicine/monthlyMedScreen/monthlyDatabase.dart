@@ -237,40 +237,40 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
             return CommonBackground(
               child: Column(
                 children: [
-                  Container(
-                    height: 200,
-                    child: LineChart(
-                      LineChartData(
-                        gridData: FlGridData(show: true),
-                        titlesData: FlTitlesData(show: true),
-                        borderData: FlBorderData(
-                          show: true,
-                          border: Border.all(
-                            color: const Color(0xff37434d),
-                            width: 1,
-                          ),
-                        ),
-                        minX: 0,
-                        maxX: data.length.toDouble(),
-                        minY: 0,
-                        maxY: 100, // Adjust this based on your data range
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: data.map((entry) {
-                              return FlSpot(
-                                data.indexOf(entry).toDouble(),
-                                entry['value']?.toDouble() ?? 0.0, // Replace 'value' with the actual key
-                              );
-                            }).toList(),
-                            isCurved: true,
-                            color: Colors.red,
-                            belowBarData: BarAreaData(show: true),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  ),
+                  // Container(
+                  //   height: 200,
+                  //   child: LineChart(
+                  //     LineChartData(
+                  //       gridData: FlGridData(show: true),
+                  //       titlesData: FlTitlesData(show: true),
+                  //       borderData: FlBorderData(
+                  //         show: true,
+                  //         border: Border.all(
+                  //           color: const Color(0xff37434d),
+                  //           width: 1,
+                  //         ),
+                  //       ),
+                  //       minX: 0,
+                  //       maxX: data.length.toDouble(),
+                  //       minY: 0,
+                  //       maxY: 100, // Adjust this based on your data range
+                  //       lineBarsData: [
+                  //         LineChartBarData(
+                  //           spots: data.map((entry) {
+                  //             return FlSpot(
+                  //               data.indexOf(entry).toDouble(),
+                  //               entry['value']?.toDouble() ?? 0.0, // Replace 'value' with the actual key
+                  //             );
+                  //           }).toList(),
+                  //           isCurved: true,
+                  //           color: Colors.red,
+                  //           belowBarData: BarAreaData(show: true),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  //
+                  // ),
                   SizedBox(
                     height: 20,
                   ),

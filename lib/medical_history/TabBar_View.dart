@@ -38,10 +38,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            shadowColor:  Color.fromRGBO(5, 70, 65, 1.0),
+            shadowColor: Color.fromRGBO(5, 70, 65, 1.0),
             toolbarHeight: 30,
             elevation: 6.0,
-            backgroundColor:  Color.fromRGBO(217, 236, 235, 1.0),
+            backgroundColor: Color.fromRGBO(217, 236, 235, 1.0),
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -58,7 +58,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
               IconButton(
                 icon: Icon(
                   Icons.bookmark_add_rounded,
-                  color:  Color.fromRGBO(5, 70, 65, 1.0),
+                  color: Color.fromRGBO(5, 70, 65, 1.0),
                   semanticLabel: 'Bookmark',
                   size: 25,
                 ),
@@ -66,7 +66,9 @@ class _TabBarScreenState extends State<TabBarScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => BookMarkScreen()));
+                          builder: (context) => BookMarkScreen(
+                                uniqueDiagnosisNumber: widget.uniqueDocID,
+                              )));
                 },
               ),
             ],
@@ -74,7 +76,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
               '${id[id.length - 1]} : Health Record',
               style: TextStyle(
                 fontSize: 18,
-                color:  Color.fromRGBO(5, 70, 65, 1.0),
+                color: Color.fromRGBO(5, 70, 65, 1.0),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -83,27 +85,27 @@ class _TabBarScreenState extends State<TabBarScreen> {
               indicatorWeight: 2.0,
               // Thickness of the tab indicator
 
-              indicatorColor:  Color.fromRGBO(5, 70, 65, 1.0),
-              labelColor:  Color.fromRGBO(5, 70, 65, 1.0),
+              indicatorColor: Color.fromRGBO(5, 70, 65, 1.0),
+              labelColor: Color.fromRGBO(5, 70, 65, 1.0),
               tabs: [
                 Tab(
                     icon: Icon(
                       Icons.medical_information_rounded,
-                      color:  Color.fromRGBO(5, 70, 65, 1.0),
+                      color: Color.fromRGBO(5, 70, 65, 1.0),
                       size: 18,
                     ),
                     text: "Detail Info"),
                 Tab(
                     icon: Icon(
                       Icons.create_new_folder_outlined,
-                      color:  Color.fromRGBO(5, 70, 65, 1.0),
+                      color: Color.fromRGBO(5, 70, 65, 1.0),
                       size: 18,
                     ),
                     text: "EHR Folder"),
                 Tab(
                     icon: Icon(
                       Icons.picture_as_pdf_sharp,
-                      color:  Color.fromRGBO(5, 70, 65, 1.0),
+                      color: Color.fromRGBO(5, 70, 65, 1.0),
                       size: 18,
                     ),
                     text: "PDF Prescription")

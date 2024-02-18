@@ -8,9 +8,10 @@ class ToDo {
   ToDo(this.title, this.description);
 }
 
-
 class BookMarkScreen extends StatefulWidget {
-  const BookMarkScreen({super.key});
+  String? uniqueDiagnosisNumber;
+
+  BookMarkScreen({super.key, required uniqueDiagnosisNumber});
 
   @override
   State<BookMarkScreen> createState() => _BookMarkScreenState();
@@ -175,7 +176,6 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         centerTitle: true,
       ),
       body: Container(
-
         color: Color.fromRGBO(241, 229, 220, 1.0),
         child: Column(
           children: [
@@ -251,12 +251,14 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
                         ),
                         backgroundColor: Color.fromRGBO(144, 125, 227, 1.0),
                       ),
-                      title: Text(toDoList[index].title,
+                      title: Text(
+                        toDoList[index].title,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: Color.fromRGBO(8, 52, 109, 1.0),
-                        ),),
+                        ),
+                      ),
                       subtitle: Text(toDoList[index].description),
                       trailing: IconButton(
                         onPressed: () {

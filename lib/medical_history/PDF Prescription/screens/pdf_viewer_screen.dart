@@ -23,15 +23,15 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
-        backgroundColor: Colors.deepPurple.shade100,
+        backgroundColor: Colors.teal.shade100,
         title: Text(
           'PDF : ${widget.pdfName}',
-          style: TextStyle(color: Colors.deepPurple),
+          style: TextStyle(color: Colors.teal.shade800),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.deepPurple,
+            color: Colors.teal.shade800
           ),
           onPressed: () {
             Navigator.pop(context);

@@ -51,12 +51,15 @@ class _EHRScreenState extends State<EHRScreen> {
                   actions: [
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple.shade300,
+                          backgroundColor: Color.fromRGBO(5, 70, 65, 1.0),
                         ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('Dismisss'))
+                        child: Text(
+                          'Dismisss',
+                          style: TextStyle(color: Colors.white),
+                        ))
                   ],
                 );
               });
@@ -70,17 +73,19 @@ class _EHRScreenState extends State<EHRScreen> {
 
   Widget _buildEHRFolder(BuildContext context, String folderName) {
     return Card(
-      color:  Color.fromRGBO(237, 252, 250, 1.0),
+      color: Color.fromRGBO(237, 252, 250, 1.0),
       elevation: 6.0,
-      shadowColor:  Color.fromRGBO(5, 70, 65, 1.0),
+      shadowColor: Color.fromRGBO(5, 70, 65, 1.0),
       margin: EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  EHRArticleDetailScreen(folderName: folderName, uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,),
+              builder: (context) => EHRArticleDetailScreen(
+                folderName: folderName,
+                uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
+              ),
             ),
           );
         },
@@ -105,7 +110,7 @@ class _EHRScreenState extends State<EHRScreen> {
                   Icon(
                     Icons.folder,
                     size: 80.0,
-                    color:  Color.fromRGBO(14, 110, 102, 1.0),
+                    color: Color.fromRGBO(14, 110, 102, 1.0),
                   ),
                   SizedBox(height: 10.0),
                   Text(

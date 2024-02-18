@@ -68,10 +68,15 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
   }
 
   void pickFile() async {
+    setState(() {
+      isAddingPDF = true; // Show circular progress indicator
+    });
+
     final pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
+
     if (pickedFile != null) {
       String fileName = pickedFile.files.first.name;
       File file = File(pickedFile.files.first.path!);
@@ -87,12 +92,21 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
         'name': fileName,
         'url': downloadLink,
       });
+
+      setState(() {
+        isAddingPDF = false; // Hide circular progress indicator
+      });
+
       showSnackBar('PDF uploaded successfully!', Duration(seconds: 2));
       getALlPdf();
+    } else {
+      setState(() {
+        isAddingPDF = false; // Hide circular progress indicator
+      });
     }
   }
 
-  void deletePDF(String pdfName) async {
+  Future<void> deletePDF(String pdfName) async {
     QuerySnapshot<Map<String, dynamic>> result = await firebaseFirestore
         .collection('users')
         .doc(userID)
@@ -103,23 +117,51 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
         .get();
 
     if (result.docs.isNotEmpty) {
-      await firebaseFirestore
-          .collection('users')
-          .doc(userID)
-          .collection('healthRecords')
-          .doc(widget.uniqueDiagnosisNumber)
-          .collection('pdf_folders')
-          .doc(result.docs.first.id)
-          .delete();
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Deletion'),
+            content: Text('Are you sure you want to delete this PDF?'),
+            backgroundColor: Color.fromRGBO(215, 246, 244, 1.0),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await firebaseFirestore
+                      .collection('users')
+                      .doc(userID)
+                      .collection('healthRecords')
+                      .doc(widget.uniqueDiagnosisNumber)
+                      .collection('pdf_folders')
+                      .doc(result.docs.first.id)
+                      .delete();
 
-      showSnackBar('PDF deleted successfully!', Duration(seconds: 2));
-      getALlPdf();
+                  Navigator.pop(context);
+                  showSnackBar(
+                      'PDF deleted successfully!', Duration(seconds: 2));
+                  getALlPdf();
+                },
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
   bool isAddingPDF = true;
 
-  Future getALlPdf() async {
+  Future<void> getALlPdf() async {
     final result = await firebaseFirestore
         .collection('users')
         .doc(userID)
@@ -137,6 +179,10 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('PDF Documents'),
+        backgroundColor: Colors.teal.shade50,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await getALlPdf();
@@ -155,6 +201,7 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
           itemBuilder: (context, index) {
             return Card(
               elevation: 4.0,
+              color: Colors.teal.shade100,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
@@ -170,30 +217,41 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
                     ),
                   );
                 },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Stack(
                   children: [
-                    Image.asset(
-                      'assets/images/pdf_logo.png',
-                      height: 80,
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      pdfData[index]['name'],
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        overflow: TextOverflow.ellipsis,
+                    Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/pdf_logo.png',
+                            height: 80,
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            pdfData[index]['name'],
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                    Positioned(
+                      top: 4.0,
+                      right: 4.0,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          deletePDF(pdfData[index]['name']);
+                        },
                       ),
-                      onPressed: () {
-                        deletePDF(pdfData[index]['name']);
-                      },
                     ),
                   ],
                 ),
@@ -202,34 +260,16 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
           },
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () {
-              pickFile();
-            },
-            label: Text('Upload PDF'),
-            icon: Icon(Icons.file_upload),
-            backgroundColor: Colors.purple.shade800,
-          ),
-          SizedBox(height: 16.0), // Add spacing between buttons
-          FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ImageToPDF(
-                    uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,
-                  ),
-                ),
-              );
-            },
-            label: Text('Convert to PDF'),
-            icon: Icon(Icons.picture_as_pdf),
-            backgroundColor: Colors.deepPurple.shade800,
-          ),
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          pickFile();
+        },
+        label: Text(
+          'Upload PDF',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: Icon(Icons.file_upload),
+        backgroundColor: Colors.teal.shade800,
       ),
     );
   }
