@@ -289,7 +289,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 border: Border.all(
                                     color: Colors.black26, width: 0.9),
                                 color:  Color(0xff008081),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                             // Text(
