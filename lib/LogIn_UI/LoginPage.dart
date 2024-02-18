@@ -229,7 +229,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: Text(
                               'Regsiter Here',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Colors.teal.shade600,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 13,
                               ),

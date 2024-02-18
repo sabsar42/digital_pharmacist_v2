@@ -72,7 +72,7 @@ class _ResultScreenState extends State<ResultScreen> {
           Icons.arrow_forward_ios,
           color: Colors.white,
         ),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.teal.shade800,
       ),
     );
   }

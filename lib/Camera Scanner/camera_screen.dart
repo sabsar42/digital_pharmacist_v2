@@ -79,7 +79,7 @@ class _CameraScreenState extends State<CameraScreen>
             Scaffold(
               appBar: AppBar(
                 toolbarHeight: 50,
-                backgroundColor: Colors.purple.shade50,
+                backgroundColor: Colors.brown.shade50,
                 centerTitle: true,
                 title: const Text(
                   'Scan Prescription',
@@ -111,7 +111,7 @@ class _CameraScreenState extends State<CameraScreen>
                                 _scanImage();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.purple.shade700,
+                                backgroundColor: Colors.teal.shade800,
 
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
