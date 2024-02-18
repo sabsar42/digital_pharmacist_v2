@@ -21,6 +21,7 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     loadUserInfo();
+    UserProfileCircleAvatar();
   }
 
   Future<void> loadUserInfo() async {
@@ -55,7 +56,7 @@ class _UserProfileState extends State<UserProfile> {
           borderRadius: BorderRadius.circular(8.0),
           image: DecorationImage(
             image: AssetImage(
-              "assets/images/card_background.png", // Replace with the URL of your image
+              "assets/images/dashboard_card.png", // Replace with the URL of your image
             ),
             fit: BoxFit.cover,
           ),
@@ -152,7 +153,7 @@ class _UserProfileState extends State<UserProfile> {
         title: Text(
           "PROFILE",
           style: TextStyle(
-              color: Colors.purple, fontWeight: FontWeight.w400, fontSize: 20),
+              color: Colors.teal.shade600, fontWeight: FontWeight.w400, fontSize: 20),
         ),
         backgroundColor: Colors.white,
         elevation: 0,

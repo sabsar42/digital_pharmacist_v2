@@ -70,7 +70,7 @@ class HealthRecordCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.delete_outline_rounded, color: Colors.white),
+                            icon: Icon(Icons.delete, color: Colors.redAccent),
                             onPressed: onDelete,
                           ),
                         ],

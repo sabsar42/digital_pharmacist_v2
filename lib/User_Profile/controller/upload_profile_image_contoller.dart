@@ -15,7 +15,11 @@ class ShowUserProfileImageController extends GetxController {
 
   String? get profileImageUrl => _profileImageUrl;
 
-
+  @override
+  void onInit() {
+    super.onInit();
+    loadUserImageData();
+  }
 
   Future<void> loadUserImageData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -27,8 +31,10 @@ class ShowUserProfileImageController extends GetxController {
       await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
       if (userDoc.exists) {
-        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-        _profileImageUrl = userData['user_profile_picture'] ?? 'No Image';
+        Map<String, dynamic> userData =
+        userDoc.data() as Map<String, dynamic>;
+        _profileImageUrl =
+            userData['user_profile_picture'] ?? 'No Image';
         update();
       }
     }

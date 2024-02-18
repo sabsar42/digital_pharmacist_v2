@@ -219,8 +219,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               width: 200,
               child: Center(child: Text('DASHBOARD',style: siz30White(),)),
               decoration: BoxDecoration(
-                color:  Color(0xff008081),
-                borderRadius: BorderRadius.circular(20),
+                color:  Color(0xff008070),
+                borderRadius: BorderRadius.circular(16),
               ),
             ),
             SizedBox(height: 30,),
@@ -453,7 +453,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               .center,
                                                       children: [
                                                         Image.asset(
-                                                          'assets/images/dashboard_2.png',
+                                                          'assets/images/medicine_collection.png',
                                                           width: 60,
                                                           height: 60,
                                                         ),
