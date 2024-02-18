@@ -81,7 +81,7 @@ dependencies:
   fl_chart: ^0.66.1
   health: ^8.1.0
   firebase_messaging: ^14.7.15
-
+  flutter_launcher_icons: ^0.13.1
 
 
 
