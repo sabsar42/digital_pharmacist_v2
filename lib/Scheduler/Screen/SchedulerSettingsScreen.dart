@@ -5,7 +5,6 @@ import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class SchedulerSettingsScreen extends StatefulWidget {
   const SchedulerSettingsScreen({Key? key}) : super(key: key);
 
@@ -16,27 +15,35 @@ class SchedulerSettingsScreen extends StatefulWidget {
 
 class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
   late User currentUser;
+  bool switchValue = false;
   late String latestHealthRecordId;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  double _currentSliderValue = 1;
+  bool beforeMealSelected = false;
+  bool afterMealSelected = false;
   final TextEditingController newValueController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController futureDateController = TextEditingController();
+  final TextEditingController pillTimeController = TextEditingController();
+  final TextEditingController pillLimitController = TextEditingController();
+  final TextEditingController pillImageController = TextEditingController();
   late DateTime futureTime = DateTime.now();
 
   late List<TextEditingController> timeControllers;
+  int medTypeIsSelected = -1;
   var items = ['select'];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-  fetchLatestHealthRecordId(currentUser.uid);
-   // loadHealthRecordDetails();
+    fetchLatestHealthRecordId(currentUser.uid);
     int timesPerDay = calculateTimesPerDay();
-    timeControllers = List.generate(timesPerDay, (index) => TextEditingController());
+    timeControllers =
+        List.generate(timesPerDay, (index) => TextEditingController());
   }
 
   Future<void> getCurrentUser() async {
@@ -47,6 +54,7 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
       });
     }
   }
+
   Future<String?> fetchLatestHealthRecordId(String userId) async {
     print(userId);
     print('entereddddddd');
@@ -58,11 +66,14 @@ class _SchedulerSettingsScreenState extends State<SchedulerSettingsScreen> {
           .collection('healthRecords');
       print('isIt');
 
-      QuerySnapshot querySnapshot = await healthRecordsCollection.orderBy('timestamp', descending: true).limit(1).get();
-print(querySnapshot.docs.first.id);
-print('isIt');
+      QuerySnapshot querySnapshot = await healthRecordsCollection
+          .orderBy('timestamp', descending: true)
+          .limit(1)
+          .get();
+      print(querySnapshot.docs.first.id);
+      print('isIt');
       if (querySnapshot.docs.isNotEmpty) {
-        latestHealthRecordId=querySnapshot.docs.first.id;
+        latestHealthRecordId = querySnapshot.docs.first.id;
 
         print('recordrecoredrecord');
         print(latestHealthRecordId);
@@ -78,9 +89,7 @@ print('isIt');
     }
   }
 
-
   Future<void> loadHealthRecordDetails(String latestHealthRecordId) async {
-
     String userID = currentUser.uid;
 
     try {
@@ -90,69 +99,96 @@ print('isIt');
           .collection('healthRecords')
           .doc(latestHealthRecordId)
           .collection('medicine_dosage_duration')
-      .get();
-
+          .get();
 
       for (QueryDocumentSnapshot document in snapshot.docs) {
-String medicineName = document['medicine_name'];
-//print(medicineName);
-      items.add(medicineName);
-      setState(() {
-
-      });
-
+        String medicineName = document['medicine_name'];
+        items.add(medicineName);
+        setState(() {});
       }
-
-
-
-
     } catch (e) {
       print("Error loading health record details: $e");
     }
   }
 
-  Future<void> addUserDetails() async {
-    String userID = currentUser.uid;
-    print(futureTime);
-    List<int> pillSchedule = [];
-    for (int i = 0; i < timeControllers.length; i++) {
-      int timeValue = int.parse(timeControllers[i].text);
+  Future<void> addMedicineInfo() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
 
+      String userID = currentUser.uid;
+      print(futureTime);
+      List<int> pillSchedule = [];
+      for (int i = 0; i < timeControllers.length; i++) {
+        int timeValue = int.parse(timeControllers[i].text);
 
-      pillSchedule.add(timeValue);
+        pillSchedule.add(timeValue);
+      }
+
+      Map<String, dynamic> addDetails = {
+        'medicineName': newValueController.text,
+        'type': typeController.text,
+        'duration': durationController.text,
+        'frequency': frequencyController.text,
+        'validtill': futureTime,
+        'timestamp': FieldValue.serverTimestamp(),
+        'listoftimes': pillSchedule,
+        'pilltime': pillTimeController.text,
+        'pilllimit': pillLimitController.text,
+        'pillImage': pillImageController.text,
+      };
+
+      await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('remindersSet')
+          .add(addDetails);
+
+      setState(() {
+        isLoading = false;
+      });
+      showSnackBar("Added into medicine Reminder");
+    } catch (e) {
+      print("Error adding medicine info: $e");
+      setState(() {
+        isLoading = false;
+      });
     }
-
-
-    Map<String, dynamic> addDetails = {
-      'medicineName': newValueController.text,
-      'type': typeController.text,
-      'duration': durationController.text,
-      'frequency': frequencyController.text,
-      'validtill': futureTime,
-      'timestamp': FieldValue.serverTimestamp(),
-      'listoftimes': pillSchedule,
-
-    };
-
-
-    await _firestore
-        .collection('users')
-        .doc(userID)
-        .collection('remindersSet')
-        .add(addDetails);
   }
 
   String dropdownvalue = 'select';
-
-
+  bool manualDropdownFlag = false;
 
   var colors = [
-    Color(0x5903593f),
-    Color(0x59F11212),
-    Color(0xFFFF6B00),
-    Color(0x5903593f),
-    Color(0x59F11212),
+    Colors.white,
+    Colors.white,
+    Colors.white,
   ];
+  var medImgForm = [
+    Image.asset('assets/images/syrup.png'),
+    Image.asset('assets/images/tablet.png'),
+    Image.asset('assets/images/eye-drops.png'),
+    Image.asset('assets/images/dashboard_4.png'),
+    Image.asset('assets/images/capsule.png'),
+  ];
+  var medicineImage = [
+    'assets/images/syrup.png',
+    'assets/images/tablet.png',
+    'assets/images/eye-drops.png',
+    'assets/images/dashboard_4.png',
+    'assets/images/capsule.png'
+  ];
+  var medFormName = ['Syrup', 'Tablet', 'Drops', 'Injection', 'Capsule'];
+
+  void showSnackBar(String message) {
+    var snackbar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,273 +196,437 @@ String medicineName = document['medicine_name'];
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => SchedulerScreen()));
+                    builder: (BuildContext context) => SchedulerScreen()),
+                (route) => false);
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => SchedulerScreen()));
           },
           child: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: Colors.black,
             size: 30,
           ),
         ),
+        title:Text(
+          'Set Reminders',
+          style: siz31Black(),
+        ),
+
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: ListView(
         children: [
           Container(
-            margin: EdgeInsets.fromLTRB(15, 15, 10, 10),
+            margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Set Reminders',
-                  style: siz31Black(),
-                ),
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                // Center(
-                //   child: Image.asset(
-                //     'assets/images/dashboard_1.png',
-                //     height: 202,
-                //     width: 202,
-                //   ),
-                // ),
+
                 const SizedBox(
-                  height: 40,
+                  height: 18,
                 ),
                 Text(
                   'Medicine Name',
                   style: siz20Black(),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  height: 44,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.amberAccent,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Color(0xff040359), width: 2)),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    dropdownColor: Colors.yellow,
-                    borderRadius: BorderRadius.circular(30),
-                    elevation: 0,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        newValueController.text = newValue!;
-                        dropdownvalue = newValue!;
-                      });
-                    },
-                  ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 75,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                        height: 44,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.grey, width: 2)),
+                        child: Center(
+                          child: DropdownButton(
+                            value: manualDropdownFlag
+                                ? newValueController.text
+                                : dropdownvalue,
+                            dropdownColor: Colors.grey,
+                            borderRadius: BorderRadius.circular(30),
+                            elevation: 0,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                newValueController.text = newValue!;
+                                dropdownvalue = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 35,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            backgroundColor: Color(0xff008081),
+                          ),
+                          onPressed: () {
+                            _showDialog(context);
+                          },
+                          child: Text(
+                            'Enter Manually',
+                            style: size14White(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text(
-                  'Type',
-                  style: siz20System(),
+                  'Medicine Form',
+                  style: siz20Black(),
+                ),
+                SizedBox(
+                  height: 2,
                 ),
                 Container(
-                  height: 100,
+                  height: 150,
                   child: ListView.builder(
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          height: 72,
-                          width: 82,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: colors[index],
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: () {
+                            if (medTypeIsSelected == index) {
+                              medTypeIsSelected = -1;
+                            } else {
+                              medTypeIsSelected = index;
+                              typeController.text = medFormName[index];
+                              pillImageController.text = medicineImage[index];
+                            }
+                            setState(() {});
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                padding: EdgeInsets.all(8),
+                                height: medTypeIsSelected == index ? 80 : 72,
+                                width: medTypeIsSelected == index ? 80 : 72,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: medTypeIsSelected == index
+                                      ? Color(0xff008081)
+                                      : Colors.white,
+                                ),
+                                child: medImgForm[index],
+                                //color: Colors.red,
+                              ),
+                              Text(
+                                medFormName[index],
+                                style: medTypeIsSelected == index
+                                    ? size25Black()
+                                    : size15Black(),
+                              ),
+                            ],
                           ),
-                          //color: Colors.red,
                         );
                       }),
                 ),
-                SizedBox(height: 30,),
-
-                Container(
-                 // / margin: EdgeInsets.all(20),
-                  //height: 180,
-                  width: double.infinity,
-
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color:  Colors.yellow,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Start    ',
-                              style: siz20Black(),
-                            ),
-                            CustomDropdown(
-                              items: ['Today', 'Yesterday'],
-                              initialValue: 'Today',
-                              onChanged: (String newValue) {},
-                            ),
-
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Duration    ',
-                              style: siz20Black(),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            CustomDropdown(
-                              items: [
-                                '3',
-                                '7',
-                                '10',
-                                '15',
-                                '20',
-                                '25',
-                                '30',
-                                '40',
-                                '60',
-                              ],
-                              initialValue: '3',
-                              onChanged: (value) {
-                                setState(() {
-                                  durationController.text = value;
-                                  calculateDate();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Frequency     ',
-                              style: siz20Black(),
-                            ),
-                            CustomDropdown(
-                              items: [
-                                'Everyday',
-                                'Twice a Day',
-                                'Thrice a Day'
-                              ],
-                              initialValue: 'Everyday',
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  frequencyController.text = newValue!;
-                                  int timesPerDay = calculateTimesPerDay();
-                                  timeControllers =
-                                      List.generate(timesPerDay,
-                                              (index) => TextEditingController());
-                                  _showTimeDialog();
-
-                                });
-                              },
-                            ),
-
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Alarm     ',
-                              style: siz20Black(),
-                            ),
-                            Icon(Icons.add),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                Text(
+                  'Pill Limit',
+                  style: siz20Black(),
                 ),
-                // Text(
-                //   'Time & Schedule',
-                //   style: size25Black(),
-                // ),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.green,
-                //         ),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.yellow,
-                //         ),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(10),
-                //         height: 30,
-                //         width: 100,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(15),
-                //           color: Colors.deepOrangeAccent,
-                //         ),
-                //       ),
-                //       ElevatedButton(
-                //           style: ElevatedButton.styleFrom(
-                //               backgroundColor: Color(0xff08346D)),
-                //           onPressed: () {
-                //             _showTimeDialog();
-                //           },
-                //           child: Icon(Icons.add))
-                //     ],
-                //   ),
-                // ),
+                Slider(
+                  value: _currentSliderValue,
+                  max: 5,
+                  divisions: 5,
+                  activeColor: Color(0xff02a676),
+                  label: _currentSliderValue.round().toString(),
+                  onChanged: (value) {
+                    setState(() {
+                      _currentSliderValue = value;
+                      int x = value.toInt();
+                      pillLimitController.text = x.toString();
+                    });
+                  },
+                ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(18),
+                        onTap: () {
+                          pillTimeController.text = 'Before Meal';
+                          setState(() {
+                            beforeMealSelected = true;
+                            afterMealSelected = false;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: beforeMealSelected
+                                ? Colors.amberAccent
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: beforeMealSelected
+                                  ? Colors.amberAccent
+                                  : Color(0xff02a676),
+                              width: 2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Before Meal",
+                              style: size15Black(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(18),
+                        onTap: () {
+                          pillTimeController.text = 'After Meal';
+                          setState(() {
+                            beforeMealSelected = false;
+                            afterMealSelected = true;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color:
+                                afterMealSelected ? Colors.indigo : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: afterMealSelected
+                                  ? Colors.indigo
+                                  : Color(0xff02a676),
+                              width: 2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "After Meal",
+                              style: afterMealSelected
+                                  ? size17White()
+                                  : size15Black(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 30,
+                      child: Text(
+                        'Start From ',
+                        style: siz20Black(),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 70,
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: ['Today', 'Yesterday'],
+                            initialValue: 'Today',
+                            onChanged: (String newValue) {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 28,
+                      child: Text(
+                        'Duration    ',
+                        style: siz20Black(),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 72,
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: [
+                              '3',
+                              '7',
+                              '10',
+                              '15',
+                              '20',
+                              '25',
+                              '30',
+                              '40',
+                              '60',
+                              '90'
+                            ],
+                            initialValue: '3',
+                            onChanged: (value) {
+                              setState(() {
+                                durationController.text = value;
+                                calculateDate();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 30,
+                      child: Text(
+                        'Frequency     ',
+                        style: siz20Black(),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 70,
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: Center(
+                          child: CustomDropdown(
+                            items: ['Everyday', 'Twice a Day', 'Thrice a Day'],
+                            initialValue: 'Everyday',
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                frequencyController.text = newValue!;
+                                int timesPerDay = calculateTimesPerDay();
+                                timeControllers = List.generate(timesPerDay,
+                                    (index) => TextEditingController());
+                                _showTimeDialog();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Alarm     ',
+                      style: siz20Black(),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Switch(
+                      inactiveTrackColor: Colors.white,
+                      inactiveThumbColor: Colors.red,
+                      value: switchValue,
+                      onChanged: (value) {
+                        switchValue = value;
+                        setState(() {});
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 Center(
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff08346D),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            )),
+                          backgroundColor: Color(0xff008081),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                         onPressed: () {
-                          addUserDetails();
+                          isLoading = true;
+
+                          addMedicineInfo();
                           for (int i = 0; i < timeControllers.length; i++) {
                             print("Time ${i + 1}: ${timeControllers[i].text}");
                           }
                         },
-                        child: Text(
-                          "Add Reminders",
-                          style: size20White(),
-                        )),
+                        child: isLoading
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                "Add Reminders",
+                                style: size20White(),
+                              ),),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -449,15 +649,13 @@ String medicineName = document['medicine_name'];
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.yellow,
-
+          backgroundColor: Colors.white,
           title: Text('Select Pill Schedule'),
           content: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Column(
-
                   children: List.generate(timesPerDay, (index) {
                     return Container(
                       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -472,7 +670,8 @@ String medicineName = document['medicine_name'];
                                 fillColor: colors[index],
                                 filled: true,
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -485,15 +684,16 @@ String medicineName = document['medicine_name'];
                               items: ['AM', 'PM'].map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-
                                   child: Text(value),
                                 );
                               }).toList(),
                               onChanged: (String? value) {
                                 if (value == 'PM') {
-                                  timeControllers[index].text = (int.parse(timeControllers[index].text) + 12).toString();
+                                  timeControllers[index].text =
+                                      (int.parse(timeControllers[index].text) +
+                                              12)
+                                          .toString();
                                 }
-
                               },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -502,12 +702,12 @@ String medicineName = document['medicine_name'];
                             ),
                           ),
                         ],
-
                       ),
                     );
                   }),
                 ),
-                Text('NB: After Selecting AM/PM time will automatic generated in 24hr time format!!'),
+                Text(
+                    'NB: After Selecting AM/PM time will automatic generated in 24hr time format!!'),
               ],
             ),
           ),
@@ -515,9 +715,11 @@ String medicineName = document['medicine_name'];
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(onPressed: (){
-                  Navigator.of(context).pop();
-                }, child: Text('Cancel')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel')),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -543,5 +745,41 @@ String medicineName = document['medicine_name'];
       default:
         return 1;
     }
+  }
+
+  void _showDialog(BuildContext context) {
+    TextEditingController textFieldController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Name'),
+          content: TextField(
+            controller: textFieldController,
+            decoration: InputDecoration(hintText: 'Medicine Name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                newValueController.text = textFieldController.text;
+                items.add(newValueController.text);
+                manualDropdownFlag = true;
+                setState(() {});
+
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -19,6 +19,7 @@ class MonthlyMedDetails extends StatefulWidget {
 
 class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   late User currentUser;
+  late String medicineCount='0';
   List<String> monthList = [
     'January',
     'February',
@@ -120,6 +121,7 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
 
           records.add(data);
         });
+        medicineCount=records.length.toString();
 
         return records;
       }
@@ -133,40 +135,68 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            image: DecorationImage(
-              image: AssetImage(
-                "assets/images/dashboard_card.png",
+        preferredSize: const Size.fromHeight(130.0),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/dashboard_card.png",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: AppBar(
+                  toolbarHeight: 100,
+                  leading: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.purple.shade50,
+                      size: 25,
+                    ),
+                  ),
+                  title: Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: Text(
+                      "${monthList[widget.index]} - 2024",
+                      style: siz22White(),
+                    ),
+                  ),
+                  centerTitle: true,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ),
               ),
-              fit: BoxFit.cover,
             ),
-          ),
-          child: AppBar(
-            toolbarHeight: 100,
-            leading: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.purple.shade50,
-                size: 25,
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                margin: EdgeInsets.only(left: 10, bottom: 5),
+                child:  FutureBuilder(
+                  future:getData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return Text(
+                        'Total Medicine: $medicineCount',style: siz30White(),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
-            title: Container(
-              margin: EdgeInsets.only(top: 30),
-              child: Text(
-                "${monthList[widget.index]} - 2024",
-                style: siz22White(),
-              ),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
+          ],
         ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -219,16 +249,18 @@ class _MonthlyMedDetailsState extends State<MonthlyMedDetails> {
                                   )),
                             ),
                             SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data[index]['medicineName'],
-                                    style: size25Black()),
-                                Text(
-                                    'Starting Date: ${DateFormat('yyyy-MM-dd').format(data[index]['timestamp'].toDate())}'),
-                                Text(
-                                    'Ending Date: ${DateFormat('yyyy-MM-dd').format(data[index]['validtill'].toDate())}'),
-                              ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data[index]['medicineName'],
+                                      style: size25Black()),
+                                  Text(
+                                      'Starting Date: ${DateFormat('yyyy-MM-dd').format(data[index]['timestamp'].toDate())}'),
+                                  Text(
+                                      'Ending Date: ${DateFormat('yyyy-MM-dd').format(data[index]['validtill'].toDate())}'),
+                                ],
+                              ),
                             ),
                           ]),
                         );

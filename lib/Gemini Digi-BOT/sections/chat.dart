@@ -70,7 +70,7 @@ class _SectionChatState extends State<SectionChat> {
     return Card(
       elevation: 0,
       color:
-          content.role == 'model' ? Colors.blue.shade800 : Colors.transparent,
+          content.role == 'model' ? Colors.teal.shade800 : Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

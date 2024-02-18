@@ -1,31 +1,9 @@
-import 'package:digi_pharma_app_test/Camera%20Scanner/result_in_pdf_page.dart';
+ import 'package:digi_pharma_app_test/Camera%20Scanner/result_in_pdf_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
-
-import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
-import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
-
 import '../Google Berd/BardAiController.dart';
-import 'package:digi_pharma_app_test/Google Berd/BardAiController.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'dart:convert';
-
-import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
-import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:digi_pharma_app_test/Camera Scanner/result_in_pdf_page.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'dart:convert';
-import 'package:digi_pharma_app_test/Google Berd/BardModel.dart';
-import 'package:digi_pharma_app_test/Google Berd/data_key.dart';
 import 'package:http/http.dart' as http;
 
 

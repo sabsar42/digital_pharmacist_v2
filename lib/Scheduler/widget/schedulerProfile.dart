@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerSettingsScreen.dart';
+import 'package:digi_pharma_app_test/dasboard/dashboard.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,120 +49,147 @@ class _schedulerProfileBarState extends State<schedulerProfileBar> {
   Widget build(BuildContext context) {
     return Container(
 
-      child: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 50, left:0 ),
-            // color: Colors.green,
-          ),
-          Positioned(
-            top: 50,
-            left: 20,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-
-                GetBuilder<ShowUserProfileImageController>(
-                  builder: (controller) {
-                    final profileImageUrl = controller.profileImageUrl;
-
-                    return CircleAvatar(
-                      child: ClipOval(
-                        child: profileImageUrl != null
-                            ? Image.network(
-                          profileImageUrl,
-                          fit: BoxFit
-                              .cover, // Use BoxFit.cover to ensure the image covers the circular area
-                        )
-                            : Icon(
-                          Icons.person,
-                          size: 30,
-                          color: Color.fromRGBO(227, 209, 236, 1.0),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => UserProfile()));
-                  },
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          userInfo['full_name'] ?? 'Name not available',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        Text(
-                          'Age :  ${userInfo['age']}',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+      child: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 50, left:0 ),
+              color: Colors.teal.shade800,
+              height: 130,
             ),
-          ),
-          Positioned(
-              top: 110,
-              left: 180,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Create New Schedule',
-                      style: size20White(),
-                    ),
+            // Positioned(
+            //   top: 50,
+            //   left: 20,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //
+            //       GetBuilder<ShowUserProfileImageController>(
+            //         builder: (controller) {
+            //           final profileImageUrl = controller.profileImageUrl;
+            //
+            //           return CircleAvatar(
+            //             child: ClipOval(
+            //               child: profileImageUrl != null
+            //                   ? Image.network(
+            //                 profileImageUrl,
+            //                 fit: BoxFit
+            //                     .cover,
+            //               )
+            //                   : Icon(
+            //                 Icons.person,
+            //                 size: 30,
+            //                 color: Color.fromRGBO(227, 209, 236, 1.0),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       GestureDetector(
+            //         onTap: () {
+            //           Navigator.push(context,
+            //               MaterialPageRoute(builder: (context) => UserProfile()));
+            //         },
+            //         child: Container(
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               Text(
+            //                 userInfo['full_name'] ?? 'Name not available',
+            //                 style: TextStyle(
+            //                   color: Colors.white,
+            //                   fontSize: 20.0,
+            //                 ),
+            //               ),
+            //               Text(
+            //                 'Age :  ${userInfo['age']}',
+            //                 style: TextStyle(
+            //                   fontSize: 15,
+            //                   color: Colors.white,
+            //                 ),
+            //               )
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            Positioned(
+        
+                top: 10,left: 10,
+                child: Container(
 
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SchedulerSettingsScreen()));
-                        },
-                        child: SizedBox(
-                          width: 140,
-                          child: Center(
-                            child: Text(
-                              'Create',
-                              style: siz20System(),
-                            ),
+                  child: Row(
+
+                    children: [
+                      IconButton(onPressed: (){
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => DashboardScreen()),
+                                (route) => false);
+                      }, icon: Icon(Icons.arrow_back_ios_new),color: Colors.white,),
+
+                      Text(
+                        'Reminders',
+                        style:siz25White(),
+                      ),
+                    ],
+                  ),
+                )),
+            Positioned(
+                top: 50,
+                left: 160,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Create New Schedule',
+                        style: size20White(),
+                      ),
+        
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
                           ),
-                        ))
-                  ],
-                ),
-              ))
-
-        ],
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SchedulerSettingsScreen()));
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            child: Center(
+                              child: Text(
+                                'Create',
+                                style: siz20System(),
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ))
+        
+          ],
+        ),
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/images/dashboard_card.png",
-          ),
-          fit: BoxFit.cover,
-        ),
+        // image: DecorationImage(
+        //   image: AssetImage(
+        //     "assets/images/dashboard_card.png",
+        //   ),
+        //   fit: BoxFit.cover,
+        // ),
       ),
     );
   }

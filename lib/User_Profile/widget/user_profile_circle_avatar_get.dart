@@ -3,7 +3,13 @@ import 'package:get/get.dart';
 
 import '../controller/upload_profile_image_contoller.dart';
 
-class UserProfileCircleAvatar extends StatelessWidget {
+class UserProfileCircleAvatar extends StatefulWidget {
+  @override
+  State<UserProfileCircleAvatar> createState() => _UserProfileCircleAvatarState();
+}
+
+class _UserProfileCircleAvatarState extends State<UserProfileCircleAvatar> {
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ShowUserProfileImageController>(

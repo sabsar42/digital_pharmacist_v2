@@ -23,7 +23,7 @@ class DoctorHospitalInformation extends StatelessWidget {
           borderRadius: BorderRadius.circular(
               12.0),
         ),
-        color: Colors.orange.shade100,
+        color: Colors.orange.shade50,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

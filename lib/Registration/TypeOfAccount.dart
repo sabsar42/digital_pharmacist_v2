@@ -20,42 +20,40 @@ class TypeOfAccount extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: CommonBackground(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Type of Account",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 30,
-              ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Type of Account",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 30,
             ),
-            SizedBox(height: 10),
-            Text(
-              'Choose the type of your account',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.grey,
-              ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            'Choose the type of your account',
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
             ),
-            SizedBox(height: 90),
-            buildAccountCard(
-              context,
-              title: 'I am a Patient',
-              description:
-                  'Find Medicine, access Medical records, schedule medicine reminders',
-              imageUrl: 'assets/images/patient.png',
-            ),
-            SizedBox(height: 20),
-            buildAccountCard(
-              context,
-              title: 'I am a Doctor',
-              description: 'The easiest way to reach your patients',
-              imageUrl: 'assets/images/doctor.png',
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 90),
+          buildAccountCard(
+            context,
+            title: 'I am a Patient',
+            description:
+                'Find Medicine, access Medical records, schedule medicine reminders',
+            imageUrl: 'assets/images/patient.png',
+          ),
+          SizedBox(height: 20),
+          buildAccountCard(
+            context,
+            title: 'I am a Doctor',
+            description: 'The easiest way to reach your patients',
+            imageUrl: 'assets/images/doctor.png',
+          ),
+        ],
       ),
     );
   }
@@ -81,7 +79,7 @@ class TypeOfAccount extends StatelessWidget {
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        splashColor: Color.fromRGBO(110, 10, 161, 1.0),
+        splashColor:  Color(0xff008081),
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(
@@ -120,7 +118,7 @@ class TypeOfAccount extends StatelessWidget {
                 flex: 40,
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundColor: Colors.grey,
+                  backgroundColor:  Color(0xff008081),
                   child: Image.asset(imageUrl),
                 ),
               ),

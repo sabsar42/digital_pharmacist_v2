@@ -43,8 +43,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   String? userID;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -61,10 +59,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       loadUserData();
     }
   }
+
   Future<void> loadUserData() async {
     String userID = currentUser.uid;
     var userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(userID).get();
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
@@ -82,7 +81,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-
   Future<void> addUserProfilePicture() async {
     String userID = currentUser.uid;
     Reference ref = FirebaseStorage.instance
@@ -94,7 +92,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     String userProfileImageUrl = await ref.getDownloadURL();
     print(userProfileImageUrl);
 
-    var userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    var userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       await FirebaseFirestore.instance.collection('users').doc(userID).update({
@@ -107,16 +106,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-
-
-
-
-
   Future<void> addUserDetails() async {
     String userID = currentUser.uid;
 
     var userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(userID).get();
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     if (userDoc.exists) {
       await FirebaseFirestore.instance.collection('users').doc(userID).update({
@@ -170,7 +164,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color.fromRGBO(13, 44, 82, 1.0),
+            color: Colors.teal,
           ),
         ),
         title: Text("EDIT PROFILE",
@@ -195,23 +189,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                             return Container(
                               height: 50, // Adjust the height as needed
-                              width: 50,  // Adjust the width as needed
+                              width: 50, // Adjust the width as needed
                               child: ClipOval(
                                 child: profileImageUrl != null
                                     ? Image.network(
-                                  profileImageUrl,
-                                  fit: BoxFit.cover,
-                                )
+                                        profileImageUrl,
+                                        fit: BoxFit.cover,
+                                      )
                                     : Icon(
-                                  Icons.person,
-                                  size: 30,
-                                  color: Color.fromRGBO(227, 209, 236, 1.0),
-                                ),
+                                        Icons.person,
+                                        size: 30,
+                                        color:
+                                            Color.fromRGBO(141, 12, 206, 1.0),
+                                      ),
                               ),
                             );
                           },
                         ),
-                          onTap: () => imagePickerMethod(ImageSource.gallery),
+                        onTap: () => imagePickerMethod(ImageSource.gallery),
                       ),
                     ),
                     Positioned(
@@ -222,7 +217,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         height: 35,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
-                          color: Color.fromRGBO(22, 82, 131, 1.0),
+                          color: Colors.teal.shade600,
                         ),
                         child: const Icon(Icons.camera_alt_outlined,
                             color: Colors.white70, size: 20),
@@ -327,16 +322,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             addUserProfilePicture();
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => UserProfile()),
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfile()),
                             );
-
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             elevation: 4.0,
-                            backgroundColor: Color.fromRGBO(13, 44, 82, 1.0),
+                            backgroundColor: Colors.teal.shade600,
                             fixedSize: Size(350.0, 50.0),
                           ),
                           child: const Text(
@@ -352,29 +347,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Joined 01/01/2024",
+                            "Time : ${DateTime.now()}",
                             style: TextStyle(fontSize: 12),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle delete profile logic
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              elevation: 4.0,
-                              backgroundColor:
-                                  Color.fromRGBO(188, 166, 199, 1.0),
-                              fixedSize: Size(90.0,
-                                  12.0), // Set the width and height as desired
-                            ),
-                            child: const Text(
-                              "Delete",
-                              style: TextStyle(
-                                color: Colors.purple,
-                              ),
-                            ),
                           ),
                         ],
                       ),

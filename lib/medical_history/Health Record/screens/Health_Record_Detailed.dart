@@ -225,8 +225,6 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
             ? Center(
                 child: CircularProgressIndicator(
                   color: Colors.purple,
-
-
                 ),
               )
             : SingleChildScrollView(
@@ -279,53 +277,75 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
 
   Row CompletedanndSaveRow() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: 8,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.yellowAccent,
-                width: 2,
-              )),
-          child: CircleAvatar(
-            backgroundColor: isCompleted ? Colors.green : Colors.grey,
-            radius: 18,
-            child: IconButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+        // SizedBox(
+        //   width: 8,
+        // ),
+        Expanded(
+          flex: 5,
+          child: Row(children: [
+            Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isCompleted ? Colors.green : Colors.yellow,
+                    width: 2,
+                  )),
+              child: CircleAvatar(
+                backgroundColor: isCompleted ? Colors.green : Colors.brown,
+                radius: 18,
+                child: IconButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isCompleted ? Colors.green : Colors.yellow,
+                  ),
+                  icon: Icon(
+                    Icons.done_outline_rounded,
+                    color: isCompleted ? Colors.white : Colors.black45,
+                    size: 22,
+                  ),
+                  onPressed: () {
+                    isCompleted = !isCompleted;
+                    setState(() {});
+                  },
+                ),
               ),
-              icon: Icon(
-                Icons.done_outline_rounded,
-                color: isCompleted ? Colors.white : Colors.black45,
-                size: 22,
-              ),
-              onPressed: () {
-                isCompleted = !isCompleted;
-                setState(() {});
-              },
             ),
+            SizedBox(
+              width: 8,
+            ),
+            Container(
+              width: 90,
+              child: isCompleted
+                  ? Text(
+                      'Completed',
+                      style: TextStyle(fontSize: 15),
+                    )
+                  : Text('Ongoing'),
+            ),
+          ]),
+        ),
+        Expanded(
+          flex: 4,
+          child: SizedBox(
+            width: 10,
           ),
         ),
-        SizedBox(
-          width: 10,
-        ),
-        Container(
-          width: 70,
-          child: isCompleted ? Text('Completed') : Text('Ongoing'),
-        ),
-        SizedBox(
-          width: 185,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            addHealthRecordDetails();
-          },
-          child: Text("+ SAVE"),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple.shade700,
+        Expanded(
+          flex: 3,
+          child: ElevatedButton(
+            onPressed: () {
+              addHealthRecordDetails();
+            },
+            child: Text(
+              "+ SAVE",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+            ),
           ),
         ),
       ],
@@ -339,7 +359,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
         height: 70, // Adjust the height as needed
 
         child: Card(
-          color: Colors.brown.shade200,
+          color: Colors.red.shade50,
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6),
@@ -383,7 +403,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.teal.shade500, width: 1),
+              side: BorderSide(color: Colors.teal.shade100, width: 1),
               borderRadius: BorderRadius.circular(8.0),
             ),
             color: Colors.white70,
@@ -402,7 +422,8 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.purple, // Set your desired color here
+                        color: Colors.teal.shade600
+                        , // Set your desired color here
                       ),
                     ),
                   ],
@@ -411,7 +432,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               trailing: IconButton(
                 icon: Icon(
                   Icons.calendar_month,
-                  color: Colors.purple, // Set your desired color here
+                  color: Colors.teal.shade600,// Set your desired color here
                 ),
                 onPressed: _showDatePicker,
               ),
@@ -419,7 +440,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
           ),
           Card(
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.teal.shade500, width: 1),
+              side: BorderSide(color: Colors.teal.shade100, width: 1),
               borderRadius: BorderRadius.circular(8.0),
             ),
             color: Colors.white70,
@@ -438,7 +459,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.purple, // Set your desired color here
+                        color: Colors.indigo.shade600, // Set your desired color here
                       ),
                     ),
                   ],
@@ -447,7 +468,7 @@ class _HealthRecordDetailScreenState extends State<HealthRecordDetailScreen> {
               trailing: IconButton(
                 icon: Icon(
                   Icons.access_time,
-                  color: Colors.purple, // Set your desired color here
+                  color: Colors.indigo.shade600, // Set your desired color here
                 ),
                 onPressed: _showTimePicker,
               ),

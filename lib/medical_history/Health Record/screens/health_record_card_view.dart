@@ -5,8 +5,11 @@ import '../../TabBar_View.dart';
 
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
+
   // final String uniqueDocID;
-  HealthRecordCard({required this.record});
+  final VoidCallback onDelete;
+
+  HealthRecordCard({required this.record, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +44,39 @@ class HealthRecordCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Card(
-                  color: Colors.deepPurple.shade800,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(6, 5, 10, 5),
-                    child: Text(
-                      'Category : ${record.diagnosisType}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Card(
+                      color: Colors.deepPurple.shade800,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(6, 5, 10, 5),
+                        child: Text(
+                          'Category : ${record.diagnosisType}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.redAccent),
+                            onPressed: onDelete,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,9 +155,7 @@ class HealthRecordCard extends StatelessWidget {
                     radius: 16,
                     child: Icon(
                       Icons.done_outline_rounded,
-                      color: record.isCompleted
-                          ? Colors.white
-                          : Colors.black45,
+                      color: record.isCompleted ? Colors.white : Colors.black45,
                       size: 20,
                     ),
                   ),

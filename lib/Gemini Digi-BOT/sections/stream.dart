@@ -42,7 +42,7 @@ class _SectionTextInputStreamState extends State<SectionTextStreamInput> {
       children: [
         if (searchedText != null)
           MaterialButton(
-              color: Colors.blue.shade700,
+              color: Colors.teal.shade700,
               onPressed: () {
                 setState(() {
                   searchedText = null;

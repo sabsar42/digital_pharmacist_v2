@@ -12,35 +12,37 @@ class EhrCardView extends StatefulWidget {
     Key? key,
     required this.url,
     required this.description,
+    required this.onDelete,
   }) : super(key: key);
 
   final String url;
   final String description;
+  final VoidCallback onDelete;
 
   @override
   State<EhrCardView> createState() => _EhrCardViewState();
 }
 
 class _EhrCardViewState extends State<EhrCardView> {
-
   Future<void> showFullDialog() {
     return showDialog(
-        context: context,
-        builder: (BuildContext contex) {
-          return AlertDialog(
-            content: Container(
-              height: 600,
-              width: 600,
-              child: Image.network(
-                widget.url,
-                fit: BoxFit.fill,
-              ),
+      context: context,
+      builder: (BuildContext contex) {
+        return AlertDialog(
+          content: Container(
+            height: 800,
+            width: 1200,
+            child: Image.network(
+              widget.url,
+              fit: BoxFit.cover,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
-  Future shareImage() async {
+  Future<void> shareImage() async {
     final uri = Uri.parse(widget.url);
     final response = await http.get(uri);
     if (response.statusCode == ConnectionState.waiting) {
@@ -57,18 +59,45 @@ class _EhrCardViewState extends State<EhrCardView> {
     }
   }
 
+  Future<void> confirmDelete() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Deletion"),
+          content: Text("Are you sure you want to delete this EHR image?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                widget.onDelete();
+                Navigator.of(context).pop();
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(15),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(20),
             color: Colors.grey.shade50,
           ),
           child: Column(
@@ -78,34 +107,52 @@ class _EhrCardViewState extends State<EhrCardView> {
                 padding: const EdgeInsets.all(15),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Expanded(
                       flex: 8,
                       child: InkWell(
                         child: Image.network(
                           widget.url,
-                          height: 300,
-                          width: 400,
+                          height: 600,
+                          width: double.infinity,
                           fit: BoxFit.cover,
                         ),
                         onTap: () => showFullDialog(),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton.icon(
+                    SizedBox(width: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,
                           ),
-                          icon: Icon(Icons.share),
+                          iconSize: 16,
+                          icon: Icon(
+                            Icons.share,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
                             shareImage();
                           },
-                          label: Text('Share'),
                         ),
-                      ),
+                        SizedBox(height: 20),
+                        IconButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          iconSize: 16,
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            confirmDelete();
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -84,7 +84,7 @@ class _SectionTextInputState extends State<SectionTextInput> {
                       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                       margin: EdgeInsets.only(top: 10),
                       decoration: BoxDecoration(
-                        color: Colors.blue.shade700,
+                        color: Colors.teal.shade700,
                         borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
                       ),
                       child: Text(

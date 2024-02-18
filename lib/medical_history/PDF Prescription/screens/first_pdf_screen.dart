@@ -13,7 +13,8 @@ import 'package:flutter/material.dart';
 class FirstPdfScreen extends StatefulWidget {
   final String uniqueDiagnosisNumber;
 
-  const FirstPdfScreen({super.key, required this.uniqueDiagnosisNumber});
+  const FirstPdfScreen({Key? key, required this.uniqueDiagnosisNumber})
+      : super(key: key);
 
   @override
   State<FirstPdfScreen> createState() => _FirstPdfScreenState();
@@ -55,11 +56,11 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
   Future<String?> uploadPDF(String fileName, File file) async {
     final reference = FirebaseStorage.instance
         .ref()
-        .child('${userID}')
-        .child("pdf_folder/$fileName.pdf");
+        .child('$userID')
+        .child('pdf_folder/$fileName.pdf');
     final uploadTask = reference.putFile(file);
     await uploadTask.whenComplete(() {
-      showSnackBar('SUCCESS', Duration(seconds: 3));
+      showSnackBar('PDF uploaded successfully!', Duration(seconds: 2));
     });
 
     final downloadLink = await reference.getDownloadURL();
@@ -67,38 +68,106 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
   }
 
   void pickFile() async {
+    setState(() {
+      isAddingPDF = true; // Show circular progress indicator
+    });
+
     final pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
+
     if (pickedFile != null) {
-      String fileName = pickedFile.files[0].name;
-      File file = File(pickedFile.files[0].path!);
+      String fileName = pickedFile.files.first.name;
+      File file = File(pickedFile.files.first.path!);
       final downloadLink = await uploadPDF(fileName, file);
 
       await firebaseFirestore
-          .collection("users")
+          .collection('users')
           .doc(userID)
-          .collection("healthRecords")
+          .collection('healthRecords')
           .doc(widget.uniqueDiagnosisNumber)
-          .collection("pdf_folders")
+          .collection('pdf_folders')
           .add({
-        "name": fileName,
-        "url": downloadLink,
-      }).whenComplete(() => showSnackBar(
-              'Image uploaded successfully!', Duration(seconds: 2)));
+        'name': fileName,
+        'url': downloadLink,
+      });
+
+      setState(() {
+        isAddingPDF = false; // Hide circular progress indicator
+      });
+
+      showSnackBar('PDF uploaded successfully!', Duration(seconds: 2));
+      getALlPdf();
+    } else {
+      setState(() {
+        isAddingPDF = false; // Hide circular progress indicator
+      });
+    }
+  }
+
+  Future<void> deletePDF(String pdfName) async {
+    QuerySnapshot<Map<String, dynamic>> result = await firebaseFirestore
+        .collection('users')
+        .doc(userID)
+        .collection('healthRecords')
+        .doc(widget.uniqueDiagnosisNumber)
+        .collection('pdf_folders')
+        .where('name', isEqualTo: pdfName)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Deletion'),
+            content: Text('Are you sure you want to delete this PDF?'),
+            backgroundColor: Color.fromRGBO(215, 246, 244, 1.0),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await firebaseFirestore
+                      .collection('users')
+                      .doc(userID)
+                      .collection('healthRecords')
+                      .doc(widget.uniqueDiagnosisNumber)
+                      .collection('pdf_folders')
+                      .doc(result.docs.first.id)
+                      .delete();
+
+                  Navigator.pop(context);
+                  showSnackBar(
+                      'PDF deleted successfully!', Duration(seconds: 2));
+                  getALlPdf();
+                },
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
   bool isAddingPDF = true;
 
-  Future getALlPdf() async {
+  Future<void> getALlPdf() async {
     final result = await firebaseFirestore
         .collection('users')
         .doc(userID)
-        .collection("healthRecords")
+        .collection('healthRecords')
         .doc(widget.uniqueDiagnosisNumber)
-        .collection("pdf_folders")
+        .collection('pdf_folders')
         .get();
 
     pdfData = result.docs.map((e) => e.data()).toList();
@@ -110,107 +179,97 @@ class _FirstPdfScreenState extends State<FirstPdfScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('PDF Documents'),
+        backgroundColor: Colors.teal.shade50,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await getALlPdf();
         },
         child: isAddingPDF
             ? Center(
-                child: CircularProgressIndicator(),
-              )
+          child: CircularProgressIndicator(),
+        )
             : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemCount: pdfData.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.all(8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PDFViewerScreen(
-                                      pdfUrl: pdfData[index]['url'],
-                                      pdfName: pdfData[index]['name'],
-                                    )));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset(
-                              "assets/images/pdf_logo.png",
-                              height: 120,
-                              width: 120,
-                            ),
-                            Text(
-                              pdfData[index]['name'],
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            )
-                          ],
-                        ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+          ),
+          itemCount: pdfData.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 4.0,
+              color: Colors.teal.shade100,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PDFViewerScreen(
+                        pdfUrl: pdfData[index]['url'],
+                        pdfName: pdfData[index]['name'],
                       ),
                     ),
                   );
-                }),
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/pdf_logo.png',
+                            height: 80,
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            pdfData[index]['name'],
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 4.0,
+                      right: 4.0,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          deletePDF(pdfData[index]['name']);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {
-              pickFile();
-            },
-            style: TextButton.styleFrom(
-              elevation: 4,
-              backgroundColor: Colors.purple.shade800,
-              padding: EdgeInsets.all(16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: Text(
-              'Upload PDF',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(height: 16.0), // Add spacing between buttons
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ImageToPDF(uniqueDiagnosisNumber: widget.uniqueDiagnosisNumber,)),
-              );
-            },
-            style: TextButton.styleFrom(
-              elevation: 4,
-              backgroundColor: Colors.deepPurple.shade800,
-              padding: EdgeInsets.all(13),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: Text(
-              'Convert to PDF',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          pickFile();
+        },
+        label: Text(
+          'Upload PDF',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: Icon(Icons.file_upload),
+        backgroundColor: Colors.teal.shade800,
       ),
     );
   }

@@ -15,7 +15,22 @@ TextStyle size16White() {
   );
 }
 
+TextStyle size17White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 17,
+  );
+}
 
+TextStyle size14White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+}
 
 TextStyle siz30White() {
   return const TextStyle(
@@ -25,11 +40,27 @@ TextStyle siz30White() {
   );
 }
 
+
+TextStyle siz25White() {
+  return const TextStyle(
+    color: Colors.white,
+    fontFamily: 'Fontmain',
+    fontSize: 25,
+  );
+}
+
 TextStyle siz20Black() {
   return const TextStyle(
     color: Colors.black87,
     fontFamily: 'Fontmain',
     fontSize: 20,
+  );
+}
+TextStyle size15Black(){
+  return const TextStyle(
+    color: Colors.black87,
+    fontFamily: 'Fontmain',
+    fontSize: 17,
   );
 }
 

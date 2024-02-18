@@ -1,7 +1,7 @@
 import 'package:digi_pharma_app_test/common_background.dart';
-
 import '../../style.dart';
 import 'package:flutter/material.dart';
+import 'monthlyDatabase.dart';
 import 'monthlyMedDetails.dart';
 
 class monthlyMed extends StatefulWidget {
@@ -49,19 +49,19 @@ class _monthlyMedState extends State<monthlyMed> {
     if (selectedIndex == 0) {
       int lastDate = lastDates[selectedIndex];
       DateTime selectedDate =
-          DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
+      DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
       dateController.text = selectedDate.toLocal().toString().split(' ')[0];
       print(dateController.text);
     } else {
       int lastDate = lastDates[selectedIndex];
       int prevMonthLastDate = lastDates[selectedIndex - 1];
       DateTime selectedDate =
-          DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
+      DateTime(DateTime.now().year, selectedIndex + 1, lastDate);
       DateTime prevMonthDate =
-          DateTime(DateTime.now().year, selectedIndex, prevMonthLastDate);
+      DateTime(DateTime.now().year, selectedIndex, prevMonthLastDate);
       dateController.text = selectedDate.toLocal().toString().split(' ')[0];
       prevDateController.text =
-          prevMonthDate.toLocal().toString().split(' ')[0];
+      prevMonthDate.toLocal().toString().split(' ')[0];
       print(dateController.text);
       print(prevDateController.text);
     }
@@ -73,11 +73,11 @@ class _monthlyMedState extends State<monthlyMed> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('MONTHLY MEDICINE',
-        style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 20,
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: 20,
 
-        ),),
+          ),),
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -105,19 +105,19 @@ class _monthlyMedState extends State<monthlyMed> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => MonthlyMedDetails(
-                                    index: index,
-                                    time1: dateController,
-                                    // time2: prevDateController,
-                                  )));
+                                index: index,
+                                time1: dateController,
+                                time2: prevDateController,
+                              )));
                     } else {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => MonthlyMedDetails(
-                                    index: index,
-                                    time1: dateController,
-                                    time2: prevDateController,
-                                  )));
+                                index: index,
+                                time1: dateController,
+                                time2: prevDateController,
+                              ),),);
                     }
                   },
                   child: Container(
@@ -150,16 +150,7 @@ class _monthlyMedState extends State<monthlyMed> {
                               "${monthList[index]}",
                               style: siz30White(),
                             )),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 10, bottom: 5),
-                            child: Text(
-                              "Total Medicine : 10 ",
-                              style: size20White(),
-                            ),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),

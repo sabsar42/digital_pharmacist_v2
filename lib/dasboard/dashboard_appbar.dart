@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:digi_pharma_app_test/style.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-
+import 'package:digi_pharma_app_test/Scheduler/Screen/SchedulerScreen.dart';
 import '../User_Profile/screens/UserProfile.dart';
 import '../User_Profile/widget/user_profile_circle_avatar_get.dart';
 import 'drawer_dashboard.dart';
@@ -50,6 +50,15 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
       child: Stack(
         children: [
           Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/dashboard_card.png",
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
             padding: EdgeInsets.only(top: 50, left: 10),
             // color: Colors.green,
           ),
@@ -68,7 +77,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     child: Icon(
                       Icons.menu,
                       size: 30,
-                      color: Color.fromRGBO(175, 184, 196, 1.0),
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -80,8 +89,8 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                     final profileImageUrl = controller.profileImageUrl;
 
                     return Container(
-                      height: 50, // Adjust the height as needed
-                      width: 50,  // Adjust the width as needed
+                      height: 50,
+                      width: 50,
                       child: ClipOval(
                         child: profileImageUrl != null
                             ? Image.network(
@@ -112,10 +121,7 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
                       children: [
                         Text(
                           userInfo['full_name'] ?? 'Name not available',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                          ),
+                          style:size20White(),
                         ),
                         Text(
                           'Age :  ${userInfo['age']}',
@@ -131,84 +137,85 @@ class _DashboardAppbarState extends State<DashboardAppbar> {
               ],
             ),
           ),
-          Positioned(
-            top: 130,
-            left: 60,
-            right: 49,
-            child: Stack(
-              children: [
-                Container(
-                  height: 40,
-                  width: 280,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54, width: 1),
-                      color: Color.fromRGBO(238, 217, 217, 1.0),
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                Positioned(
-                    bottom: 5,
-                    top: 5,
-                    left: 40,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                'assets/images/dashboard_3.png',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Pill 2X",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w100),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.black26, width: 0.9),
-                                color: Color.fromRGBO(227, 209, 236, 1.0),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            Text(
-                              "9.00AM",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      ],
-                    ))
-              ],
-            ),
-          ),
+          // Positioned(
+          //   top: 130,
+          //   left: 60,
+          //   right: 49,
+          //   child: Stack(
+          //     children: [
+          //       Container(
+          //         height: 40,
+          //         width: 280,
+          //         decoration: BoxDecoration(
+          //             border: Border.all(color: Colors.black54, width: 1),
+          //             color: Color.fromRGBO(238, 217, 217, 1.0),
+          //             borderRadius: BorderRadius.circular(10)),
+          //       ),
+          //       Positioned(
+          //           bottom: 5,
+          //           top: 5,
+          //           left: 40,
+          //           child: Row(
+          //             children: [
+          //               Container(
+          //                 width: 30,
+          //                 height: double.infinity,
+          //                 decoration: BoxDecoration(
+          //                   image: DecorationImage(
+          //                     image: AssetImage(
+          //                       'assets/images/dashboard_3.png',
+          //                     ),
+          //                     fit: BoxFit.cover,
+          //                   ),
+          //                 ),
+          //               ),
+          //               SizedBox(
+          //                 width: 10,
+          //               ),
+          //               Text(
+          //                 "Pill 2X",
+          //                 style: TextStyle(
+          //                     fontSize: 20, fontWeight: FontWeight.w100),
+          //               ),
+          //               SizedBox(
+          //                 width: 20,
+          //               ),
+          //               Stack(
+          //                 alignment: Alignment.center,
+          //                 children: [
+          //                   Container(
+          //                     width: 100,
+          //                     height: 35,
+          //                     decoration: BoxDecoration(
+          //                       border: Border.all(
+          //                           color: Colors.black26, width: 0.9),
+          //                       color: Color.fromRGBO(227, 209, 236, 1.0),
+          //                       borderRadius: BorderRadius.circular(8),
+          //                     ),
+          //                   ),
+          //                   // Text(
+          //                   //   // timeWidget,
+          //                   //   style: TextStyle(
+          //                   //       fontSize: 18, fontWeight: FontWeight.w500),
+          //                   // )
+          //                 ],
+          //               ),
+          //             ],
+          //           ))
+          //     ],
+          //   ),
+          // ),
         ],
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/images/dashboard_card.png", // Replace with the URL of your image
-          ),
-          fit: BoxFit.cover,
-        ),
+        color:   Color(0xff008081),
+        // image: DecorationImage(
+        //   image: AssetImage(
+        //     "assets/images/dashboard_card.png", // Replace with the URL of your image
+        //   ),
+        //   fit: BoxFit.cover,
+        // ),
       ),
     );
   }
