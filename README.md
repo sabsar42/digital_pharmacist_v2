@@ -1,8 +1,8 @@
-# Patient Medical History Management System
+# DigiPharma - AI based Patient Medical History Management System 
 
 ## Overview
 
-The Patient Medical History Management System is a comprehensive application designed to streamline and enhance healthcare services through efficient management of patient information, medication, and health records. This system offers a variety of features to support pharmacists, administrators, and patients in their healthcare journeys.
+The DigiPharma - AI based Patient Medical History Management System  is a comprehensive application designed to streamline and enhance healthcare services through efficient management of patient information, medication, and health records. This system offers a variety of features to support pharmacists, administrators, and patients in their healthcare journeys.
 
 ## Features
 
