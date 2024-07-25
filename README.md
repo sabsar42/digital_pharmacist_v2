@@ -64,13 +64,13 @@ To get started with this project:
    ```bash
    flutter run
 
-###Contributing
+### Contributing
 Contributions are welcome! If you have suggestions or improvements, please create an issue or submit a pull request. Make sure to follow the project's coding standards and guidelines.
 
-###License
+### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-###Acknowledgements
+### Acknowledgements
 Flutter and Dart for providing a powerful toolkit and language for app development.
 Google Firebase for its comprehensive suite of development tools.
 
