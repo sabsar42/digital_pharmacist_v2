@@ -141,18 +141,21 @@ The DigiPharma - AI based Patient Medical History Management System  is a compre
 
 To get started with this project:
 
-1. **Clone the Repository**: 
+1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
+   git clone https://github.com/sabsar42/digital_pharmacist_v2.git
+   ```
 
-2. **Install Dependencies:**: 
+2. **Install Dependencies:** 
    ```bash
-   cd your-repository
+   cd digital_pharmacist_v2
    flutter pub get
+   ```
    
-3. **Run the Application:**: 
+3. **Run the Application:**
    ```bash
    flutter run
+   ```
 
 ### Contributing
 Contributions are welcome! If you have suggestions or improvements, please create an issue or submit a pull request. Make sure to follow the project's coding standards and guidelines.
